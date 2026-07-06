@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlipBuy - CapCut Studio Version</title>
+    <title>FlipBuy Pro - Studio & Marketplace</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     
@@ -21,183 +21,220 @@
         .video-card { scroll-snap-align: start; }
         .feed-container { scroll-snap-type: y mandatory; }
         
-        /* Ẩn tuyệt đối thanh kéo cuộn màu trắng trên mọi thiết bị */
+        /* Giấu thanh cuộn */
         ::-webkit-scrollbar { display: none !important; }
         * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
         
-        /* Hiệu ứng nhấp nháy cho nút ghi âm */
-        .recording-pulse { animation: recPulse 1s infinite alternate; }
-        @keyframes recPulse { from { opacity: 1; } to { opacity: 0.4; } }
+        /* Hiệu ứng kính mờ tinh tế */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .recording { animation: blink 1s infinite alternate; }
+        @keyframes blink { from { background: #dc2626; } to { background: #991b1b; } }
     </style>
 </head>
 <body class="bg-black text-white font-sans select-none overflow-hidden flex justify-center">
 
-    <div class="w-full max-w-[450px] h-screen relative bg-zinc-950 flex flex-col justify-between">
+    <div class="w-full max-w-[450px] h-screen relative bg-zinc-950 flex flex-col justify-between border-x border-zinc-900">
         
-        <div id="view-home" class="tab-view active w-full h-full overflow-y-scroll feed-container pb-16">
+        <div id="view-home" class="tab-view active w-full h-full overflow-y-scroll feed-container pb-16 relative">
+            
             <div class="video-card w-full h-[calc(100vh-64px)] relative flex items-center justify-center bg-black">
-                <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" loop muted autoplay playsinline class="w-full h-full object-cover"></video>
-                <div class="absolute bottom-20 left-4 right-16 z-10">
-                    <h3 class="font-bold text-lg" id="feed-username">@admin_shop</h3>
-                    <p class="text-sm text-zinc-300 my-2" data-lang="video_caption">Video hài hước nhất năm nay! Xem ngay món đồ độc lạ này 😂</p>
-                    <a href="https://shopee.vn" target="_blank" class="inline-block bg-[#ff0050] text-white px-5 py-2.5 rounded-full font-bold text-sm animate-bounce shadow-lg">🛒 MÚC NGAY TẠI ĐÂY</a>
+                <video id="main-feed-player" src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" loop muted autoplay playsinline class="w-full h-full object-cover"></video>
+                
+                <div class="absolute right-3 bottom-28 flex flex-col items-center gap-5 z-20">
+                    <div class="relative flex flex-col items-center">
+                        <div class="w-11 h-11 bg-zinc-800 rounded-full border-2 border-white flex items-center justify-center text-xl">👤</div>
+                        <button onclick="toggleFollow(this)" class="absolute -bottom-1 bg-[#ff0050] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-md hover:scale-110 transition">+</button>
+                    </div>
+                    <div class="text-center cursor-pointer group" onclick="toggleLike(this)">
+                        <span class="text-2xl group-active:scale-120 transition block">❤️</span>
+                        <p class="text-[10px] font-bold mt-0.5 text-zinc-300" id="like-count">14.2K</p>
+                    </div>
+                    <div class="text-center cursor-pointer" onclick="openComments()">
+                        <span class="text-2xl block">💬</span>
+                        <p class="text-[10px] font-bold mt-0.5 text-zinc-300">842</p>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-20 left-3 right-16 z-10 space-y-2.5">
+                    <div class="text-xs">
+                        <span class="font-bold text-white">@covan_taubac</span>
+                        <p class="text-zinc-300 mt-1">Outfit phối đồ đi chơi Tết bao chất, bao ngầu cho anh em Gen Z nhé! 😂 #trending</p>
+                    </div>
+                    
+                    <div class="glass-card p-2.5 rounded-2xl flex items-center gap-3 shadow-2xl">
+                        <div class="w-12 h-12 bg-zinc-800 rounded-xl overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=150" class="w-full h-full object-cover" alt="product">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">Áo Hoodie Tết Phối Màu Cao Cấp</h4>
+                            <p class="text-[11px] font-extrabold text-[#ff0050] mt-0.5">250.000 ₫</p>
+                        </div>
+                        <a href="https://shopee.vn" target="_blank" class="bg-[#ff0050] text-white px-3.5 py-1.5 rounded-xl text-[11px] font-black tracking-wide shadow-md whitespace-nowrap active:scale-95 transition">🛒 MUA</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="comment-sheet" class="absolute bottom-16 left-0 right-0 h-[60%] bg-zinc-900 border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between">
+                <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+                    <span class="text-xs font-bold text-zinc-400">Bình luận (842)</span>
+                    <button onclick="closeComments()" class="text-zinc-500 text-sm">✕</button>
+                </div>
+                <div class="flex-1 overflow-y-auto py-3 space-y-3 text-xs" id="comment-list">
+                    <div><span class="font-bold text-zinc-400">@hoang_anh:</span> Mặc chất vãi shop ơi, có size L không ạ?</div>
+                    <div><span class="font-bold text-zinc-400">@lan_nguyen:</span> Video hài xỉu, đã múc 1 cái ủng hộ kkk.</div>
+                </div>
+                <div class="flex gap-2 pt-2 border-t border-zinc-800">
+                    <input type="text" id="comment-input" placeholder="Thêm bình luận công khai..." class="flex-1 bg-black rounded-xl p-2.5 text-xs focus:outline-none text-white">
+                    <button onclick="sendComment()" class="bg-[#ff0050] px-4 rounded-xl text-xs font-bold">Gửi</button>
                 </div>
             </div>
         </div>
 
         <div id="view-upload" class="tab-view w-full h-full pb-20 overflow-y-auto bg-zinc-950">
             <div class="p-4 border-b border-zinc-900 sticky top-0 bg-zinc-950 z-20 flex justify-between items-center">
-                <h2 class="text-base font-bold tracking-wide" data-lang="upload_title">CapCut Editing Studio</h2>
-                <button id="btn-publish" class="bg-[#ff0050] text-white px-4 py-1.5 rounded-full font-bold text-xs shadow active:scale-95 transition" data-lang="publish">Xuất bản</button>
+                <h2 class="text-sm font-bold tracking-wider text-zinc-400">CAPCUT WEB ENGINE</h2>
+                <button id="btn-publish" class="bg-[#ff0050] text-white px-4 py-1.5 rounded-full font-bold text-xs shadow active:scale-95 transition">Đăng bài</button>
             </div>
 
-            <div class="w-full aspect-video bg-black relative flex items-center justify-center border-b border-zinc-900 group">
+            <div class="w-full aspect-video bg-black relative flex items-center justify-center border-b border-zinc-900">
                 <video id="studio-player" class="w-full h-full object-contain hidden" loop playsinline></video>
                 
                 <div id="studio-placeholder" class="text-center p-6">
                     <input type="file" id="video-input" accept="video/*" class="hidden">
                     <label for="video-input" class="cursor-pointer block">
-                        <p class="text-3xl mb-2">➕</p>
-                        <p class="text-xs text-zinc-400 font-bold" data-lang="upload_hint">Tải video gốc của bạn lên đây</p>
+                        <p class="text-3xl mb-1">🎞️</p>
+                        <p class="text-[11px] text-zinc-500 font-bold">BẤM TẢI VIDEO GỐC LÊN</p>
                     </label>
                 </div>
                 
-                <button id="btn-studio-play" class="absolute bg-black/60 w-12 h-12 rounded-full hidden items-center justify-center text-lg border border-zinc-700 active:scale-95 transition">▶</button>
-                <span id="studio-timer" class="absolute bottom-2 right-3 bg-black/70 text-[10px] font-mono px-2 py-0.5 rounded text-zinc-400 hidden">00:00</span>
+                <button id="btn-studio-play" class="absolute bg-black/60 w-11 h-11 rounded-full hidden items-center justify-center text-sm border border-zinc-800 active:scale-95 transition">▶</button>
+                <span id="studio-timer" class="absolute bottom-2 right-3 bg-black/70 text-[9px] font-mono px-1.5 py-0.5 rounded text-zinc-400 hidden">00:00</span>
             </div>
 
-            <div class="bg-zinc-900 p-3 space-y-2 border-b border-zinc-800">
+            <div class="bg-zinc-900 p-3 space-y-2.5 border-b border-zinc-800">
                 <div class="flex items-center justify-between text-[10px] text-zinc-500 font-bold px-1">
-                    <span>TIMELINE LAYERS</span>
-                    <span id="active-layers-indicator">Tracks: 1/3</span>
+                    <span>TRACK MANAGEMENT (TIMELINE)</span>
+                    <button onclick="toggleOriginalAudio()" id="btn-mute-original" class="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">🔊 Âm thanh gốc: Bật</button>
                 </div>
                 
-                <div class="space-y-1.5 bg-black/40 p-2 rounded-xl border border-zinc-800/60 text-[11px]">
-                    <div class="flex items-center gap-2 bg-zinc-900/80 p-2 rounded border-l-4 border-blue-500">
-                        <span class="w-12 font-bold text-blue-400">VIDEO</span>
-                        <div class="flex-1 bg-zinc-800 h-5 rounded relative overflow-hidden flex items-center px-2">
-                            <span id="track-name-video" class="text-[10px] text-zinc-400 truncate">Trống - Chưa nạp dữ liệu</span>
-                        </div>
+                <div class="space-y-2 bg-black/40 p-2 rounded-xl text-[11px]">
+                    <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded border-l-4 border-blue-500">
+                        <span class="w-10 font-bold text-blue-500">VIDEO</span>
+                        <div class="flex-1 bg-zinc-900 h-5 rounded flex items-center px-2 text-[10px] text-zinc-400 truncate" id="track-name-video">Chưa có video...</div>
                     </div>
-                    <div class="flex items-center gap-2 bg-zinc-900/80 p-2 rounded border-l-4 border-green-500">
-                        <span class="w-12 font-bold text-green-400">AUDIO</span>
-                        <div class="flex-1 bg-zinc-800 h-5 rounded relative overflow-hidden flex items-center px-2">
-                            <span id="track-name-music" class="text-[10px] text-zinc-500 italic">Chưa chèn nhạc mẫu</span>
+                    <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded border-l-4 border-green-500">
+                        <span class="w-10 font-bold text-green-500">AUDIO</span>
+                        <div class="flex-1 bg-zinc-900 h-5 rounded flex items-center justify-between px-2 text-[10px]">
+                            <span id="track-name-music" class="text-zinc-600 italic">Chưa chèn nhạc</span>
+                            <button onclick="deleteTrack('music')" id="btn-del-music" class="text-zinc-500 font-bold hidden hover:text-red-500">✕ Xóa</button>
                             <audio id="timeline-music" loop class="hidden"></audio>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2 bg-zinc-900/80 p-2 rounded border-l-4 border-red-500">
-                        <span class="w-12 font-bold text-red-400">VOICE</span>
-                        <div class="flex-1 bg-zinc-800 h-5 rounded relative overflow-hidden flex items-center px-2">
-                            <span id="track-name-voice" class="text-[10px] text-zinc-500 italic">Chưa thu âm lồng tiếng</span>
+                    <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded border-l-4 border-red-500">
+                        <span class="w-10 font-bold text-red-500">VOICE</span>
+                        <div class="flex-1 bg-zinc-900 h-5 rounded flex items-center justify-between px-2 text-[10px]">
+                            <span id="track-name-voice" class="text-zinc-600 italic">Chưa ghi âm lồng tiếng</span>
+                            <button onclick="deleteTrack('voice')" id="btn-del-voice" class="text-zinc-500 font-bold hidden hover:text-red-500">✕ Xóa</button>
                             <audio id="timeline-voice" class="hidden"></audio>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="p-4 space-y-4">
+            <div class="p-3 space-y-3.5">
                 <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-2xl flex items-center justify-between">
                     <div>
-                        <p class="font-bold text-xs" data-lang="voiceover">🎙️ LỒNG TIẾNG VÀ GHI ÂM TRỰC TIẾP</p>
-                        <p class="text-[10px] text-zinc-500 mt-0.5">Nhấn giữ hoặc bấm để nói đè vào trục âm thanh</p>
+                        <p class="font-bold text-xs">🎙️ THU ÂM & LỒNG TIẾNG</p>
+                        <p class="text-[9px] text-zinc-500 mt-0.5">Nói đè lời thoại khớp theo timeline video</p>
                     </div>
-                    <button id="btn-studio-record" class="bg-red-600 px-4 py-1.5 rounded-xl text-xs font-bold shadow active:scale-95 transition whitespace-nowrap" data-lang="start_record">Bắt đầu thu</button>
+                    <button id="btn-studio-record" class="bg-red-600 text-white px-4 py-1.5 rounded-xl text-xs font-bold active:scale-95 transition">Bắt đầu thu</button>
                 </div>
 
                 <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-2xl space-y-2">
-                    <p class="font-bold text-xs text-zinc-400 tracking-wider" data-lang="auto_music">🎵 KHO NHẠC MẪU THỊNH HÀNH (KHÔNG BẢN QUYỀN)</p>
-                    <div class="space-y-1.5 max-h-36 overflow-y-auto pr-1">
-                        <div class="bg-black/40 border border-zinc-800 p-2 rounded-xl flex items-center justify-between text-xs">
-                            <div>
-                                <p class="font-semibold text-zinc-200">Chill Lofi HipHop</p>
-                                <p class="text-[9px] text-zinc-500">Trending TikTok No Copyright</p>
-                            </div>
-                            <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', 'Chill Lofi HipHop')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-bold transition">Sử dụng</button>
+                    <p class="font-bold text-[11px] text-zinc-400">🎵 KHO NHẠC TRENDING ĐA THỂ LOẠI</p>
+                    <div class="grid grid-cols-1 gap-1.5 max-h-36 overflow-y-auto pr-0.5">
+                        <div class="bg-black/30 border border-zinc-800 p-2 rounded-xl flex items-center justify-between text-xs">
+                            <div><p class="font-bold text-zinc-300">Remix Vui Nhộn Meme</p><p class="text-[9px] text-zinc-500">Hài Hước</p></div>
+                            <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', 'Remix Hài Hước')" class="bg-zinc-800 px-3 py-1 rounded-lg text-[10px] font-bold">Dùng</button>
                         </div>
-                        <div class="bg-black/40 border border-zinc-800 p-2 rounded-xl flex items-center justify-between text-xs">
-                            <div>
-                                <p class="font-semibold text-zinc-200">Hài Hước Vui Nhộn Remix</p>
-                                <p class="text-[9px] text-zinc-500">Meme Sound Background</p>
-                            </div>
-                            <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', 'Hài Hước Vui Nhộn')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-bold transition">Sử dụng</button>
+                        <div class="bg-black/30 border border-zinc-800 p-2 rounded-xl flex items-center justify-between text-xs">
+                            <div><p class="font-bold text-zinc-300">Lofi Chill Đêm</p><p class="text-[9px] text-zinc-500">Nhẹ Nhàng</p></div>
+                            <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', 'Lofi Chill')" class="bg-zinc-800 px-3 py-1 rounded-lg text-[10px] font-bold">Dùng</button>
+                        </div>
+                        <div class="bg-black/30 border border-zinc-800 p-2 rounded-xl flex items-center justify-between text-xs">
+                            <div><p class="font-bold text-zinc-300">Bass Cực Căng Dance</p><p class="text-[9px] text-zinc-500">Sôi Động</p></div>
+                            <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', 'Bass Sôi Động')" class="bg-zinc-800 px-3 py-1 rounded-lg text-[10px] font-bold">Dùng</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-3 bg-zinc-900 border border-zinc-800 p-3 rounded-2xl">
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-zinc-400 font-bold block" data-lang="caption_label">TIÊU ĐỀ NỘI DUNG VIDEO</label>
-                        <input type="text" id="video-caption-input" placeholder="Viết mô tả cho video hài hước của bạn..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#ff0050]">
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="text-[10px] text-zinc-400 font-bold block" data-lang="product_link_label">LIÊN KẾT SẢN PHẨM MUA HÀNG</label>
-                        <input type="text" id="product-link" placeholder="Dán link Shopee, TikTok Shop vào đây..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#ff0050]">
-                    </div>
+                    <input type="text" id="video-caption-input" placeholder="Viết mô tả tiêu đề cho video hài hước..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none">
+                    <input type="text" id="product-link" placeholder="Gắn mã link sản phẩm (Shopee, Lazada, TikTok Shop)..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none">
                 </div>
             </div>
         </div>
 
-        <div id="view-profile" class="tab-view w-full h-full p-6 pb-20 overflow-y-auto">
-            <div id="auth-box" class="space-y-4 my-6 p-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
-                <h3 class="text-base font-bold text-center" data-lang="login_title">Đăng Nhập / Đăng Ký</h3>
-                <button onclick="loginWithGoogle()" class="w-full bg-white text-black p-3 rounded-xl font-bold flex justify-center items-center gap-2 text-sm shadow transition active:scale-95">🌐 Kết nối bằng Gmail</button>
-                <div class="flex gap-2">
-                    <input type="tel" id="phone-number" placeholder="Số điện thoại khôi phục..." class="flex-1 bg-black p-3 rounded-xl border border-zinc-800 text-sm focus:outline-none">
-                    <button onclick="loginWithPhone()" class="bg-zinc-800 border border-zinc-700 px-4 rounded-xl text-xs font-bold active:scale-95" data-lang="send_otp">Gửi OTP</button>
+        <div id="view-profile" class="tab-view w-full h-full p-4 pb-20 overflow-y-auto bg-zinc-950">
+            <div class="text-center space-y-2 mt-2">
+                <div class="w-20 h-20 bg-zinc-800 rounded-full mx-auto border-2 border-[#ff0050] flex items-center justify-center text-3xl">👤</div>
+                <h2 id="user-nickname" class="text-base font-bold">Cổ Văn Tảu Bắc</h2>
+                <p id="user-id" class="text-[10px] text-zinc-500 font-mono tracking-wider">ID CỐ ĐỊNH: app_giai_tri_user_2026</p>
+                <div class="flex justify-center gap-6 text-xs text-zinc-400 py-2">
+                    <div><b class="text-white">128</b> Đang Follow</div>
+                    <div><b class="text-white">54.2K</b> Follower</div>
                 </div>
             </div>
 
-            <div id="profile-info" class="text-center space-y-3 mt-4">
-                <div class="w-24 h-24 bg-zinc-800 rounded-full mx-auto border-2 border-[#ff0050] flex items-center justify-center text-4xl shadow-inner">👤</div>
-                <h2 id="user-nickname" class="text-xl font-bold" data-lang="default_user">Khách Ẩn Danh</h2>
-                <p id="user-id" class="text-xs text-zinc-500 font-mono tracking-wider" data-lang="id_status">ID CỐ ĐỊNH: Chưa đăng nhập</p>
-                
-                <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-left mt-6 space-y-2">
-                    <label class="text-xs text-zinc-400 font-bold block" data-lang="change_name_label">ĐỔI BIỆT DANH (12 ngày/lần)</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="new-nickname" class="flex-1 bg-black p-2.5 rounded-xl border border-zinc-800 text-sm focus:outline-none focus:border-[#ff0050]">
-                        <button onclick="updateNickname()" class="bg-[#ff0050] px-5 rounded-xl text-xs font-bold active:scale-95 transition" data-lang="save">Lưu</button>
+            <div class="mt-6 border-t border-zinc-900 pt-4 space-y-4">
+                <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-2xl space-y-3 shadow-md">
+                    <h3 class="text-xs font-black tracking-wider text-[#ff0050]">🏪 QUẢN LÝ GIAN HÀNG CỦA TÔI</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="shop-p-name" placeholder="Tên sản phẩm..." class="bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
+                        <input type="text" id="shop-p-price" placeholder="Giá tiền (đ)..." class="bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
                     </div>
-                    <p id="nickname-msg" class="text-xs text-red-500 font-semibold mt-1"></p>
+                    <input type="text" id="shop-p-link" placeholder="Đường dẫn link mua hàng Affiliate..." class="w-full bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
+                    <button onclick="addProductToStore()" class="w-full bg-white text-black text-xs font-bold py-2 rounded-xl shadow active:scale-98 transition">Thêm sản phẩm vào giỏ hàng cá nhân</button>
                 </div>
 
-                <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-left mt-4">
-                    <label class="text-xs text-zinc-400 font-bold block mb-2" data-lang="lang_settings">🌍 NGÔN NGỮ HỆ THỐNG / LANGUAGE</label>
-                    <select id="lang-selector" onchange="changeLanguage(this.value)" class="w-full bg-black p-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
-                        <option value="vi">Tiếng Việt</option>
-                        <option value="en">English</option>
-                        <option value="zh">中文 (Chinese)</option>
-                        <option value="th">ไทย (Thai)</option>
-                        <option value="km">ភាសាខ្មែរ (Cambodian)</option>
-                        <option value="lo">ພາສາລາວ (Lao)</option>
-                        <option value="ru">Русский (Russian)</option>
-                        <option value="es">Español (Cuba)</option>
-                        <option value="id">Bahasa Indonesia</option>
-                    </select>
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-zinc-400 pl-1">GIỎ HÀNG ĐÃ ĐĂNG</h4>
+                    <div id="my-store-grid" class="grid grid-cols-2 gap-2.5">
+                        <div class="bg-zinc-900 border border-zinc-800/80 p-2 rounded-2xl flex flex-col justify-between">
+                            <div class="w-full aspect-square bg-zinc-800 rounded-xl overflow-hidden mb-1.5">
+                                <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=150" class="w-full h-full object-cover" alt="item">
+                            </div>
+                            <h5 class="text-[11px] font-bold text-zinc-200 truncate">Áo Hoodie Tết Phối Màu</h5>
+                            <p class="text-[11px] font-extrabold text-[#ff0050] mt-0.5">250.000 đ</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="h-16 bg-black border-t border-zinc-900 flex justify-around items-center z-50 shadow-2xl">
-            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-zinc-500 nav-active transition">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-zinc-500 nav-active">
                 <span class="text-xl">🏠</span>
-                <span class="text-[10px] font-bold mt-0.5" data-lang="nav_home">Trang chủ</span>
+                <span class="text-[10px] font-bold mt-0.5">Trang chủ</span>
             </button>
-            <button onclick="switchTab('upload')" id="nav-upload" class="flex flex-col items-center text-zinc-500 transition active:scale-90">
+            <button onclick="switchTab('upload')" id="nav-upload" class="flex flex-col items-center text-zinc-500 active:scale-90 transition">
                 <div class="bg-white text-black font-extrabold px-4 py-1 rounded-xl text-lg flex items-center justify-center shadow shadow-white">+</div>
             </button>
-            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-zinc-500 transition">
+            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-zinc-500">
                 <span class="text-xl">👤</span>
-                <span class="text-[10px] font-bold mt-0.5" data-lang="nav_profile">Tôi</span>
+                <span class="text-[10px] font-bold mt-0.5">Tôi</span>
             </button>
         </div>
 
     </div>
 
     <script>
-        // 1. KẾT NỐI THÔNG SỐ FIREBASE THỰC TẾ CỦA BẠN
+        // 1. KẾT NỐI HỆ THỐNG FIREBASE CỦA BẠN
         const firebaseConfig = {
             apiKey: "AIzaSyBgfznta_Ikr8yDb6_Z89SrhfuHHsAsDw8", 
             authDomain: "app-giai-tri.firebaseapp.com", 
@@ -211,32 +248,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. TỪ ĐIỂN ĐA NGÔN NGỮ ĐỒNG BỘ ĐỒNG NHẤT 100% CÁC CHỮ TRÊN MÀN HÌNH
-        const languages = {
-            vi: { nav_home: "Trang chủ", nav_profile: "Tôi", upload_title: "CapCut Editing Studio", upload_hint: "Tải video gốc của bạn lên đây", auto_music: "🎵 KHO NHẠC MẪU THỊNH HÀNH (KHÔNG BẢN QUYỀN)", voiceover: "🎙️ LỒNG TIẾNG VÀ GHI ÂM TRỰC TIẾP", start_record: "Bắt đầu thu", publish: "Xuất bản", login_title: "Đăng Nhập / Đăng Ký", change_name_label: "ĐỔI BIỆT DANH (12 ngày/lần)", save: "Lưu", lang_settings: "🌍 NGÔN NGỮ HỆ THỐNG", video_caption: "Video hài hước nhất năm nay! 😂", product_link_label: "LIÊN KẾT SẢN PHẨM MUA HÀNG", caption_label: "TIÊU ĐỀ NỘI DUNG VIDEO", default_user: "Khách Ẩn Danh", id_status: "ID CỐ ĐỊNH: Chưa đăng nhập", send_otp: "Gửi OTP" },
-            en: { nav_home: "Home", nav_profile: "Me", upload_title: "CapCut Editing Studio", upload_hint: "Upload your original video here", auto_music: "🎵 TRENDING AUDIO BACKING TRACKS (COPYRIGHT FREE)", voiceover: "🎙️ LIVE VOICEOVER & AUDIO REC", start_record: "REC Now", publish: "Export", login_title: "Login / Register", change_name_label: "CHANGE NICKNAME (12 days limit)", save: "Save", lang_settings: "🌍 SYSTEM LANGUAGE", video_caption: "Funniest video of the year! 😂", product_link_label: "PRODUCT LINK FOR SHOPPING", caption_label: "TIÊU ĐỀ NỘI DUNG VIDEO", default_user: "Anonymous Guest", id_status: "FIXED ID: Not Logged In", send_otp: "Send OTP" }
-        };
-
-        function autoDetectLanguage() {
-            let browserLang = navigator.language || navigator.userLanguage;
-            let code = browserLang.split('-')[0];
-            if (!['vi', 'en'].includes(code)) code = 'en'; 
-            document.getElementById('lang-selector').value = code;
-            changeLanguage(code);
-        }
-
-        function changeLanguage(code) {
-            let langData = languages[code] || languages['en'];
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                let key = el.getAttribute('data-lang');
-                if (langData[key]) el.innerText = langData[key];
-            });
-            document.getElementById('video-caption-input').placeholder = "Viết mô tả cho video hài hước của bạn...";
-            document.getElementById('product-link').placeholder = "Dán link Shopee, TikTok Shop vào đây...";
-        }
-        window.addEventListener('DOMContentLoaded', autoDetectLanguage);
-
-        // SWITCH TAB 
+        // 2. LOGIC ĐIỀU HƯỚNG TAB
         function switchTab(tabName) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
@@ -244,18 +256,58 @@
             document.getElementById(`view-${tabName}`).classList.add('active');
             document.getElementById(`nav-${tabName}`).classList.add('nav-active');
             
-            // Tắt nhạc phát chéo khi chuyển màn hình
-            const mainVideo = document.querySelector('#view-home video');
+            const mainFeedPlayer = document.getElementById('main-feed-player');
             const studioPlayer = document.getElementById('studio-player');
             const bgMusic = document.getElementById('timeline-music');
             const recVoice = document.getElementById('timeline-voice');
 
-            if(tabName !== 'home') mainVideo.pause(); else mainVideo.play();
+            if(tabName !== 'home') mainFeedPlayer.pause(); else mainFeedPlayer.play();
             if(tabName !== 'upload') { studioPlayer.pause(); bgMusic.pause(); recVoice.pause(); }
         }
 
+        // 3. TƯƠNG TÁC XÃ HỘI (FOLLOW, LIKE, BOTTOM-SHEET COMMENT)
+        function toggleFollow(btn) {
+            if(btn.innerText === "+") {
+                btn.innerText = "✓";
+                btn.className = "absolute -bottom-1 bg-zinc-700 text-zinc-300 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-md";
+            } else {
+                btn.innerText = "+";
+                btn.className = "absolute -bottom-1 bg-[#ff0050] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-md";
+            }
+        }
+
+        function toggleLike(div) {
+            const countEl = document.getElementById('like-count');
+            if(div.classList.contains('liked')) {
+                div.classList.remove('liked');
+                div.querySelector('span').innerText = "❤️";
+                countEl.innerText = "14.2K";
+                countEl.classList.remove('text-[#ff0050]');
+            } else {
+                div.classList.add('liked');
+                div.querySelector('span').innerText = "💖";
+                countEl.innerText = "14.3K";
+                countEl.classList.add('text-[#ff0050]');
+            }
+        }
+
+        function openComments() { document.getElementById('comment-sheet').classList.remove('translate-y-full'); }
+        function closeComments() { document.getElementById('comment-sheet').classList.add('translate-y-full'); }
+
+        function sendComment() {
+            const input = document.getElementById('comment-input');
+            const list = document.getElementById('comment-list');
+            if(!input.value.trim()) return;
+            
+            const newComment = document.createElement('div');
+            newComment.innerHTML = `<span class="font-bold text-[#ff0050]">@bạn:</span> ${input.value}`;
+            list.appendChild(newComment);
+            list.scrollTop = list.scrollHeight;
+            input.value = "";
+        }
+
         // =========================================================
-        // 🔮 CORE LOGIC: CAPCUT MULTI-TRACK AUDIO MIXER ENGINE
+        // 4. CAPCUT WEB ENGINE (LỌC ÂM, PHÁT ĐA TẦNG, XÓA TRACK)
         // =========================================================
         const studioPlayer = document.getElementById('studio-player');
         const bgMusic = document.getElementById('timeline-music');
@@ -263,35 +315,27 @@
         const playBtn = document.getElementById('btn-studio-play');
         const timerLabel = document.getElementById('studio-timer');
 
-        // Bẫy sự kiện chọn file video gốc đưa vào Studio
+        // Đọc nạp video gốc
         document.getElementById('video-input').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                const url = URL.createObjectURL(file);
+                studioPlayer.src = URL.createObjectURL(file);
                 document.getElementById('studio-placeholder').classList.add('hidden');
-                
-                studioPlayer.src = url;
                 studioPlayer.classList.remove('hidden');
-                playBtn.classList.remove('hidden');
-                playBtn.classList.add('flex');
+                playBtn.classList.replace('hidden', 'flex');
                 timerLabel.classList.remove('hidden');
-                
-                // Cập nhật tên thanh Video Track
                 document.getElementById('track-name-video').innerText = `🎞️ ${file.name}`;
-                updateLayerIndicator();
             }
         });
 
-        // Xử lý nút bấm phát tổng hợp (Mixer Playback Control)
+        // Nút Phát / Tạm dừng đồng bộ Mixer
         playBtn.addEventListener('click', function() {
             if (studioPlayer.paused) {
-                // Bật tất cả các layer chạy cùng lúc đồng bộ thời gian gốc
                 studioPlayer.play();
                 if(bgMusic.src) bgMusic.play();
                 if(recVoice.src) { recVoice.currentTime = studioPlayer.currentTime; recVoice.play(); }
                 playBtn.innerText = "⏸";
             } else {
-                // Tạm dừng đồng loạt dữ liệu các tầng
                 studioPlayer.pause();
                 bgMusic.pause();
                 recVoice.pause();
@@ -299,28 +343,32 @@
             }
         });
 
-        // Cập nhật đồng hồ đếm thời gian biên tập video
-        studioPlayer.addEventListener('timeupdate', function() {
-            let curr = Math.floor(studioPlayer.currentTime);
-            let mins = Math.floor(curr / 60).toString().padStart(2, '0');
-            let secs = (curr % 60).toString().padStart(2, '0');
-            timerLabel.innerText = `${mins}:${secs}`;
-        });
-
-        // Chèn nhạc nền thịnh hành từ kho nhạc vào trục thời gian (Layer 2)
-        function applyMusicTrack(audioUrl, trackName) {
-            bgMusic.src = audioUrl;
-            bgMusic.volume = 0.4; // Tự động giảm volume nhạc nền xuống 40% để nhường giọng nói nói rõ hơn
-            document.getElementById('track-name-music').innerText = `🎵 Chèn nhạc: ${trackName} (Vol: 40%)`;
-            document.getElementById('track-name-music').classList.remove('text-zinc-500', 'italic');
-            document.getElementById('track-name-music').classList.add('text-green-400', 'font-semibold');
-            
-            // Nếu video đang phát, chạy luôn nhạc nền đi kèm luôn
-            if(!studioPlayer.paused) bgMusic.play();
-            updateLayerIndicator();
+        // Bộ lọc tách/tắt âm thanh video gốc
+        function toggleOriginalAudio() {
+            const btn = document.getElementById('btn-mute-original');
+            if (studioPlayer.muted) {
+                studioPlayer.muted = false;
+                btn.innerText = "🔊 Âm thanh gốc: Bật";
+                btn.className = "text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20";
+            } else {
+                studioPlayer.muted = true;
+                btn.innerText = "🔇 Âm thanh gốc: ĐÃ TẮT";
+                btn.className = "text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20";
+            }
         }
 
-        // 🎙️ Ghi âm lồng tiếng chuẩn và đẩy thẳng vào Layer 3
+        // Áp dụng chèn âm nhạc mẫu từ kho nhạc chuyên sâu
+        function applyMusicTrack(url, name) {
+            bgMusic.src = url;
+            bgMusic.volume = 0.5;
+            const textTrack = document.getElementById('track-name-music');
+            textTrack.innerText = `🎵 ${name}`;
+            textTrack.className = "text-green-400 font-bold";
+            document.getElementById('btn-del-music').classList.remove('hidden');
+            if(!studioPlayer.paused) bgMusic.play();
+        }
+
+        // Ghi âm lồng tiếng
         let mediaRecorder;
         let audioChunks = [];
         const recordBtn = document.getElementById('btn-studio-record');
@@ -329,8 +377,7 @@
             if (mediaRecorder && mediaRecorder.state === "recording") {
                 mediaRecorder.stop();
                 recordBtn.innerText = "Bắt đầu thu";
-                recordBtn.classList.remove('bg-zinc-700', 'recording-pulse');
-                recordBtn.classList.add('bg-red-600');
+                recordBtn.classList.remove('recording');
                 studioPlayer.pause();
             } else {
                 audioChunks = [];
@@ -339,102 +386,80 @@
                     mediaRecorder = new MediaRecorder(stream);
                     mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
                     mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-                        const audioUrl = URL.createObjectURL(audioBlob);
-                        
-                        recVoice.src = audioUrl;
-                        document.getElementById('track-name-voice').innerText = `🎙️ Bản thu ghi âm lồng tiếng cá nhân.mp3`;
-                        document.getElementById('track-name-voice').classList.remove('text-zinc-500', 'italic');
-                        document.getElementById('track-name-voice').classList.add('text-red-400', 'font-semibold');
-                        updateLayerIndicator();
+                        recVoice.src = URL.createObjectURL(new Blob(audioChunks, { type: 'audio/mp3' }));
+                        const textVoice = document.getElementById('track-name-voice');
+                        textVoice.innerText = "🎙️ Bản thu ghi âm lồng tiếng cá nhân.mp3";
+                        textVoice.className = "text-red-400 font-bold";
+                        document.getElementById('btn-del-voice').classList.remove('hidden');
                     };
-                    
-                    // Khi bắt đầu nói lồng tiếng, chạy video phát từ đầu để khớp khẩu hình
                     studioPlayer.currentTime = 0;
                     studioPlayer.play();
                     mediaRecorder.start();
-                    
-                    recordBtn.innerText = "🛑 ĐANG THU";
-                    recordBtn.classList.remove('bg-red-600');
-                    recordBtn.classList.add('bg-zinc-700', 'recording-pulse');
-                } catch (err) {
-                    alert("Yêu cầu cấp Micro để sử dụng tính năng lồng tiếng này!");
-                }
+                    recordBtn.innerText = "🔴 ĐANG THU";
+                    recordBtn.classList.add('recording');
+                } catch (err) { alert("Cần cấp quyền micro để lồng tiếng!"); }
             }
         });
 
-        function updateLayerIndicator() {
-            let active = 1;
-            if(bgMusic.src) active++;
-            if(recVoice.src) active++;
-            document.getElementById('active-layers-indicator').innerText = `Tracks: ${active}/3`;
+        // TÍNH NĂNG XÓA TRACK ĐÃ CHÈN (ĐÚNG YÊU CẦU CỦA BẠN)
+        function deleteTrack(type) {
+            if (type === 'music') {
+                bgMusic.pause();
+                bgMusic.removeAttribute('src');
+                const textTrack = document.getElementById('track-name-music');
+                textTrack.innerText = "Chưa chèn nhạc";
+                textTrack.className = "text-zinc-600 italic font-normal";
+                document.getElementById('btn-del-music').classList.add('hidden');
+            } else if (type === 'voice') {
+                recVoice.pause();
+                recVoice.removeAttribute('src');
+                const textVoice = document.getElementById('track-name-voice');
+                textVoice.innerText = "Chưa ghi âm lồng tiếng";
+                textVoice.className = "text-zinc-600 italic font-normal";
+                document.getElementById('btn-del-voice').classList.add('hidden');
+            }
         }
 
-        // =========================================================
-        // KHÓA ĐỔI BIỆT DANH CHẶN ĐÚNG 12 NGÀY CHÍNH XÁC & AUTH
-        // =========================================================
-        let currentUserData = null;
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById('auth-box').style.display = 'none';
-                document.getElementById('user-id').innerText = `ID CỐ ĐỊNH: ${user.uid}`;
-                
-                db.collection('users').doc(user.uid).get().then(doc => {
-                    if (doc.exists) {
-                        currentUserData = doc.data();
-                        document.getElementById('user-nickname').innerText = currentUserData.nickname || "Người dùng ẩn danh";
-                    } else {
-                        let defaultData = { nickname: "Người Dùng Mới", lastUpdate: null };
-                        db.collection('users').doc(user.uid).set(defaultData);
-                        currentUserData = defaultData;
-                        document.getElementById('user-nickname').innerText = defaultData.nickname;
-                    }
-                });
-            }
+        studioPlayer.addEventListener('timeupdate', function() {
+            let curr = Math.floor(studioPlayer.currentTime);
+            let mins = Math.floor(curr / 60).toString().padStart(2, '0');
+            let secs = (curr % 60).toString().padStart(2, '0');
+            timerLabel.innerText = `${mins}:${secs}`;
         });
 
-        function updateNickname() {
-            const newName = document.getElementById('new-nickname').value.trim();
-            const msgEl = document.getElementById('nickname-msg');
-            if(!auth.currentUser) { alert("Vui lòng kết nối tài khoản trước!"); return; }
-            if(!newName) return;
+        // =========================================================
+        // 5. GIAN HÀNG CÁ NHÂN (USER GIAN HÀNG)
+        // =========================================================
+        function addProductToStore() {
+            const name = document.getElementById('shop-p-name').value.trim();
+            const price = document.getElementById('shop-p-price').value.trim();
+            const link = document.getElementById('shop-p-link').value.trim();
+            const grid = document.getElementById('my-store-grid');
 
-            const now = new Date();
-            if (currentUserData && currentUserData.lastUpdate) {
-                const lastDate = currentUserData.lastUpdate.toDate();
-                const diffTime = Math.abs(now - lastDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                if (diffDays <= 12) {
-                    msgEl.className = "text-xs text-red-500 font-semibold mt-1";
-                    msgEl.innerText = `Chặn quyền! Bạn cần đợi thêm ${12 - diffDays + 1} ngày nữa để đổi tên tiếp.`;
-                    return;
-                }
-            }
+            if(!name || !price || !link) { alert("Vui lòng điền đủ Tên, Giá và Link sản phẩm!"); return; }
 
-            db.collection('users').doc(auth.currentUser.uid).update({
-                nickname: newName,
-                lastUpdate: firebase.firestore.Timestamp.fromDate(now)
-            }).then(() => {
-                document.getElementById('user-nickname').innerText = newName;
-                msgEl.className = "text-xs text-green-500 font-semibold mt-1";
-                msgEl.innerText = "Cập nhật biệt danh thành công!";
-                currentUserData.lastUpdate = firebase.firestore.Timestamp.fromDate(now);
-            });
+            const newProduct = document.createElement('div');
+            newProduct.className = "bg-zinc-900 border border-zinc-800/80 p-2 rounded-2xl flex flex-col justify-between";
+            newProduct.innerHTML = `
+                <div class="w-full aspect-square bg-zinc-800 rounded-xl overflow-hidden mb-1.5">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=150" class="w-full h-full object-cover" alt="item">
+                </div>
+                <h5 class="text-[11px] font-bold text-zinc-200 truncate">${name}</h5>
+                <p class="text-[11px] font-extrabold text-[#ff0050] mt-0.5">${price} đ</p>
+            `;
+            grid.appendChild(newProduct);
+            
+            // Xóa rỗng form sau khi đăng
+            document.getElementById('shop-p-name').value = "";
+            document.getElementById('shop-p-price').value = "";
+            document.getElementById('shop-p-link').value = "";
+            alert("Đã thêm sản phẩm thành công vào gian hàng của bạn!");
         }
 
         document.getElementById('btn-publish').addEventListener('click', function() {
-            if(!studioPlayer.src) { alert("Vui lòng tải video lên Studio để biên tập trước!"); return; }
-            alert("🚀 Hệ thống Mixer đang nén và đóng gói các tầng âm thanh/video để đẩy lên lưu trữ Firebase!");
+            if(!studioPlayer.src) { alert("Vui lòng tải video lên Studio biên tập trước!"); return; }
+            alert("🚀 Hệ thống đang nén dữ liệu video, các track âm thanh độc lập và liên kết sản phẩm lên Firebase của bạn!");
         });
-
-        function loginWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).catch(err => alert("Lỗi đăng nhập: " + err.message));
-        }
-        function loginWithPhone() { alert("Gói gửi SMS đang chờ cấu hình."); }
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); }
     </script>
 </body>
 </html>
