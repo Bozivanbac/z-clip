@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlipBuy - Video & Shopping</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Tailwind CSS (Giao diện chuẩn App di động) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- Tích hợp Firebase SDK v10 (Bản tương thích) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    
+    <style>
+        .nav-active { color: #ff0050 !important; }
+        .tab-view { display: none; }
+        .tab-view.active { display: block; }
+        .video-card { scroll-snap-align: start; }
+        .feed-container { scroll-snap-type: y mandatory; }
+    </style>
+</head>
+<body class="bg-black text-white font-sans select-none overflow-hidden flex justify-center">
+
+    <!-- KHUNG ĐIỆN THOẠI CHÍNH -->
+    <div class="w-full max-w-[450px] h-screen relative bg-zinc-950 flex flex-col justify-between">
+        
+        <!-- ========================================================= -->
+        <!-- 1. MÀN HÌNH CHÍNH (HOME FEED - LƯỚT VIDEO) -->
+        <!-- ========================================================= -->
+        <div id="view-home" class="tab-view active w-full h-full overflow-y-scroll feed-container pb-16">
+            <!-- Video mẫu 1 -->
+            <div class="video-card w-full h-[calc(100vh-64px)] relative flex items-center justify-center bg-black">
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" loop muted autoplay playsinline class="w-full h-full object-cover"></video>
+                <div class="absolute bottom-20 left-4 right-16 z-10">
+                    <h3 class="font-bold text-lg" id="feed-username">@admin_shop</h3>
+                    <p class="text-sm text-zinc-300 my-2" data-lang="video_caption">Video hài hước nhất năm nay! Xem ngay món đồ độc lạ này 😂</p>
+                    <a href="https://shopee.vn" target="_blank" class="inline-block bg-[#ff0050] text-white px-5 py-2.5 rounded-full font-bold text-sm animate-bounce shadow-lg">🛒 MÚC NGAY TẠI ĐÂY</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 2. MÀN HÌNH ĐĂNG VIDEO (+) -->
+        <!-- ========================================================= -->
+        <div id="view-upload" class="tab-view w-full h-full p-6 pb-20 overflow-y-auto">
+            <h2 class="text-xl font-bold mb-6 text-center" data-lang="upload_title">Tạo Video Mới</h2>
+            
+            <div class="border-2 border-dashed border-zinc-700 rounded-xl p-8 text-center mb-6 cursor-pointer hover:border-[#ff0050]">
+                <input type="file" id="video-input" accept="video/*" class="hidden">
+                <label for="video-input" class="cursor-pointer">
+                    <p class="text-4xl mb-2">🎬</p>
+                    <p class="text-sm text-zinc-400" data-lang="upload_hint">Bấm để tải video hoặc chọn nhiều clip</p>
+                </label>
+            </div>
+
+            <!-- Tính năng thông minh dạng mô phỏng / Hỗ trợ xử lý -->
+            <div class="space-y-4">
+                <button id="btn-auto-music" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex justify-between items-center text-left active:scale-95 transition">
+                    <div>
+                        <p class="font-semibold text-sm" data-lang="auto_music">🎵 Tự Động Chọn Nhạc Hợp Xu Hướng</p>
+                        <p class="text-xs text-zinc-500" data-lang="auto_music_desc">AI tự quét nội dung video để chèn nhạc phù hợp</p>
+                    </div>
+                </button>
+
+                <button id="btn-auto-stitch" class="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex justify-between items-center text-left active:scale-95 transition">
+                    <div>
+                        <p class="font-semibold text-sm" data-lang="auto_stitch">⚡ Auto Ghép Video & Làm Mượt</p>
+                        <p class="text-xs text-zinc-500" data-lang="auto_stitch_desc">Nối các clip ngắn thành một video hoàn chỉnh</p>
+                    </div>
+                </button>
+
+                <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl space-y-3">
+                    <p class="font-semibold text-sm" data-lang="voiceover">🎙️ Lồng Tiếng & Ghi Âm Trực Tiếp</p>
+                    <div class="flex items-center gap-3">
+                        <button id="btn-record" class="bg-red-600 px-4 py-2 rounded-xl text-xs font-bold shadow transition active:scale-95" data-lang="start_record">Bắt đầu thu âm</button>
+                        <audio id="voice-preview" controls class="hidden flex-1 max-h-8"></audio>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs text-zinc-400 font-bold block" data-lang="product_link_label">LIÊN KẾT SẢN PHẨM</label>
+                    <input type="text" id="product-link" placeholder="Dán link Shopee, TikTok Shop vào đây..." class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-xl text-sm text-white focus:outline-none focus:border-[#ff0050]">
+                </div>
+                
+                <button class="w-full bg-[#ff0050] py-3.5 rounded-xl font-bold shadow-lg transition active:scale-95 mt-4" data-lang="publish">ĐĂNG VIDEO LÊN APP</button>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 3. MÀN HÌNH TRANG CÁ NHÂN & CÀI ĐẶT -->
+        <!-- ========================================================= -->
+        <div id="view-profile" class="tab-view w-full h-full p-6 pb-20 overflow-y-auto">
+            
+            <!-- Box Đăng Nhập (Sẽ ẩn đi sau khi đăng nhập thành công) -->
+            <div id="auth-box" class="space-y-4 my-6 p-4 bg-zinc-900 border border-zinc-800 rounded-2xl">
+                <h3 class="text-base font-bold text-center" data-lang="login_title">Đăng Nhập / Đăng Ký</h3>
+                <button onclick="loginWithGoogle()" class="w-full bg-white text-black p-3 rounded-xl font-bold flex justify-center items-center gap-2 text-sm shadow transition active:scale-95">🌐 Kết nối bằng Gmail</button>
+                <div class="flex gap-2">
+                    <input type="tel" id="phone-number" placeholder="Số điện thoại khôi phục..." class="flex-1 bg-black p-3 rounded-xl border border-zinc-800 text-sm focus:outline-none">
+                    <button onclick="loginWithPhone()" class="bg-zinc-800 border border-zinc-700 px-4 rounded-xl text-xs font-bold active:scale-95">Gửi OTP</button>
+                </div>
+            </div>
+
+            <!-- Khu Vực Thông Tin Profile -->
+            <div id="profile-info" class="text-center space-y-3 mt-4">
+                <div class="w-24 h-24 bg-zinc-800 rounded-full mx-auto border-2 border-[#ff0050] flex items-center justify-center text-4xl shadow-inner">👤</div>
+                <h2 id="user-nickname" class="text-xl font-bold">Khách Ẩn Danh</h2>
+                <p id="user-id" class="text-xs text-zinc-500 font-mono tracking-wider">ID CỐ ĐỊNH: Chưa đăng nhập</p>
+                
+                <!-- Khu vực đổi Nickname chặn 12 ngày -->
+                <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-left mt-6 space-y-2">
+                    <label class="text-xs text-zinc-400 font-bold block" data-lang="change_name_label">ĐỔI BIỆT DANH (12 ngày/lần)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="new-nickname" class="flex-1 bg-black p-2.5 rounded-xl border border-zinc-800 text-sm focus:outline-none focus:border-[#ff0050]">
+                        <button onclick="updateNickname()" class="bg-[#ff0050] px-5 rounded-xl text-xs font-bold active:scale-95 transition" data-lang="save">Lưu</button>
+                    </div>
+                    <p id="nickname-msg" class="text-xs text-red-500 font-semibold mt-1"></p>
+                </div>
+
+                <!-- Cài đặt Ngôn ngữ tự động / Thủ công -->
+                <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-left mt-4">
+                    <label class="text-xs text-zinc-400 font-bold block mb-2" data-lang="lang_settings">🌍 NGÔN NGỮ HỆ THỐNG / LANGUAGE</label>
+                    <select id="lang-selector" onchange="changeLanguage(this.value)" class="w-full bg-black p-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                        <option value="vi">Tiếng Việt</option>
+                        <option value="en">English</option>
+                        <option value="zh">中文 (Chinese)</option>
+                        <option value="th">ไทย (Thai)</option>
+                        <option value="km">ភាសាខ្មែរ (Cambodian)</option>
+                        <option value="lo">ພາສາລາວ (Lao)</option>
+                        <option value="ru">Русский (Russian)</option>
+                        <option value="es">Español (Cuba)</option>
+                        <option value="id">Bahasa Indonesia</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- THANH ĐIỀU HƯỚNG DƯỚI CÙNG (BOTTOM NAV BAR) -->
+        <!-- ========================================================= -->
+        <div class="h-16 bg-black border-t border-zinc-900 flex justify-around items-center z-50 shadow-2xl">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-zinc-500 nav-active transition">
+                <span class="text-xl">🏠</span>
+                <span class="text-[10px] font-bold mt-0.5" data-lang="nav_home">Trang chủ</span>
+            </button>
+            <button onclick="switchTab('upload')" id="nav-upload" class="flex flex-col items-center text-zinc-500 transition active:scale-90">
+                <div class="bg-white text-black font-extrabold px-4 py-1 rounded-xl text-lg flex items-center justify-center shadow shadow-white">+</div>
+            </button>
+            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-zinc-500 transition">
+                <span class="text-xl">👤</span>
+                <span class="text-[10px] font-bold mt-0.5" data-lang="nav_profile">Tôi</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- LOGIC XỬ LÝ SCRIPT & KẾT NỐI FIREBASE -->
+    <!-- ========================================================= -->
+    <script>
+        // 1. KẾT NỐI THÔNG SỐ FIREBASE CỦA BẠN
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgfznta_Ikr8yDb6_Z89SrhfuHHsAsDw8", 
+            authDomain: "app-giai-tri.firebaseapp.com", 
+            projectId: "app-giai-tri", 
+            storageBucket: "app-giai-tri.firebasestorage.app", 
+            messagingSenderId: "92002334598", 
+            appId: "1:92002334598:web:1ed13c8e363e2329359e07", 
+            measurementId: "G-RNBGX6SQE2" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // 2. TỪ ĐIỂN ĐA NGÔN NGỮ (9 NGÔN NGỮ BẠN YÊU CẦU)
+        const languages = {
+            vi: { nav_home: "Trang chủ", nav_profile: "Tôi", upload_title: "Tạo Video Mới", upload_hint: "Bấm để tải video hoặc chọn nhiều clip", auto_music: "🎵 Tự Động Chọn Nhạc Hợp Xu Hướng", auto_music_desc: "AI tự quét nội dung video để chèn nhạc phù hợp", auto_stitch: "⚡ Auto Ghép Video & Làm Mượt", auto_stitch_desc: "Nối các clip ngắn thành một video hoàn chỉnh", voiceover: "🎙️ Lồng Tiếng & Ghi Âm Trực Tiếp", start_record: "Bắt đầu thu âm", publish: "ĐĂNG VIDEO LÊN APP", login_title: "Đăng Nhập / Đăng Ký", change_name_label: "ĐỔI BIỆT DANH (12 ngày/lần)", save: "Lưu", lang_settings: "🌍 NGÔN NGỮ HỆ THỐNG", video_caption: "Video hài hước nhất năm nay! 😂", product_link_label: "LIÊN KẾT SẢN PHẨM" },
+            en: { nav_home: "Home", nav_profile: "Me", upload_title: "Create Video", upload_hint: "Click to upload video clips", auto_music: "🎵 Auto Trendy Music", auto_music_desc: "AI match music with video context", auto_stitch: "⚡ Auto Video Stitching", auto_stitch_desc: "Merge short clips seamlessly", voiceover: "🎙️ Live Voiceover & Record", start_record: "Start Record", publish: "PUBLISH VIDEO", login_title: "Login / Register", change_name_label: "CHANGE NICKNAME (12 days limit)", save: "Save", lang_settings: "🌍 SYSTEM LANGUAGE", video_caption: "Funniest video of the year! 😂", product_link_label: "PRODUCT LINK" },
+            zh: { nav_home: "首页", nav_profile: "我的", upload_title: "创建新视频", upload_hint: "点击上传视频片段", auto_music: "🎵 智能热门音乐匹配", auto_music_desc: "AI自动根据视频内容匹配音乐", auto_stitch: "⚡ 自动视频剪辑融合", auto_stitch_desc: "将多个片段自然流畅拼接", voiceover: "🎙️ 实时配音录制", start_record: "开始录音", publish: "发布视频", login_title: "登录 / 注册", change_name_label: "更改昵称（12天一次）", save: "保存", lang_settings: "🌍 系统语言", video_caption: "今年最搞笑的视频！ 😂", product_link_label: "商品链接" },
+            th: { nav_home: "หน้าแรก", nav_profile: "ฉัน", upload_title: "สร้างวิดีโอใหม่", upload_hint: "คลิกเพื่ออัปโหลดคลิป", auto_music: "🎵 เลือกเพลงฮิตอัตโนมัติ", auto_music_desc: "AI สแกนเนื้อหาเพื่อใส่เพลงที่เหมาะสม", auto_stitch: "⚡ ตัดต่อวิดีโออัตโนมัติ", auto_stitch_desc: "รวมคลิปสั้นให้เป็นวิดีโอที่สมบูรณ์", voiceover: "🎙️ พากย์เสียงสดและบันทึก", start_record: "เริ่มบันทึกเสียง", publish: "โพสต์วิดีโอ", login_title: "เข้าสู่ระบบ", change_name_label: "เปลี่ยนชื่อเล่น (ทุก 12 วัน)", save: "บันทึก", lang_settings: "🌍 ภาษาของระบบ", video_caption: "วิดีโอตลกที่สุดของปีนี้! 😂", product_link_label: "ลิงก์สินค้า" },
+            km: { nav_home: "ទំព័រដើម", nav_profile: "ខ្ញុំ", upload_title: "បង្កើតវីដេអូថ្មី", upload_hint: "ចុចដើម្បីផ្ទុកឡើងឃ្លីប", auto_music: "🎵 ជ្រើសរើសតន្ត្រីពេញនិយមស្វ័យប្រវត្តិ", auto_music_desc: "AI ស្កេនមាតិកាដើម្បីបញ្ចូលតន្ត្រីសមស្រប", auto_stitch: "⚡ កាត់តវីដេអូស្វ័យប្រវត្តិ", auto_stitch_desc: "ភ្ជាប់ឃ្លីបខ្លីៗឱ្យទៅជាវីដេអូពេញលេញ", voiceover: "🎙️ បញ្ចូលសំឡេងផ្ទាល់", start_record: "ចាប់ផ្តើមថតសំឡេង", publish: "បង្ហោះវីដេអូ", login_title: "ចូលប្រើប្រាស់", change_name_label: "ប្តូរឈ្មោះហៅក្រៅ (12 ថ្ងៃម្តង)", save: "រក្សាទុក", lang_settings: "🌍 ភាសាប្រព័ន្ធ", video_caption: "វីដេអូកំប្លែងបំផុតប្រចាំឆ្នាំ! 😂", product_link_label: "តំណភ្ជាប់ផលិតផល" },
+            lo: { nav_home: "ໜ້າທຳອິດ", nav_profile: "ຂ້ອຍ", upload_title: "ສ້າງວິດີໂອໃໝ່", upload_hint: "ຄລິກເພື່ອອັບໂຫຼດຄລິບ", auto_music: "🎵 ເລືອກເພງຮິດອັດຕະໂນມັດ", auto_music_desc: "AI ສະແກນເນື້ອຫາເພື່ອໃສ່ເພງທີ່ເໝາະສົມ", auto_stitch: "⚡ ຕັດຕໍ່ວິດີໂອອັດຕະໂນມັດ", auto_stitch_desc: "ລວມຄລິບສັ້ນໃຫ້ເປັນວິດີໂອທີ່ສົມບູນ", voiceover: "🎙️ ພາກສຽງສົດ ແລະ ບັນທຶກ", start_record: "ເລີ່ມບັນທຶກສຽງ", publish: "ໂພສວິດີໂອ", login_title: "ເຂົ້າສູ່ລະບົບ", change_name_label: "ປ່ຽນຊື່ຫຼິ້ນ (ທຸກໆ 12 ວັນ)", save: "ບັນທຶກ", lang_settings: "🌍 ພາສາລະບົບ", video_caption: "ວິດີໂອຕະຫຼົກທີ່ສຸດຂອງປີນີ້! 😂", product_link_label: "ລິ້ງສິນຄ້າ" },
+            ru: { nav_home: "Главная", nav_profile: "Я", upload_title: "Создать видео", upload_hint: "Нажмите для загрузки клипов", auto_music: "🎵 Автоподбор трендовой музыки", auto_music_desc: "AI сканирует контент для подбора музыки", auto_stitch: "⚡ Автоматический монтаж видео", auto_stitch_desc: "Плавное объединение коротких клипов", voiceover: "🎙️ Живая озвучка и запись", start_record: "Начать запись", publish: "ОПУБЛИКОВАТЬ ВИДЕО", login_title: "Вход / Регистрация", change_name_label: "Смена ника (раз в 12 дней)", save: "Сохранить", lang_settings: "🌍 ЯЗЫК СИСТЕМЫ", video_caption: "Самое смешное видео года! 😂", product_link_label: "ССЫЛКА НА ТОВАР" },
+            es: { nav_home: "Inicio", nav_profile: "Yo", upload_title: "Crear Video", upload_hint: "Haz clic para subir clips", auto_music: "🎵 Música tendencia automática", auto_music_desc: "El IA escanea el contenido para adaptar música", auto_stitch: "⚡ Montaje de video automático", auto_stitch_desc: "Une clips cortos en un video perfecto", voiceover: "🎙️ Doblaje en vivo y grabación", start_record: "Iniciar grabación", publish: "PUBLICAR VIDEO", login_title: "Iniciar sesión", change_name_label: "Cambiar apodo (Cada 12 días)", save: "Guardar", lang_settings: "🌍 IDIOMA DEL SISTEMA", video_caption: "¡El video más divertido del año! 😂", product_link_label: "ENLACE DEL PRODUCTO" },
+            id: { nav_home: "Beranda", nav_profile: "Saya", upload_title: "Buat Video Baru", upload_hint: "Klik untuk unggah klip", auto_music: "🎵 Pemilihan Musik Tren Otomatis", auto_music_desc: "AI memindai konten untuk mencocokkan musik", auto_stitch: "⚡ Penggabungan Video Otomatis", auto_stitch_desc: "Menggabungkan klip pendek dengan mulus", voiceover: "🎙️ Sulih Suara & Rekam Langsung", start_record: "Mulai Rekam", publish: "POSTING VIDEO", login_title: "Masuk / Daftar", change_name_label: "Ubah Nama Panggilan (12 hari sekali)", save: "Simpan", lang_settings: "🌍 BAHASA SISTEM", video_caption: "Video paling lucu tahun ini! 😂", product_link_label: "LINK PRODUK" }
+        };
+
+        // Hàm tự động phát hiện khu vực của khách truy cập để bật ngôn ngữ thích hợp
+        function autoDetectLanguage() {
+            let browserLang = navigator.language || navigator.userLanguage;
+            let code = browserLang.split('-')[0]; // Tách lấy mã ví dụ 'vi', 'zh', 'en'
+            const supportedLangs = ['vi', 'en', 'zh', 'th', 'km', 'lo', 'ru', 'es', 'id'];
+            
+            if (!supportedLangs.includes(code)) code = 'en'; // Nếu nước lạ quá thì ưu tiên tiếng Anh
+            
+            document.getElementById('lang-selector').value = code;
+            changeLanguage(code);
+        }
+
+        function changeLanguage(code) {
+            let langData = languages[code] || languages['en'];
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                let key = el.getAttribute('data-lang');
+                if (langData[key]) {
+                    if (el.tagName === 'INPUT') el.placeholder = langData[key];
+                    else el.innerText = langData[key];
+                }
+            });
+        }
+        window.addEventListener('DOMContentLoaded', autoDetectLanguage);
+
+        // 3. LOGIC CHUYỂN TAB ĐIỀU HƯỚNG
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
+            
+            document.getElementById(`view-${tabName}`).classList.add('active');
+            document.getElementById(`nav-${tabName}`).classList.add('nav-active');
+            
+            const mainVideo = document.querySelector('#view-home video');
+            if(tabName !== 'home') mainVideo.pause(); else mainVideo.play();
+        }
+
+        // 4. KIỂM TRA ĐỔI BIỆT DANH CHẶN 12 NGÀY CHÍNH XÁC
+        let currentUserData = null;
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('auth-box').style.display = 'none';
+                document.getElementById('user-id').innerText = `ID CỐ ĐỊNH: ${user.uid}`;
+                
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists) {
+                        currentUserData = doc.data();
+                        document.getElementById('user-nickname').innerText = currentUserData.nickname || "Người dùng ẩn danh";
+                    } else {
+                        let defaultData = { nickname: "Người Dùng Mới", lastUpdate: null };
+                        db.collection('users').doc(user.uid).set(defaultData);
+                        currentUserData = defaultData;
+                        document.getElementById('user-nickname').innerText = defaultData.nickname;
+                    }
+                });
+            }
+        });
+
+        function updateNickname() {
+            const newName = document.getElementById('new-nickname').value.trim();
+            const msgEl = document.getElementById('nickname-msg');
+            if(!auth.currentUser) { alert("Vui lòng kết nối tài khoản trước!"); return; }
+            if(!newName) return;
+
+            const now = new Date();
+            if (currentUserData && currentUserData.lastUpdate) {
+                const lastDate = currentUserData.lastUpdate.toDate();
+                const diffTime = Math.abs(now - lastDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays <= 12) {
+                    msgEl.className = "text-xs text-red-500 font-semibold mt-1";
+                    msgEl.innerText = `Chặn quyền! Bạn cần đợi thêm ${12 - diffDays + 1} ngày nữa để đổi tên tiếp.`;
+                    return;
+                }
+            }
+
+            db.collection('users').doc(auth.currentUser.uid).update({
+                nickname: newName,
+                lastUpdate: firebase.firestore.Timestamp.fromDate(now)
+            }).then(() => {
+                document.getElementById('user-nickname').innerText = newName;
+                msgEl.className = "text-xs text-green-500 font-semibold mt-1";
+                msgEl.innerText = "Cập nhật biệt danh thành công!";
+                currentUserData.lastUpdate = firebase.firestore.Timestamp.fromDate(now);
+            }).catch(err => {
+                msgEl.innerText = "Lỗi kết nối database: " + err.message;
+            });
+        }
+
+        // 5. GIẢ LẬP GHI ÂM LỒNG TIẾNG (VOICEOVER) TRÊN TRÌNH DUYỆT
+        let mediaRecorder;
+        let audioChunks = [];
+        const recordBtn = document.getElementById('btn-record');
+        const audioPreview = document.getElementById('voice-preview');
+
+        recordBtn.addEventListener('click', async () => {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                recordBtn.innerText = "Bắt đầu thu âm";
+                recordBtn.className = "bg-red-600 px-4 py-2 rounded-xl text-xs font-bold transition active:scale-95";
+            } else {
+                audioChunks = [];
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                        audioPreview.src = URL.createObjectURL(audioBlob);
+                        audioPreview.classList.remove('hidden');
+                    };
+                    mediaRecorder.start();
+                    recordBtn.innerText = "🛑 Đang thu âm... Ấn để dừng";
+                    recordBtn.className = "bg-green-600 px-4 py-2 rounded-xl text-xs font-bold transition active:scale-95";
+                } catch (err) {
+                    alert("Ứng dụng cần quyền truy cập Micro của bạn để tiến hành lồng tiếng!");
+                }
+            }
+        });
+
+        // 6. PHƯƠNG THỨC ĐĂNG NHẬP MẪU
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(err => alert("Lỗi đăng nhập: " + err.message));
+        }
+
+        function loginWithPhone() {
+            alert("Tính năng gửi OTP qua SMS đang cấu hình gói trả phí trên Firebase của bạn.");
+        }
+
+        // 7. KÍCH HOẠT PWA SERVICE WORKER RUNTIME
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+        }
+    </script>
+</body>
+</html>
