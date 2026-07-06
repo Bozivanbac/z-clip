@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlipBuy SuperApp - NextGen TikTok Studio</title>
+    <title>FlipBuy SuperApp - Unlimited Music Studio</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     
@@ -32,53 +32,47 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .rec-pulse { animation: recBlink 1s infinite alternate; }
-        @keyframes recBlink { from { background: #dc2626; } to { background: #450a0a; } }
     </style>
 </head>
 <body class="bg-black text-white font-sans select-none overflow-hidden flex justify-center">
 
-    <!-- BỘ KHUNG ĐIỆN THOẠI DI ĐỘNG CHUẨN MẠNG XÃ HỘI -->
+    <!-- BỘ KHUNG ĐIỆN THOẠI DI ĐỘNG -->
     <div class="w-full max-w-[450px] h-screen relative bg-zinc-950 flex flex-col justify-between border-x border-zinc-900 shadow-2xl">
         
         <!-- ========================================================= -->
-        <!-- 1. MÀN HÌNH CHÍNH (LUỒNG VIDEO FEED SÁT BOTTOM - GỌN GÀNG) -->
+        <!-- 1. MÀN HÌNH CHÍNH (HOME FEED - TRÀN VIỀN SÁT ĐÁY) -->
         <!-- ========================================================= -->
         <div id="view-home" class="tab-view active w-full h-full overflow-y-scroll feed-container pb-16 relative">
             
-            <!-- Video 1 gốc hệ thống -->
+            <!-- Video 1 -->
             <div class="video-card w-full h-[calc(100vh-64px)] relative flex items-center justify-center bg-black" data-video-id="vid_001">
                 <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" loop muted autoplay playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
                 
-                <!-- SIDEBAR CHỨC NĂNG (BỔ SUNG ĐĂNG LẠI & CHIA SẺ) -->
+                <!-- SIDEBAR CHỨC NĂNG -->
                 <div class="absolute right-3 bottom-20 flex flex-col items-center gap-4.5 z-20">
                     <div class="relative flex flex-col items-center">
                         <div class="w-10 h-10 bg-zinc-800 rounded-full border-2 border-white flex items-center justify-center font-bold text-xs">👤</div>
                         <button onclick="toggleFollow(this)" class="absolute -bottom-1 bg-[#ff0050] text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shadow">+</button>
                     </div>
-                    <!-- Thả tim mồi -->
                     <div class="text-center cursor-pointer" onclick="handleLikeReal(this, 124)">
                         <span class="text-2xl transition duration-200 block dynamic-heart">🤍</span>
                         <p class="text-[10px] font-black mt-0.5 text-zinc-300 like-counter">124</p>
                     </div>
-                    <!-- Bình luận -->
                     <div class="text-center cursor-pointer" onclick="openComments()">
                         <span class="text-2xl block">💬</span>
                         <p class="text-[10px] font-black mt-0.5 text-zinc-300">2</p>
                     </div>
-                    <!-- ĐĂNG LẠI (REPOST) -->
                     <div class="text-center cursor-pointer" onclick="handleRepost(this)">
-                        <span class="text-2xl block tracking-normal">🔁</span>
+                        <span class="text-2xl block">🔁</span>
                         <p class="text-[10px] font-black mt-0.5 text-zinc-300 repost-counter">0</p>
                     </div>
-                    <!-- CHIA SẺ (SHARE) -->
                     <div class="text-center cursor-pointer" onclick="handleShare(this)">
                         <span class="text-2xl block">↪️</span>
                         <p class="text-[10px] font-black mt-0.5 text-zinc-300 share-counter">7</p>
                     </div>
                 </div>
 
-                <!-- ĐÃ SỬA: KHÔNG GIAN THÔNG TIN RÚT GỌN SÁT ĐÁY - KHÔNG KÌ CỤC -->
+                <!-- THÔNG TIN & GIỎ HÀNG GỌN GÀNG -->
                 <div class="absolute bottom-2 left-3 right-16 z-10 space-y-2">
                     <div class="text-xs">
                         <span class="font-black text-white text-sm">@covan_taubac</span>
@@ -99,15 +93,15 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 2. MÀN HÌNH ĐĂNG VIDEO (CẢI TIẾN TRÌNH CẮT VIDEO CHUẨN iA) -->
+        <!-- 2. MÀN HÌNH ĐĂNG VIDEO (STUDIO LIỆT KÊ NHẠC KHÔNG GIỚI HẠN) -->
         <!-- ========================================================= -->
         <div id="view-upload" class="tab-view w-full h-full pb-20 overflow-y-auto bg-zinc-950">
             <div class="p-4 border-b border-zinc-900 sticky top-0 bg-zinc-950 z-20 flex justify-between items-center">
-                <h2 class="text-xs font-black tracking-widest text-zinc-400">CAPCUT PRO STUDIO v2026</h2>
+                <h2 class="text-xs font-black tracking-widest text-zinc-400">FILM EDITING STUDIO</h2>
                 <button id="btn-publish" class="bg-[#ff0050] text-white px-5 py-1.5 rounded-full font-black text-xs shadow-lg active:scale-95 transition">ĐĂNG BÀI</button>
             </div>
 
-            <!-- Preview Player -->
+            <!-- Preview Video Player -->
             <div class="w-full aspect-video bg-black relative flex items-center justify-center border-b border-zinc-900 shadow-inner">
                 <video id="studio-player" class="w-full h-full object-contain hidden" loop playsinline></video>
                 
@@ -119,40 +113,25 @@
                     </label>
                 </div>
                 
-                <!-- Trình phủ xử lý AI -->
-                <div id="ai-processing-overlay" class="absolute inset-0 bg-black/95 z-30 hidden flex-col items-center justify-center text-center p-4">
-                    <div class="w-10 h-10 border-4 border-[#ff0050] border-t-transparent rounded-full animate-spin mb-3"></div>
-                    <p class="text-xs font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ff0050] to-blue-400 tracking-widest animate-pulse">✨ THUẬT TOÁN AI ĐANG XỬ LÝ CLIP...</p>
-                    <p class="text-[10px] text-zinc-400 mt-1" id="ai-status-text">Đang tự động đo đạc sóng âm thanh...</p>
-                </div>
-
                 <button id="btn-studio-play" class="absolute bg-black/70 w-12 h-12 rounded-full hidden items-center justify-center text-sm border border-zinc-700 active:scale-95 transition shadow-2xl">▶</button>
                 <span id="studio-timer" class="absolute bottom-2 right-3 bg-black/80 text-[9px] font-mono px-2 py-0.5 rounded text-zinc-400 font-bold hidden">00:00</span>
             </div>
 
-            <!-- SMART WORKFLOW TRIGGER -->
-            <div class="p-3 bg-gradient-to-r from-zinc-900 to-zinc-950 border-b border-zinc-900 text-center">
-                <button onclick="triggerSmartAIWorkflow()" id="btn-ai-magic" class="w-full py-2.5 bg-gradient-to-r from-[#ff0050] via-purple-600 to-blue-500 rounded-xl font-black text-[11px] tracking-widest shadow-xl transition active:scale-98">
-                    ✨ KÍCH HOẠT iA AUTO-MATCH (TỰ CẮT GHÉP & CHÈN NHẠC HOT)
-                </button>
-                <p id="ai-crop-badge" class="text-[10px] text-green-400 font-black mt-1.5 hidden">✓ ĐÃ KÍCH HOẠT: AI TỰ ĐỘNG CẮT PHÂN CẢNH CHUẨN 15 GIÂY XU HƯỚNG</p>
-            </div>
-
-            <!-- TIMELINE LAYER -->
+            <!-- TIMELINE MANAGEMENT LAYER -->
             <div class="bg-zinc-900 p-3 space-y-2.5 border-b border-zinc-800">
                 <div class="flex items-center justify-between text-[10px] text-zinc-500 font-black px-1">
-                    <span>DÒNG THỜI GIAN ĐA TẦNG</span>
+                    <span>TRACK TIMELINE</span>
                     <button onclick="toggleOriginalAudio()" id="btn-mute-original" class="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20 text-[9px] font-bold">🔊 Tiếng gốc: BẬT</button>
                 </div>
                 <div class="space-y-2 bg-black/40 p-2 rounded-2xl text-[11px]">
                     <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-blue-500">
                         <span class="w-10 font-black text-blue-500 text-[10px]">VIDEO</span>
-                        <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center px-2 text-[10px] text-zinc-400 truncate font-semibold" id="track-name-video">Chưa chọn video gốc...</div>
+                        <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center px-2 text-[10px] text-zinc-400 truncate font-semibold" id="track-name-video">Chưa chọn video...</div>
                     </div>
                     <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-green-500">
                         <span class="w-10 font-black text-green-500 text-[10px]">AUDIO</span>
                         <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center justify-between px-2 text-[10px]">
-                            <span id="track-name-music" class="text-zinc-600 italic font-medium">Chưa chèn nhạc nền</span>
+                            <span id="track-name-music" class="text-zinc-600 italic font-medium">Chưa chọn nhạc nền</span>
                             <button onclick="deleteTrack('music')" id="btn-del-music" class="text-zinc-500 font-black hidden hover:text-red-500 transition text-[9px]">✕ GỠ</button>
                             <audio id="timeline-music" loop class="hidden"></audio>
                         </div>
@@ -160,28 +139,34 @@
                 </div>
             </div>
 
-            <!-- KHO NHẠC GIỚI TRẺ THẦN THÁNH NHẤT HIỆN NAY -->
+            <!-- KHO NHẠC KHÔNG GIỚI HẠN (CÓ THANH TÌM KIẾM NHƯ TIKTOK) -->
             <div class="p-4 space-y-3">
-                <p class="font-black text-[10px] text-zinc-400 tracking-wider">🎵 KHO NHẠC XU HƯỚNG GIỚI TRẺ ĐA DẠNG (CÓ LỜI HOT TREND)</p>
-                
-                <div class="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto pr-0.5">
-                    <div class="bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                        <div><p class="font-black text-zinc-200">Khóa Ly Biệt (Meme Remix)</p><p class="text-[9px] text-zinc-500">Lời bài hát cực suy, beat cực căng</p></div>
-                        <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', 'Khóa Ly Biệt (Remix)')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-black transition">Dùng</button>
-                    </div>
-                    <div class="bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                        <div><p class="font-black text-zinc-200">Giấc Mơ Rất Thơ (Lofi Chill)</p><p class="text-[9px] text-zinc-500">Giai điệu nhẹ nhàng cuốn hút cho Gen Z</p></div>
-                        <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', 'Giấc Mơ Rất Thơ (Lofi)')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-black transition">Dùng</button>
-                    </div>
-                    <div class="bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
-                        <div><p class="font-black text-zinc-200">Hào Quang (Speed Up)</p><p class="text-[9px] text-zinc-500">Sôi động, kích thích chốt đơn mua sắm</p></div>
-                        <button onclick="applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', 'Hào Quang (SpeedUp)')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-black transition">Dùng</button>
+                <div class="space-y-1.5">
+                    <p class="font-black text-[10px] text-zinc-400 tracking-wider">🎵 KHO ÂM NHẠC TỔNG HỢP KHÔNG GIỚI HẠN</p>
+                    
+                    <!-- Ô Tìm kiếm nhạc thông minh -->
+                    <div class="relative">
+                        <input type="text" id="search-music-input" oninput="filterSearchMusic(this.value)" placeholder="🔍 Tìm tên bài hát, ca sĩ, trend TikTok..." class="w-full bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#ff0050] font-medium">
                     </div>
                 </div>
+                
+                <!-- Menu danh mục thể loại -->
+                <div class="flex gap-1.5 overflow-x-auto pb-1 text-[10px] font-black">
+                    <button onclick="filterMusicTab('all')" class="bg-[#ff0050] text-white px-3 py-1 rounded-full whitespace-nowrap">🔥 Thịnh hành</button>
+                    <button onclick="filterMusicTab('vpop')" class="bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap">V-Pop Trẻ</button>
+                    <button onclick="filterMusicTab('hiphop')" class="bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap">Remix / Phonk</button>
+                    <button onclick="filterMusicTab('classic')" class="bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap">Classic / Lofi</button>
+                </div>
 
-                <div class="space-y-3 bg-zinc-900 border border-zinc-800 p-3 rounded-2xl mt-1">
-                    <input type="text" id="video-caption-input" placeholder="Viết mô tả tiêu đề cho video ngắn..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs text-white focus:outline-none">
-                    <input type="text" id="product-link" placeholder="Mã hoặc đường dẫn liên kết giỏ hàng mua sắm..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs text-white focus:outline-none">
+                <!-- Danh sách bài hát (Được render tự động bằng JS dưới để dễ mở rộng không giới hạn) -->
+                <div id="unlimited-music-box" class="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto pr-0.5">
+                    <!-- JS sẽ tự động đổ danh mục nhạc vào đây -->
+                </div>
+
+                <!-- Ô nhập thông tin bài đăng -->
+                <div class="space-y-2.5 bg-zinc-900 border border-zinc-800 p-3 rounded-2xl mt-1">
+                    <input type="text" id="video-caption-input" placeholder="Viết mô tả tiêu đề cho video ngắn..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs text-white focus:outline-none font-medium">
+                    <input type="text" id="product-link" placeholder="Mã hoặc đường dẫn liên kết giỏ hàng mua sắm..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs text-white focus:outline-none font-medium">
                 </div>
             </div>
         </div>
@@ -212,11 +197,10 @@
                     <button onclick="addProductToStore()" class="w-full bg-white text-black text-xs font-black py-2 rounded-xl transition active:scale-98">ĐĂNG SẢN PHẨM VÀO GIỎ HÀNG</button>
                 </div>
 
-                <!-- ĐÃ THÊM: DANH SÁCH LƯỚI VIDEO CỦA TÔI ĐÃ ĐĂNG NHƯ TIKTOK -->
+                <!-- LƯỚI VIDEO CỦA TÔI ĐÃ ĐĂNG -->
                 <div class="space-y-2">
                     <h4 class="text-xs font-black text-zinc-400 tracking-wider pl-1">🎬 VIDEO CỦA TÔI</h4>
                     <div id="my-uploaded-videos-grid" class="grid grid-cols-3 gap-1">
-                        <!-- Clip mặc định 1 -->
                         <div class="aspect-[3/4] bg-zinc-900 rounded-md overflow-hidden relative border border-zinc-800">
                             <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" muted class="w-full h-full object-cover"></video>
                             <span class="absolute bottom-1 left-1 text-[9px] font-black bg-black/60 px-1 rounded flex items-center gap-0.5">▶ 1.2K</span>
@@ -226,12 +210,10 @@
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- LỚP PHỦ NGOÀI: HỘP THOẠI BÌNH LUẬN TRƯỢT LÊN CHUẨN ĐÉT -->
-        <!-- ========================================================= -->
+        <!-- BOTTOM SHEET BÌNH LUẬN TRƯỢT LÊN LAYER NGOÀI -->
         <div id="comment-sheet" class="absolute bottom-0 left-0 right-0 h-[68%] bg-zinc-900 border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
             <div class="flex justify-between items-center pb-3 border-b border-zinc-800">
-                <span class="text-xs font-black text-zinc-400" id="comment-header-title">Bình luận công khai</span>
+                <span class="text-xs font-black text-zinc-400">Bình luận công khai</span>
                 <button onclick="closeComments()" class="text-zinc-500 text-sm font-bold px-2 hover:text-white">✕</button>
             </div>
             <div class="flex-1 overflow-y-auto py-3 space-y-4 text-xs" id="comment-list">
@@ -252,7 +234,7 @@
             </div>
         </div>
 
-        <!-- THANH ĐIỀU HƯỚNG DƯỚI CÙNG -->
+        <!-- THANH ĐIỀU HƯỚNG BOTTOM NAV -->
         <div class="h-16 bg-black border-t border-zinc-900 flex justify-around items-center z-40 shadow-2xl">
             <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-zinc-500 nav-active">
                 <span class="text-xl">🏠</span>
@@ -270,10 +252,9 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- LOGIC CORE ENGINE HỆ THỐNG MẠNG XÃ HỘI VÀ iA AUTO-CROP -->
+    <!-- LOGIC JAVASCRIPT ENGINE -->
     <!-- ========================================================= -->
     <script>
-        // Khởi chạy cấu hình Firebase của bạn
         const firebaseConfig = {
             apiKey: "AIzaSyBgfznta_Ikr8yDb6_Z89SrhfuHHsAsDw8", 
             authDomain: "app-giai-tri.firebaseapp.com", 
@@ -287,12 +268,67 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        let isAICropActive = false; // Biến kiểm soát trạng thái tự cắt clip của máy
+        // MẢNG DỮ LIỆU KHO NHẠC KHÔNG GIỚI HẠN (DỄ DÀNG THÊM BÀI MỚI VÀO ĐÂY)
+        const unlimitedDatabaseMusic = [
+            { id: 1, name: "Khóa Ly Biệt (Meme Remix)", author: "Dân chơi TikTok", type: "hiphop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { id: 2, name: "Từng Là (Lofi Chill Ver)", author: "Vũ. x AI", type: "classic", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { id: 3, name: "Hào Quang (Speed Up)", author: "Dân Chơi Khớp Nhạc", type: "hiphop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { id: 4, name: "Đừng Làm Trái Tim Anh Đau", author: "Sơn Tùng M-TP", type: "vpop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+            { id: 5, name: "Giấc Mơ Rất Thơ (Lyric)", author: "GenZ Mashup", type: "vpop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" },
+            { id: 6, name: "Phóng Xe Đêm (Bass Phonk)", author: "Sóng Âm Cực Căng", type: "hiphop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" },
+            { id: 7, name: "Canon In D (Classic Remix)", author: "Beethoven Remix", type: "classic", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" },
+            { id: 8, name: "Sau Lời Từ Khước (Đoạn Cuối)", author: "Phan Mạnh Quỳnh", type: "vpop", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" }
+        ];
 
+        // Hàm render danh sách nhạc tự động lên giao diện
+        function renderMusicHub(tracks) {
+            const container = document.getElementById('unlimited-music-box');
+            container.innerHTML = "";
+            if(tracks.length === 0) {
+                container.innerHTML = `<p class="text-[11px] text-zinc-600 italic text-center py-4">Không tìm thấy bài hát phù hợp...</p>`;
+                return;
+            }
+            tracks.forEach(track => {
+                const item = document.createElement('div');
+                item.className = "bg-zinc-900 border border-zinc-800/80 p-2.5 rounded-xl flex items-center justify-between text-xs";
+                item.innerHTML = `
+                    <div>
+                        <p class="font-black text-zinc-200">${track.name}</p>
+                        <p class="text-[9px] text-zinc-500 mt-0.5">${track.author}</p>
+                    </div>
+                    <button onclick="applyMusicTrack('${track.url}', '${track.name}')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-black transition whitespace-nowrap">Sử dụng</button>
+                `;
+                container.appendChild(item);
+            });
+        }
+        window.addEventListener('DOMContentLoaded', () => renderMusicHub(unlimitedDatabaseMusic));
+
+        // Hàm tìm kiếm nhạc gõ ký tự nào lọc ký tự đó
+        function filterSearchMusic(keyword) {
+            const cleanKey = keyword.toLowerCase().trim();
+            const filtered = unlimitedDatabaseMusic.filter(t => t.name.toLowerCase().includes(cleanKey) || t.author.toLowerCase().includes(cleanKey));
+            renderMusicHub(filtered);
+        }
+
+        // Hàm bấm chọn Tab thể loại nhạc
+        function filterMusicTab(cat) {
+            // Đổi màu nút active
+            event.currentTarget.parentNode.querySelectorAll('button').forEach(b => {
+                b.className = "bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap";
+            });
+            event.currentTarget.className = "bg-[#ff0050] text-white px-3 py-1 rounded-full whitespace-nowrap";
+
+            if(cat === 'all') { renderMusicHub(unlimitedDatabaseMusic); } 
+            else {
+                const filtered = unlimitedDatabaseMusic.filter(t => t.type === cat);
+                renderMusicHub(filtered);
+            }
+        }
+
+        // ĐIỀU HƯỚNG Cơ bản
         function switchTab(tabName) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
-            
             document.getElementById(`view-${tabName}`).classList.add('active');
             document.getElementById(`nav-${tabName}`).classList.add('nav-active');
             
@@ -305,7 +341,7 @@
             closeComments();
         }
 
-        // TƯƠNG TÁC SIDEBAR TRÊN HOME FEED
+        // INTERACTION FEED HOẠT ĐỘNG
         function handleLikeReal(div, baseCount) {
             const heartEl = div.querySelector('.dynamic-heart');
             const countEl = div.querySelector('.like-counter');
@@ -322,15 +358,14 @@
                 div.classList.remove('reposted'); div.querySelector('span').classList.remove('text-green-400'); counter.innerText = "0"; counter.classList.remove('text-green-400');
             } else {
                 div.classList.add('reposted'); div.querySelector('span').classList.add('text-green-400'); counter.innerText = "1"; counter.classList.add('text-green-400');
-                alert("🔁 Bạn đã đăng lại video này lên trang cá nhân thành công!");
+                alert("🔁 Bạn đã đăng lại video này lên trang cá nhân!");
             }
         }
 
         function handleShare(div) {
             const counter = div.querySelector('.share-counter');
-            let current = parseInt(counter.innerText);
-            counter.innerText = current + 1;
-            alert("↪️ Đã sao chép liên kết video! Bạn có thể gửi link cho bạn bè trên Facebook/Zalo.");
+            counter.innerText = parseInt(counter.innerText) + 1;
+            alert("↪️ Đã sao chép liên kết video!");
         }
 
         function toggleFollow(btn) {
@@ -341,7 +376,6 @@
         function openComments() { document.getElementById('comment-sheet').classList.remove('translate-y-full'); }
         function closeComments() { document.getElementById('comment-sheet').classList.add('translate-y-full'); }
         function likeComment(btn) { btn.innerText = (btn.innerText === "🤍") ? "❤️" : "🤍"; btn.classList.toggle('text-[#ff0050]'); }
-        
         function sendComment() {
             const input = document.getElementById('comment-input');
             const list = document.getElementById('comment-list');
@@ -349,14 +383,10 @@
             const item = document.createElement('div');
             item.className = "flex items-start justify-between gap-2";
             item.innerHTML = `<div class="flex gap-2.5"><div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center font-bold text-[10px]">👤</div><div><p class="font-black text-zinc-400 text-[11px]">@bạn</p><p class="text-zinc-200 mt-0.5 font-medium">${input.value}</p></div></div><button onclick="likeComment(this)" class="text-zinc-600 text-sm mt-1">🤍</button>`;
-            list.appendChild(item);
-            list.scrollTop = list.scrollHeight;
-            input.value = "";
+            list.appendChild(item); list.scrollTop = list.scrollHeight; input.value = "";
         }
 
-        // =========================================================
-        // 🔮 CAPCUT WEB ENGINE + ALGORITHM AI AUTO-CROP (GIỚI HẠN 15s)
-        // =========================================================
+        // CAPCUT STUDIO ENGINE NO AI 
         const studioPlayer = document.getElementById('studio-player');
         const bgMusic = document.getElementById('timeline-music');
         const playBtn = document.getElementById('btn-studio-play');
@@ -371,48 +401,13 @@
                 playBtn.classList.replace('hidden', 'flex');
                 timerLabel.classList.remove('hidden');
                 document.getElementById('track-name-video').innerText = `🎞️ ${file.name}`;
-                
-                // Khởi động lại trạng thái cắt
-                isAICropActive = false;
-                document.getElementById('ai-crop-badge').classList.add('hidden');
             }
         });
 
-        // THUẬT TOÁN iA TỰ CẮT VIDEO CHUẨN 15 GIÂY THEO YÊU CẦU CỦA BẠN
-        function triggerSmartAIWorkflow() {
-            const videoFile = document.getElementById('video-input').files[0];
-            if(!videoFile) { alert("Vui lòng tải tệp video gốc của bạn lên trước!"); return; }
-
-            const overlay = document.getElementById('ai-processing-overlay');
-            const statusTxt = document.getElementById('ai-status-text');
-            overlay.classList.remove('hidden');
-
-            setTimeout(() => { statusTxt.innerText = "✂️ Thuật toán iA đang tính toán nhịp độ và CẮT NGẮN CLIP về 15 giây..."; }, 1000);
-            setTimeout(() => { statusTxt.innerText = "🎵 Đang chèn bài nhạc thịnh hành phù hợp cốt truyện..."; }, 2000);
-
-            setTimeout(() => {
-                isAICropActive = true; // Kích hoạt biến khóa thời gian 15s
-                studioPlayer.muted = true;
-                document.getElementById('btn-mute-original').innerText = "🔇 Tiếng gốc: iA ĐÃ KHỬ";
-                
-                applyMusicTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', 'Khóa Ly Biệt (Meme Remix)');
-                document.getElementById('video-caption-input').value = `Clip hài hước giật giật đã được iA xử lý khớp nhịp nhạc trẻ cực hot! 🔥`;
-                
-                overlay.classList.add('hidden');
-                document.getElementById('ai-crop-badge').classList.remove('hidden');
-                
-                // Trả timeline về 0 và phát đồng bộ
-                studioPlayer.currentTime = 0;
-                studioPlayer.play();
-                bgMusic.play();
-                playBtn.innerText = "⏸";
-            }, 3000);
-        }
-
         function applyMusicTrack(url, name) {
             bgMusic.src = url; bgMusic.volume = 0.5;
-            const label = document.getElementById('track-name-music');
-            label.innerText = `🎵 ${name}`; label.className = "text-green-400 font-bold";
+            const lbl = document.getElementById('track-name-music');
+            lbl.innerText = `🎵 ${name}`; lbl.className = "text-green-400 font-bold";
             document.getElementById('btn-del-music').classList.remove('hidden');
             if(!studioPlayer.paused) bgMusic.play();
         }
@@ -426,38 +421,38 @@
             }
         }
 
+        function toggleOriginalAudio() {
+            const btn = document.getElementById('btn-mute-original');
+            if (studioPlayer.muted) {
+                studioPlayer.muted = false; btn.innerText = "🔊 Tiếng gốc: BẬT";
+                btn.className = "text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20 text-[9px] font-bold";
+            } else {
+                studioPlayer.muted = true; btn.innerText = "🔇 Tiếng gốc: ĐÃ TẮT";
+                btn.className = "text-red-400 bg-red-500/10 px-2 py-0.5 rounded-md border border-red-500/10 text-[9px] font-bold";
+            }
+        }
+
         playBtn.addEventListener('click', function() {
             if (studioPlayer.paused) { studioPlayer.play(); if(bgMusic.src) bgMusic.play(); playBtn.innerText = "⏸"; } 
             else { studioPlayer.pause(); bgMusic.pause(); playBtn.innerText = "▶"; }
         });
 
-        // KIỂM TRA VÀ TỰ ĐỘNG CẮT PHÂN CẢNH VÒNG LẶP NẾU QUÁ 15s
         studioPlayer.addEventListener('timeupdate', function() {
-            let curr = studioPlayer.currentTime;
-            
-            if (isAICropActive && curr >= 15.0) {
-                studioPlayer.currentTime = 0; // Quay đầu clip về giây số 0 lập tức
-                if(bgMusic.src) bgMusic.currentTime = 0;
-            }
-            
             let displayTime = Math.floor(studioPlayer.currentTime);
             timerLabel.innerText = `${Math.floor(displayTime/60).toString().padStart(2,'0')}:${(displayTime%60).toString().padStart(2,'0')}`;
         });
 
-        // =========================================================
-        // SỬA TRIỆT ĐỂ NÚT ĐĂNG BÀI: KÍCH HOẠT CHẾ ĐỘ CHẠY THỬ LUÔN
-        // =========================================================
+        // HÀM ĐĂNG VIDEO THỰC TẾ TRỰC TIẾP LÊN HOME FEED (LOCAL-PUBLISH MODE)
         document.getElementById('btn-publish').addEventListener('click', function() {
             const videoFile = document.getElementById('video-input').files[0];
             const caption = document.getElementById('video-caption-input').value.trim() || "Video ngắn từ CapCut Studio";
             const link = document.getElementById('product-link').value.trim() || "https://shopee.vn";
 
-            if(!videoFile) { alert("Vui lòng tải tệp video lên biên tập trước khi đăng!"); return; }
+            if(!videoFile) { alert("Vui lòng tải tệp video lên trước khi đăng!"); return; }
 
-            const blobUrl = URL.createObjectURL(videoFile); // Khởi tạo link chạy thử trực tiếp từ bộ nhớ
+            const blobUrl = URL.createObjectURL(videoFile);
 
-            // 1. CHẾ ĐỘ XỬ LÝ CHẠY THỬ NGAY LẬP TỨC (LOCAL-FALLBACK)
-            // Đẩy clip trực tiếp lên trên đầu luồng Trang chủ để bạn trải nghiệm lướt ngay
+            // Bắn thẳng lên giao diện trang chủ kiểm tra ngay lập tức
             const feedContainer = document.getElementById('view-home');
             const newVideoCard = document.createElement('div');
             newVideoCard.className = "video-card w-full h-[calc(100vh-64px)] relative flex items-center justify-center bg-black";
@@ -465,10 +460,7 @@
                 <video src="${blobUrl}" loop muted autoplay playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
                 <div class="absolute right-3 bottom-20 flex flex-col items-center gap-4.5 z-20">
                     <div class="w-10 h-10 bg-[#ff0050] rounded-full border-2 border-white flex items-center justify-center font-bold text-xs">👤</div>
-                    <div class="text-center cursor-pointer" onclick="handleLikeReal(this, 0)">
-                        <span class="text-2xl block dynamic-heart">🤍</span>
-                        <p class="text-[10px] font-black mt-0.5 text-zinc-300 like-counter">0</p>
-                    </div>
+                    <div class="text-center cursor-pointer" onclick="handleLikeReal(this, 0)"><span class="text-2xl block dynamic-heart">🤍</span><p class="text-[10px] font-black mt-0.5 text-zinc-300 like-counter">0</p></div>
                     <div class="text-center cursor-pointer" onclick="openComments()"><span class="text-2xl block">💬</span><p class="text-[10px] font-black mt-0.5 text-zinc-300">0</p></div>
                     <div class="text-center cursor-pointer" onclick="handleRepost(this)"><span class="text-2xl block">🔁</span><p class="text-[10px] font-black mt-0.5 text-zinc-300 repost-counter">0</p></div>
                 </div>
@@ -476,35 +468,35 @@
                     <div class="text-xs"><span class="font-black text-white text-sm">@covan_taubac</span><p class="text-zinc-200 mt-0.5 font-medium leading-tight">${caption}</p></div>
                     <div class="glass-card p-2 rounded-xl flex items-center gap-2.5 shadow-lg">
                         <div class="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center text-lg">📦</div>
-                        <div class="flex-1 min-w-0"><h4 class="text-[11px] font-bold text-white truncate">Sản phẩm đính kèm video</h4><p class="text-[10px] font-black text-[#ff0050]">Xem giá ưu đãi</p></div>
+                        <div class="flex-1 min-w-0"><h4 class="text-[11px] font-bold text-white truncate">Sản phẩm gắn kèm</h4><p class="text-[10px] font-black text-[#ff0050]">Xem giá ưu đãi</p></div>
                         <a href="${link}" target="_blank" class="bg-[#ff0050] text-white px-3 py-1 rounded-lg text-[10px] font-black active:scale-95 transition">MÚC</a>
                     </div>
                 </div>
             `;
             feedContainer.insertBefore(newVideoCard, feedContainer.firstChild);
 
-            // 2. Đồng thời dán một ô thumbnail clip nhỏ vào danh mục 'VIDEO CỦA TÔI' tại Trang cá nhân
+            // Đẩy vào kho cá nhân
             const profileGrid = document.getElementById('my-uploaded-videos-grid');
             const thumbItem = document.createElement('div');
             thumbItem.className = "aspect-[3/4] bg-zinc-900 rounded-md overflow-hidden relative border border-zinc-800";
             thumbItem.innerHTML = `<video src="${blobUrl}" muted class="w-full h-full object-cover"></video><span class="absolute bottom-1 left-1 text-[9px] font-black bg-black/60 px-1 rounded">▶ 1</span>`;
             profileGrid.insertBefore(thumbItem, profileGrid.firstChild);
 
-            alert("🎉 ĐĂNG BÀI THÀNH CÔNG!\nỨng dụng đã dán clip của bạn lên mục đầu Trang chủ và lưu vào 'Video của tôi' ở trang Cá nhân để bạn kiểm tra!");
+            alert("🎉 ĐÃ ĐĂNG VIDEO THÀNH CÔNG LÊN HỆ THỐNG!");
             switchTab('home');
 
-            // 3. Tiến hành đẩy ngầm file lên hệ thống Firebase Storage lưu trữ vĩnh viễn (nếu đã kết nối mạng)
+            // Lưu ngầm lên Database Firebase
             try {
                 const storageRef = firebase.storage().ref('videos/' + Date.now() + '_' + videoFile.name);
-                storageRef.put(videoFile).then(snapshot => {
-                    snapshot.ref.getDownloadURL().then(url => {
+                storageRef.put(videoFile).then(snap => {
+                    snap.ref.getDownloadURL().then(url => {
                         db.collection('videos').add({ username: "Cổ Văn Tảu Bắc", videoUrl: url, caption: caption, productLink: link, createdAt: new Date() });
                     });
                 });
-            } catch(e) { console.log("Firebase ngầm chưa cấu hình: ", e); }
+            } catch(e) {}
         });
 
-        function togglePlayFeedVideo(video) { if(video.paused) video.play(); else video.pause(); }
+        function togglePlayFeedVideo(v) { if(v.paused) v.play(); else v.pause(); }
         function addProductToStore() {
             const name = document.getElementById('shop-p-name').value.trim();
             const price = document.getElementById('shop-p-price').value.trim();
