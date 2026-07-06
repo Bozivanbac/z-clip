@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlipBuy Pro - Next Gen Studio</title>
+    <title>FlipBuy Pro - Fixed Layout</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     
@@ -44,7 +44,7 @@
     <div class="w-full max-w-[450px] h-screen relative bg-zinc-950 flex flex-col justify-between border-x border-zinc-900 shadow-2xl">
         
         <!-- ========================================================= -->
-        <!-- 1. MÀN HÌNH CHÍNH (LUỒNG VIDEO FEED CHUẨN TIKTOK) -->
+        <!-- 1. MÀN HÌNH CHÍNH (LUỒNG VIDEO FEED CUỘN DỌC) -->
         <!-- ========================================================= -->
         <div id="view-home" class="tab-view active w-full h-full overflow-y-scroll feed-container pb-16 relative">
             
@@ -112,26 +112,10 @@
                     </div>
                 </div>
             </div>
-
-            <!-- HỘP THOẠI BÌNH LUẬN TRƯỢT LÊN (BOTTOM SHEET) -->
-            <div id="comment-sheet" class="absolute bottom-16 left-0 right-0 h-[65%] bg-zinc-900 border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between">
-                <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
-                    <span class="text-xs font-bold text-zinc-400">Bình luận cộng đồng</span>
-                    <button onclick="closeComments()" class="text-zinc-500 text-sm font-bold px-2">✕</button>
-                </div>
-                <div class="flex-1 overflow-y-auto py-3 space-y-3 text-xs" id="comment-list">
-                    <div><span class="font-bold text-zinc-500">@tuan_badminton:</span> Form áo này mặc thấm hút mồ hôi tốt không shop?</div>
-                    <div><span class="font-bold text-zinc-500">@linh_meme:</span> Đoạn cuối hài hước ghê, đã múc ủng hộ nha ✌️</div>
-                </div>
-                <div class="flex gap-2 pt-2 border-t border-zinc-800">
-                    <input type="text" id="comment-input" placeholder="Viết bình luận công khai..." class="flex-1 bg-black rounded-xl p-3 text-xs focus:outline-none text-white border border-zinc-800">
-                    <button onclick="sendComment()" class="bg-[#ff0050] px-5 rounded-xl text-xs font-black">GỬI</button>
-                </div>
-            </div>
         </div>
 
         <!-- ========================================================= -->
-        <!-- 2. MÀN HÌNH ĐĂNG VIDEO (BẢN CẢI TIẾN CAPCUT STUDIO ĐA TẦNG) -->
+        <!-- 2. MÀN HÌNH ĐĂNG VIDEO (CAPCUT STUDIO ĐA TẦNG) -->
         <!-- ========================================================= -->
         <div id="view-upload" class="tab-view w-full h-full pb-20 overflow-y-auto bg-zinc-950">
             <div class="p-4 border-b border-zinc-900 sticky top-0 bg-zinc-950 z-20 flex justify-between items-center">
@@ -139,10 +123,8 @@
                 <button id="btn-publish" class="bg-[#ff0050] text-white px-5 py-1.5 rounded-full font-black text-xs shadow-lg active:scale-95 transition">XUẤT BẢN</button>
             </div>
 
-            <!-- Khung màn hình hiển thị kết quả biên tập -->
             <div class="w-full aspect-video bg-black relative flex items-center justify-center border-b border-zinc-900 shadow-inner">
                 <video id="studio-player" class="w-full h-full object-contain hidden" loop playsinline></video>
-                
                 <div id="studio-placeholder" class="text-center p-6">
                     <input type="file" id="video-input" accept="video/*" class="hidden">
                     <label for="video-input" class="cursor-pointer block group">
@@ -150,25 +132,20 @@
                         <p class="text-[11px] text-zinc-500 font-black tracking-wider">TẢI CLIP GỐC CỦA BẠN LÊN</p>
                     </label>
                 </div>
-                
                 <button id="btn-studio-play" class="absolute bg-black/70 w-12 h-12 rounded-full hidden items-center justify-center text-sm border border-zinc-700 active:scale-95 transition shadow-2xl">▶</button>
                 <span id="studio-timer" class="absolute bottom-2 right-3 bg-black/80 text-[9px] font-mono px-2 py-0.5 rounded text-zinc-400 font-bold hidden">00:00</span>
             </div>
 
-            <!-- THANH DÒNG THỜI GIAN TIMELINE ĐA TẦNG CẢI TIẾN -->
             <div class="bg-zinc-900 p-3 space-y-2.5 border-b border-zinc-800">
                 <div class="flex items-center justify-between text-[10px] text-zinc-500 font-black px-1">
                     <span>QUẢN LÝ CÁC TẦNG NHẠC VÀ CLIP</span>
                     <button onclick="toggleOriginalAudio()" id="btn-mute-original" class="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20 text-[9px] font-bold">🔊 Tiếng video gốc: BẬT</button>
                 </div>
-                
                 <div class="space-y-2 bg-black/40 p-2 rounded-2xl text-[11px]">
-                    <!-- Track Clip Video -->
                     <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-blue-500 shadow-sm">
                         <span class="w-10 font-black text-blue-500 text-[10px]">VIDEO</span>
                         <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center px-2 text-[10px] text-zinc-400 truncate font-semibold" id="track-name-video">Trống - Hãy chọn một video gốc</div>
                     </div>
-                    <!-- Track Nhạc nền chèn thêm -->
                     <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-green-500 shadow-sm">
                         <span class="w-10 font-black text-green-500 text-[10px]">AUDIO</span>
                         <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center justify-between px-2 text-[10px]">
@@ -177,7 +154,6 @@
                             <audio id="timeline-music" loop class="hidden"></audio>
                         </div>
                     </div>
-                    <!-- Track Bản ghi âm lồng tiếng -->
                     <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-red-500 shadow-sm">
                         <span class="w-10 font-black text-red-500 text-[10px]">VOICE</span>
                         <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center justify-between px-2 text-[10px]">
@@ -189,9 +165,7 @@
                 </div>
             </div>
 
-            <!-- BỘ CÔNG CỤ XỬ LÝ ÂM THANH CHUYÊN SÂU -->
             <div class="p-4 space-y-4">
-                <!-- Chức năng Thu âm -->
                 <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl flex items-center justify-between shadow-md">
                     <div>
                         <p class="font-black text-xs text-zinc-200">🎙️ LỒNG TIẾNG & GHI ÂM LIVE</p>
@@ -200,7 +174,6 @@
                     <button id="btn-studio-record" class="bg-red-600 text-white px-4 py-1.5 rounded-xl text-xs font-black active:scale-95 transition shadow shadow-red-900">Bắt đầu nói</button>
                 </div>
 
-                <!-- KHO NHẠC TRENDING HOT NHẤT HIỆN TẠI (2026 TRENDS) -->
                 <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl space-y-2.5 shadow-md">
                     <p class="font-black text-[10px] text-zinc-400 tracking-wider">🎵 KHO NHẠC TRENDING XU HƯỚNG TIKTOK (NO COPYRIGHT)</p>
                     <div class="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto pr-0.5">
@@ -219,7 +192,6 @@
                     </div>
                 </div>
 
-                <!-- Ô nhập thông tin cải tiến -->
                 <div class="space-y-3 bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl shadow-md">
                     <div class="space-y-1">
                         <label class="text-[9px] font-black text-zinc-400 tracking-wider">TIÊU ĐỀ NỘI DUNG BÀI ĐĂNG</label>
@@ -247,7 +219,6 @@
                 </div>
             </div>
 
-            <!-- GIAN HÀNG RIÊNG CHO MỖI TÀI KHOẢN -->
             <div class="mt-6 border-t border-zinc-900 pt-4 space-y-5">
                 <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl space-y-3 shadow-xl">
                     <h3 class="text-[10px] font-black tracking-widest text-[#ff0050]">🏪 QUẢN LÝ GIAN HÀNG CÁ NHÂN</h3>
@@ -274,6 +245,24 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
+        <!-- ĐÃ ĐƯỢC SỬA: HỘP THOẠI BÌNH LUẬN TRƯỢT LÊN NẰM Ở LỚP PHỦ NGOÀI -->
+        <!-- ========================================================= -->
+        <div id="comment-sheet" class="absolute bottom-16 left-0 right-0 h-[60%] bg-zinc-900 border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+            <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+                <span class="text-xs font-bold text-zinc-400">Bình luận cộng đồng</span>
+                <button onclick="closeComments()" class="text-zinc-500 text-sm font-bold px-2">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto py-3 space-y-3 text-xs" id="comment-list">
+                <div><span class="font-bold text-zinc-500">@tuan_badminton:</span> Form áo này mặc thấm hút mồ hôi tốt không shop?</div>
+                <div><span class="font-bold text-zinc-500">@linh_meme:</span> Đoạn cuối hài hước ghê, đã múc ủng hộ nha ✌️</div>
+            </div>
+            <div class="flex gap-2 pt-2 border-t border-zinc-800">
+                <input type="text" id="comment-input" placeholder="Viết bình luận công khai..." class="flex-1 bg-black rounded-xl p-3 text-xs focus:outline-none text-white border border-zinc-800">
+                <button onclick="sendComment()" class="bg-[#ff0050] px-5 rounded-xl text-xs font-black">GỬI</button>
+            </div>
+        </div>
+
         <!-- THANH CHUYỂN MÀN HÌNH ĐIỀU HƯỚNG DƯỚI CÙNG -->
         <div class="h-16 bg-black border-t border-zinc-900 flex justify-around items-center z-50 shadow-2xl">
             <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-zinc-500 nav-active">
@@ -292,10 +281,9 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- CORE ENGINE JAVASCRIPT HỆ THỐNG MẠNG XÃ HỘI -->
+    <!-- CORE ENGINE JAVASCRIPT SYSTEM -->
     <!-- ========================================================= -->
     <script>
-        // CẤU HÌNH LIÊN KẾT FIREBASE CHÍNH XÁC CỦA BẠN
         const firebaseConfig = {
             apiKey: "AIzaSyBgfznta_Ikr8yDb6_Z89SrhfuHHsAsDw8", 
             authDomain: "app-giai-tri.firebaseapp.com", 
@@ -309,7 +297,6 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // CHUYỂN ĐỔI TAB ĐIỀU HƯỚNG MƯỢT MÀ
         function switchTab(tabName) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
@@ -324,9 +311,9 @@
 
             if(tabName !== 'home' && mainPlayer) mainPlayer.pause(); else if(mainPlayer) mainPlayer.play();
             if(tabName !== 'upload') { studioPlayer.pause(); bgMusic.pause(); recVoice.pause(); }
+            closeComments(); // Tự đóng bình luận khi đổi tab
         }
 
-        // CƠ CHẾ THẢ TIM THỰC TẾ, CÓ MỒI ĐẦU ĐỂ TẠO HIỆU ỨNG KÉO NGƯỜI XEM
         function handleLikeReal(div, baseCount) {
             const heartEl = div.querySelector('.dynamic-heart');
             const countEl = div.querySelector('.like-counter');
@@ -334,13 +321,11 @@
             if(div.classList.contains('is-liked')) {
                 div.classList.remove('is-liked');
                 heartEl.innerText = "🤍";
-                heartEl.classList.remove('text-[#ff0050]', 'scale-110');
                 countEl.innerText = baseCount;
                 countEl.classList.remove('text-[#ff0050]');
             } else {
                 div.classList.add('is-liked');
                 heartEl.innerText = "❤️";
-                heartEl.classList.add('text-[#ff0050]', 'scale-110');
                 countEl.innerText = baseCount + 1;
                 countEl.classList.add('text-[#ff0050]');
             }
@@ -369,9 +354,7 @@
             input.value = "";
         }
 
-        // =========================================================
-        // 🔮 CAPCUT WEB STUDIO ENGINE (XỬ LÝ ĐA TẦNG NÂNG CAO)
-        // =========================================================
+        // CAPCUT ENGINE LOGIC
         const studioPlayer = document.getElementById('studio-player');
         const bgMusic = document.getElementById('timeline-music');
         const recVoice = document.getElementById('timeline-voice');
@@ -480,9 +463,6 @@
             timerLabel.innerText = `${Math.floor(curr/60).toString().padStart(2,'0')}:${(curr%60).toString().padStart(2,'0')}`;
         });
 
-        // =========================================================
-        // 🏪 GIAN HÀNG CÁ NHÂN (USER GIAN HÀNG)
-        // =========================================================
         function addProductToStore() {
             const name = document.getElementById('shop-p-name').value.trim();
             const price = document.getElementById('shop-p-price').value.trim();
@@ -508,7 +488,6 @@
             alert("Đã đăng sản phẩm thành công lên giỏ hàng cá nhân!");
         }
 
-        // CẢI TIẾN QUY TRÌNH ĐĂNG VIDEO THỰC TẾ LÊN HỆ THỐNG CLOUD
         document.getElementById('btn-publish').addEventListener('click', function() {
             const videoFile = document.getElementById('video-input').files[0];
             const caption = document.getElementById('video-caption-input').value.trim();
@@ -516,7 +495,7 @@
 
             if(!videoFile) { alert("Vui lòng tải video lên Studio trước!"); return; }
 
-            alert("🚀 Bắt đầu nén các luồng âm thanh và tải video lên kho lưu trữ Firebase Storage...");
+            alert("🚀 Bắt đầu tải dữ liệu video lên kho lưu trữ Firebase Storage...");
 
             const storageRef = firebase.storage().ref('videos/' + Date.now() + '_' + videoFile.name);
             const uploadTask = storageRef.put(videoFile);
@@ -533,7 +512,7 @@
                             createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
                             likes: 0
                         }).then(() => {
-                            alert("🎉 Xuất bản thành công! Video đã được đẩy lên trang chủ mạng xã hội.");
+                            alert("🎉 Xuất bản thành công! Video đã được đẩy lên hệ thống.");
                             location.reload();
                         });
                     });
@@ -541,7 +520,6 @@
             );
         });
 
-        // ĐỒNG BỘ AUTHENTICATION CƠ BẢN
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('user-id').innerText = `ID CỐ ĐỊNH: ${user.uid}`;
