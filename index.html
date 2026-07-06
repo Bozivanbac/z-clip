@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FlipBuy Pro - Studio & Entertainment Hub</title>
+    <title>FlipBuy Lite - Entertainment & Chat Hub</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     
@@ -21,28 +21,35 @@
         .video-card { scroll-snap-align: start; }
         .feed-container { scroll-snap-type: y mandatory; height: calc(100vh - 64px); }
         
-        /* Triệt tiêu hoàn toàn thanh cuộn màu trắng gây lệch hình */
+        /* Giấu thanh cuộn trên mọi nền tảng di động */
         ::-webkit-scrollbar { display: none !important; }
         * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
         
-        .glass-card {
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .glass-ad-badge {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
 <body class="bg-zinc-950 text-white font-sans select-none overflow-hidden flex justify-center">
 
-    <div class="w-full max-w-[450px] h-screen relative bg-black flex flex-col justify-between shadow-2xl overflow-hidden">
+    <div class="w-full max-w-[450px] h-screen relative bg-black flex flex-col justify-between border-x border-zinc-900 shadow-2xl overflow-hidden">
         
         <div id="view-home" class="tab-view active w-full overflow-y-scroll feed-container relative bg-black">
             
             <div class="video-card w-full h-full relative flex items-center justify-center bg-black" data-video-id="vid_001">
                 <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" loop muted autoplay playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
                 
-                <div class="absolute right-3 bottom-24 flex flex-col items-center gap-4.5 z-20">
+                <div class="absolute top-4 left-3 z-30">
+                    <a href="https://shopee.vn" target="_blank" class="glass-ad-badge px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide text-white flex items-center gap-1.5 shadow-lg animate-pulse border-l-2 border-l-[#ff0050]">
+                        <span class="bg-[#ff0050] text-[8px] px-1 rounded font-mono">ADS</span>
+                        <span>🛒 Mua sản phẩm trong video tại đây!</span>
+                    </a>
+                </div>
+
+                <div class="absolute right-3 bottom-20 flex flex-col items-center gap-4.5 z-20">
                     <div class="relative flex flex-col items-center">
                         <div class="w-10 h-10 bg-zinc-800 rounded-full border-2 border-white flex items-center justify-center font-bold text-xs">👤</div>
                         <button onclick="toggleFollow(this)" class="absolute -bottom-1 bg-[#ff0050] text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black shadow">+</button>
@@ -65,89 +72,63 @@
                     </div>
                 </div>
 
-                <div class="absolute bottom-4 left-3 right-16 z-10 space-y-2">
-                    <div class="text-xs bg-black/30 p-1 rounded-lg backdrop-blur-sm inline-block">
+                <div class="absolute bottom-4 left-3 right-16 z-10">
+                    <div class="text-xs bg-black/40 p-2 rounded-xl backdrop-blur-md">
                         <span class="font-black text-white text-sm">@covan_taubac</span>
-                        <p class="text-zinc-200 mt-0.5 font-medium leading-tight">Giao diện mới siêu mượt, hết lệch hình rồi nhé anh em ơi! 🏸🔥 #trending</p>
-                    </div>
-                    <div class="glass-card p-2 rounded-xl flex items-center gap-2.5 shadow-xl">
-                        <div class="w-10 h-10 bg-zinc-800 rounded-lg overflow-hidden flex-shrink-0">
-                            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=150" class="w-full h-full object-cover" alt="product">
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h4 class="text-[11px] font-bold text-white truncate">Áo Hoodie Thể Thao Cao Cấp ver2026</h4>
-                            <p class="text-[10px] font-black text-[#ff0050]">249.000 ₫</p>
-                        </div>
-                        <a href="https://shopee.vn" target="_blank" class="bg-[#ff0050] text-white px-3 py-1 rounded-lg text-[10px] font-black tracking-wide active:scale-95 transition">MÚC</a>
+                        <p class="text-zinc-200 mt-0.5 font-medium leading-tight">Mẹo phối đồ thể thao đón Tết bao chất cho anh em lông thủ nhé! 🏸🔥 #trending</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="view-upload" class="tab-view w-full h-full pb-20 overflow-y-auto bg-zinc-950">
-            <div class="p-4 border-b border-zinc-900 sticky top-0 bg-zinc-950 z-20 flex justify-between items-center">
-                <h2 class="text-xs font-black tracking-widest text-zinc-400">FILM EDITING STUDIO</h2>
+        <div id="view-chat" class="tab-view w-full h-full pb-16 bg-zinc-950 flex flex-col justify-between">
+            <div class="p-4 border-b border-zinc-900 bg-zinc-950 text-center sticky top-0 z-20">
+                <h2 class="text-xs font-black tracking-widest text-zinc-400">HỘP THƯ TIN NHẮN</h2>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col justify-between">
+                <div class="space-y-3" id="chat-messages-container">
+                    <div class="flex gap-2 items-start">
+                        <div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-xs">🔔</div>
+                        <div class="bg-zinc-900 p-2.5 rounded-2xl rounded-tl-none max-w-[80%] text-xs">
+                            <p class="font-bold text-zinc-400">Hệ thống FlipBuy</p>
+                            <p class="text-zinc-200 mt-0.5">Chào mừng bạn đã đến với hộp thư liên lạc! Hãy gửi tin nhắn trao đổi tương tác tại đây nhé.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2 pt-2">
+                    <input type="text" id="chat-inline-input" placeholder="Gửi tin nhắn riêng..." class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none">
+                    <button onclick="sendDirectMessage()" class="bg-[#ff0050] text-white px-4 rounded-xl text-xs font-black active:scale-95 transition">GỬI</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-upload" class="tab-view w-full h-full pb-16 bg-zinc-950 p-4 overflow-y-auto">
+            <div class="flex justify-between items-center pb-3 border-b border-zinc-900 mb-4">
+                <h2 class="text-xs font-black tracking-widest text-zinc-400">TẠO BÀI VIẾT MỚI</h2>
                 <button id="btn-publish" class="bg-[#ff0050] text-white px-5 py-1.5 rounded-full font-black text-xs shadow-lg active:scale-95 transition">ĐĂNG BÀI</button>
             </div>
 
-            <div class="w-full aspect-video bg-black relative flex items-center justify-center border-b border-zinc-900 shadow-inner">
-                <video id="studio-player" class="w-full h-full object-contain hidden" loop playsinline></video>
+            <div class="space-y-4">
+                <textarea id="video-caption-input" rows="4" placeholder="Hôm nay bạn thế nào? Chia sẻ nội dung tiêu đề video ngắn của bạn tại đây..." class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-2xl text-xs text-white focus:outline-none focus:border-zinc-700 font-medium resize-none"></textarea>
                 
-                <div id="studio-placeholder" class="text-center p-6">
+                <div class="border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center bg-zinc-900/40 cursor-pointer hover:border-zinc-700 transition" id="upload-zone">
                     <input type="file" id="video-input" accept="video/*" class="hidden">
-                    <label for="video-input" class="cursor-pointer block group">
-                        <p class="text-3xl mb-1 group-hover:scale-110 transition">🎬</p>
-                        <p class="text-[11px] text-zinc-500 font-black tracking-wider">TẢI CLIP GỐC CỦA BẠN LÊN</p>
+                    <label for="video-input" class="cursor-pointer block" id="upload-label">
+                        <p class="text-3xl mb-1">➕</p>
+                        <p class="text-[11px] text-zinc-500 font-bold">BẤM ĐỂ CHỌN CLIP TỪ ĐIỆN THOẠI</p>
                     </label>
                 </div>
-                
-                <button id="btn-studio-play" class="absolute bg-black/70 w-12 h-12 rounded-full hidden items-center justify-center text-sm border border-zinc-700 active:scale-95 transition shadow-2xl">▶</button>
-                <span id="studio-timer" class="absolute bottom-2 right-3 bg-black/80 text-[9px] font-mono px-2 py-0.5 rounded text-zinc-400 font-bold hidden">00:00</span>
-            </div>
 
-            <div class="bg-zinc-900 p-3 space-y-2.5 border-b border-zinc-800">
-                <div class="flex items-center justify-between text-[10px] text-zinc-500 font-black px-1">
-                    <span>TRACK TIMELINE</span>
-                    <button onclick="toggleOriginalAudio()" id="btn-mute-original" class="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20 text-[9px] font-bold">🔊 Tiếng gốc: BẬT</button>
-                </div>
-                <div class="space-y-2 bg-black/40 p-2 rounded-2xl text-[11px]">
-                    <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-blue-500">
-                        <span class="w-10 font-black text-blue-500 text-[10px]">VIDEO</span>
-                        <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center px-2 text-[10px] text-zinc-400 truncate font-semibold" id="track-name-video">Chưa chọn video...</div>
-                    </div>
-                    <div class="flex items-center gap-2 bg-zinc-950 p-2 rounded-xl border-l-4 border-green-500">
-                        <span class="w-10 font-black text-green-500 text-[10px]">AUDIO</span>
-                        <div class="flex-1 bg-zinc-900 h-5 rounded-lg flex items-center justify-between px-2 text-[10px]">
-                            <span id="track-name-music" class="text-zinc-600 italic font-medium">Chưa chọn nhạc nền</span>
-                            <button onclick="deleteTrack('music')" id="btn-del-music" class="text-zinc-500 font-black hidden hover:text-red-500 transition text-[9px]">✕ GỠ</button>
-                            <audio id="timeline-music" loop class="hidden"></audio>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 space-y-3">
-                <div class="space-y-1.5">
-                    <p class="font-black text-[10px] text-zinc-400 tracking-wider">🎵 KHO ÂM NHẠC GIỚI TRẺ THỊNH HÀNH (CÓ LỜI / NỀN HOT)</p>
-                    <input type="text" id="search-music-input" oninput="filterSearchMusic(this.value)" placeholder="🔍 Tìm nhanh bài hát, ca sĩ, tên nhạc trend..." class="w-full bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#ff0050] font-medium">
-                </div>
-                
-                <div class="flex gap-1.5 overflow-x-auto pb-1 text-[10px] font-black">
-                    <button onclick="filterMusicTab('all')" class="bg-[#ff0050] text-white px-3 py-1 rounded-full whitespace-nowrap">🔥 Tất cả kẹo xu hướng</button>
-                    <button onclick="filterMusicTab('lyric')" class="bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap">Có lời cực hot</button>
-                    <button onclick="filterMusicTab('remix')" class="bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap">Remix / Phonk căng</button>
-                </div>
-
-                <div id="unlimited-music-box" class="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto pr-0.5"></div>
-
-                <div class="space-y-2.5 bg-zinc-900 border border-zinc-800 p-3 rounded-2xl mt-1">
-                    <input type="text" id="video-caption-input" placeholder="Viết mô tả tiêu đề cho video ngắn..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs text-white focus:outline-none font-medium">
-                    <input type="text" id="product-link" placeholder="Mã hoặc đường dẫn liên kết giỏ hàng mua sắm..." class="w-full bg-black border border-zinc-800 p-3 rounded-xl text-xs text-white focus:outline-none font-medium">
+                <div id="studio-preview-box" class="hidden w-full aspect-video bg-black rounded-2xl overflow-hidden relative border border-zinc-900">
+                    <video id="studio-player" class="w-full h-full object-contain" loop muted playsinline></video>
+                    <button type="button" onclick="clearSelectedVideo()" class="absolute top-2 right-2 bg-black/70 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">✕</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-profile" class="tab-view w-full h-full p-4 pb-20 overflow-y-auto bg-zinc-950">
+        <div id="view-profile" class="tab-view w-full h-full p-4 pb-16 overflow-y-auto bg-zinc-950">
             <div class="text-center space-y-2 mt-2">
                 <div class="w-20 h-20 bg-zinc-800 rounded-full mx-auto border-2 border-[#ff0050] flex items-center justify-center text-3xl shadow-lg">👤</div>
                 <h2 id="user-nickname" class="text-base font-black">Cổ Văn Tảu Bắc</h2>
@@ -158,24 +139,12 @@
                 </div>
             </div>
 
-            <div class="mt-4 border-t border-zinc-900 pt-3 space-y-4">
-                <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-2xl space-y-2.5 shadow-xl">
-                    <h3 class="text-[10px] font-black tracking-widest text-[#ff0050]">🏪 QUẢN LÝ GIAN HÀNG CÁ NHÂN</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="shop-p-name" placeholder="Tên hàng hóa..." class="bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
-                        <input type="text" id="shop-p-price" placeholder="Giá bán (₫)..." class="bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
-                    </div>
-                    <input type="text" id="shop-p-link" placeholder="Đường dẫn link mua hàng Affiliate..." class="w-full bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
-                    <button onclick="addProductToStore()" class="w-full bg-white text-black text-xs font-black py-2 rounded-xl transition active:scale-98">ĐĂNG SẢN PHẨM VÀO GIỎ HÀNG</button>
-                </div>
-
-                <div class="space-y-2">
-                    <h4 class="text-xs font-black text-zinc-400 tracking-wider pl-1">🎬 VIDEO CỦA TÔI</h4>
-                    <div id="my-uploaded-videos-grid" class="grid grid-cols-3 gap-1">
-                        <div class="aspect-[3/4] bg-zinc-900 rounded-md overflow-hidden relative border border-zinc-800">
-                            <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" muted class="w-full h-full object-cover"></video>
-                            <span class="absolute bottom-1 left-1 text-[9px] font-black bg-black/60 px-1 rounded flex items-center gap-0.5">▶ 1.2K</span>
-                        </div>
+            <div class="mt-6 border-t border-zinc-900 pt-4 space-y-2">
+                <h4 class="text-xs font-black text-zinc-400 tracking-wider pl-1">🎬 VIDEO CỦA TÔI</h4>
+                <div id="my-uploaded-videos-grid" class="grid grid-cols-3 gap-1">
+                    <div class="aspect-[3/4] bg-zinc-900 rounded-md overflow-hidden relative border border-zinc-800">
+                        <video src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" muted class="w-full h-full object-cover"></video>
+                        <span class="absolute bottom-1 left-1 text-[9px] font-black bg-black/60 px-1 rounded flex items-center gap-0.5">▶ 1.2K</span>
                     </div>
                 </div>
             </div>
@@ -189,17 +158,17 @@
             <div class="flex-1 overflow-y-auto py-3 space-y-4 text-xs" id="comment-list">
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex gap-2.5">
-                        <div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center font-bold text-[10px]">🏸</div>
+                        <div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-xs">🏸</div>
                         <div>
                             <p class="font-black text-zinc-400 text-[11px]">@tuan_badminton <span class="text-[9px] font-normal text-zinc-600 ml-1">2 giờ trước</span></p>
-                            <p class="text-zinc-200 mt-0.5 font-medium">Form thiết kế chuẩn ôm dáng, mặc đi đập cầu lông bao phê shop ơi kkk!</p>
+                            <p class="text-zinc-200 mt-0.5 font-medium">Form đồ ôm dáng di chuyển đập cầu lông bao thích luôn kkk!</p>
                         </div>
                     </div>
                     <button onclick="likeComment(this)" class="text-zinc-600 text-sm mt-1">🤍</button>
                 </div>
             </div>
             <div class="flex gap-2 pt-3 border-t border-zinc-800 items-center">
-                <input type="text" id="comment-input" placeholder="Thêm bình luận công khai..." class="flex-1 bg-black rounded-xl p-3 text-xs focus:outline-none text-white border border-zinc-800">
+                <input type="text" id="comment-input" placeholder="Thêm bình luận..." class="flex-1 bg-black rounded-xl p-3 text-xs focus:outline-none text-white border border-zinc-800">
                 <button onclick="sendComment()" class="bg-[#ff0050] text-white px-5 py-2.5 rounded-xl text-xs font-black">GỬI</button>
             </div>
         </div>
@@ -209,8 +178,12 @@
                 <span class="text-xl">🏠</span>
                 <span class="text-[10px] font-black mt-0.5">Trang chủ</span>
             </button>
+            <button onclick="switchTab('chat')" id="nav-chat" class="flex flex-col items-center text-zinc-500">
+                <span class="text-xl">💬</span>
+                <span class="text-[10px] font-black mt-0.5">Hộp thư</span>
+            </button>
             <button onclick="switchTab('upload')" id="nav-upload" class="flex flex-col items-center text-zinc-500 active:scale-90 transition">
-                <div class="bg-white text-black font-black px-4 py-1 rounded-xl text-lg flex items-center justify-center shadow shadow-white">+</div>
+                <div class="bg-white text-black font-black px-4 py-1 rounded-xl text-sm flex items-center justify-center shadow shadow-white">+ Đăng</div>
             </button>
             <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-zinc-500">
                 <span class="text-xl">👤</span>
@@ -234,52 +207,6 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // K KHO NHẠC TRẺ ĐA DẠNG CÓ LỜI (ĐƯỢC CẤP LINK SỬ DỤNG SẴN CHẠY THỰC TẾ)
-        const unlimitedDatabaseMusic = [
-            { id: 1, name: "Đừng Làm Trái Tim Anh Đau (Có Lời Hit)", author: "Sơn Tùng M-TP", type: "lyric", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
-            { id: 2, name: "Khóa Ly Biệt (Meme Bass Remix)", author: "Dân Chơi TikTok", type: "remix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
-            { id: 3, name: "Hào Quang (Speed Up Hot Trend)", author: "Anh Tú x Rhyder", type: "remix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
-            { id: 4, name: "Giấc Mơ Rất Thơ (Lofi Chill Có Lời)", author: "Vpop Mashup 2026", type: "lyric", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
-            { id: 5, name: "Phóng Xe Đêm (Cực Căng Phonk)", author: "Beat Giật Giật TikTok", type: "remix", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
-        ];
-
-        function renderMusicHub(tracks) {
-            const container = document.getElementById('unlimited-music-box');
-            container.innerHTML = "";
-            if(tracks.length === 0) {
-                container.innerHTML = `<p class="text-[11px] text-zinc-600 italic text-center py-4">Không tìm thấy bản nhạc trẻ phù hợp...</p>`;
-                return;
-            }
-            tracks.forEach(track => {
-                const item = document.createElement('div');
-                item.className = "bg-zinc-900 border border-zinc-800 p-2.5 rounded-xl flex items-center justify-between text-xs";
-                item.innerHTML = `
-                    <div>
-                        <p class="font-black text-zinc-200">${track.name}</p>
-                        <p class="text-[9px] text-zinc-500 mt-0.5">${track.author}</p>
-                    </div>
-                    <button onclick="applyMusicTrack('${track.url}', '${track.name}')" class="bg-zinc-800 hover:bg-green-600 px-3 py-1 rounded-lg text-[10px] font-black transition whitespace-nowrap">Sử dụng</button>
-                `;
-                container.appendChild(item);
-            });
-        }
-        window.addEventListener('DOMContentLoaded', () => renderMusicHub(unlimitedDatabaseMusic));
-
-        function filterSearchMusic(keyword) {
-            const cleanKey = keyword.toLowerCase().trim();
-            const filtered = unlimitedDatabaseMusic.filter(t => t.name.toLowerCase().includes(cleanKey) || t.author.toLowerCase().includes(cleanKey));
-            renderMusicHub(filtered);
-        }
-
-        function filterMusicTab(cat) {
-            event.currentTarget.parentNode.querySelectorAll('button').forEach(b => {
-                b.className = "bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1 rounded-full whitespace-nowrap";
-            });
-            event.currentTarget.className = "bg-[#ff0050] text-white px-3 py-1 rounded-full whitespace-nowrap";
-            if(cat === 'all') { renderMusicHub(unlimitedDatabaseMusic); } 
-            else { renderMusicHub(unlimitedDatabaseMusic.filter(t => t.type === cat)); }
-        }
-
         function switchTab(tabName) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
@@ -288,27 +215,13 @@
             
             const mainPlayer = document.getElementById('main-feed-player');
             const studioPlayer = document.getElementById('studio-player');
-            const bgMusic = document.getElementById('timeline-music');
 
             if(tabName !== 'home' && mainPlayer) mainPlayer.pause(); else if(mainPlayer) mainPlayer.play();
-            if(tabName !== 'upload') { studioPlayer.pause(); bgMusic.pause(); }
+            if(tabName !== 'upload' && studioPlayer) studioPlayer.pause();
             closeComments();
         }
 
-        // =========================================================
-        // 🔮 FIXED AUDIO SYNC LOGIC: PHÁT ĐỒNG BỘ CẢ TIẾNG KHI XEM FEED
-        // =========================================================
-        function togglePlayFeedVideo(video) {
-            const card = video.closest('.video-card');
-            const audioTrack = card.querySelector('.feed-card-music-track');
-            if(video.paused) {
-                video.play();
-                if(audioTrack) audioTrack.play();
-            } else {
-                video.pause();
-                if(audioTrack) audioTrack.pause();
-            }
-        }
+        function togglePlayFeedVideo(video) { if(video.paused) video.play(); else video.pause(); }
 
         function handleLikeReal(div, baseCount) {
             const heartEl = div.querySelector('.dynamic-heart');
@@ -323,16 +236,16 @@
         function handleRepost(div) {
             const counter = div.querySelector('.repost-counter');
             if(div.classList.contains('reposted')) {
-                div.classList.remove('reposted'); div.querySelector('span').classList.remove('text-green-400'); counter.innerText = "0";
+                div.classList.remove('reposted'); counter.innerText = "0"; div.querySelector('span').classList.remove('text-green-400');
             } else {
-                div.classList.add('reposted'); div.querySelector('span').classList.add('text-green-400'); counter.innerText = "1";
-                alert("🔁 Đã đăng lại clip này lên giỏ hàng video cá nhân của bạn!");
+                div.classList.add('reposted'); counter.innerText = "1"; div.querySelector('span').classList.add('text-green-400');
+                alert("🔁 Bạn đã đăng lại video ngắn này về trang cá nhân.");
             }
         }
 
         function handleShare(div) {
             div.querySelector('.share-counter').innerText = parseInt(div.querySelector('.share-counter').innerText) + 1;
-            alert("↪️ Sao chép liên kết video thành công!");
+            alert("↪️ Đã sao chép liên kết chia sẻ video!");
         }
 
         function toggleFollow(btn) {
@@ -353,157 +266,130 @@
             list.appendChild(item); list.scrollTop = list.scrollHeight; input.value = "";
         }
 
-        // FILM STUDIO ENGINE CƠ BẢN
+        // TÍNH NĂNG CHAT HỘP THƯ TIN NHẮN DIỄN RA TRONG ĐỜI THỰC
+        function sendDirectMessage() {
+            const input = document.getElementById('chat-inline-input');
+            const container = document.getElementById('chat-messages-container');
+            if(!input.value.trim()) return;
+
+            // Tin nhắn của bạn gửi đi
+            const myMsg = document.createElement('div');
+            myMsg.className = "flex gap-2 items-start justify-end";
+            myMsg.innerHTML = `<div class="bg-[#ff0050] p-2.5 rounded-2xl rounded-tr-none max-w-[80%] text-xs text-white"><p class="font-bold text-white text-right">Bạn</p><p class="mt-0.5 text-left">${input.value}</p></div>`;
+            container.appendChild(myMsg);
+            
+            const savedText = input.value;
+            input.value = "";
+            container.parentNode.scrollTop = container.parentNode.scrollHeight;
+
+            // Phản hồi giả lập từ Admin / Bạn bè sau 1 giây
+            setTimeout(() => {
+                const autoReply = document.createElement('div');
+                autoReply.className = "flex gap-2 items-start";
+                autoReply.innerHTML = `<div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-xs">👤</div><div class="bg-zinc-900 p-2.5 rounded-2xl rounded-tl-none max-w-[80%] text-xs"><p class="font-bold text-zinc-400">Cổ Văn Tảu Bắc (Admin)</p><p class="text-zinc-200 mt-0.5">Chào bạn! Mình đã nhận được tin nhắn về câu hỏi "${savedText}". Mình sẽ phản hồi lại ngay nha! 👍</p></div>`;
+                container.appendChild(autoReply);
+                container.parentNode.scrollTop = container.parentNode.scrollHeight;
+            }, 1200);
+        }
+
+        // =========================================================
+        // 🔮 LOGIC ĐĂNG BÀI NHẬT KÝ ZALO (TỰ ĐỘNG XOÁ SẠCH DỮ LIỆU CŨ)
+        // =========================================================
         const studioPlayer = document.getElementById('studio-player');
-        const bgMusic = document.getElementById('timeline-music');
-        const playBtn = document.getElementById('btn-studio-play');
-        const timerLabel = document.getElementById('studio-timer');
 
         document.getElementById('video-input').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
+                // Giải phóng các luồng URL cũ nếu có để tránh tràn bộ nhớ đệm gây kẹt
+                if(studioPlayer.src) URL.revokeObjectURL(studioPlayer.src);
+
                 studioPlayer.src = URL.createObjectURL(file);
-                document.getElementById('studio-placeholder').classList.add('hidden');
-                studioPlayer.classList.remove('hidden');
-                playBtn.classList.replace('hidden', 'flex');
-                timerLabel.classList.remove('hidden');
-                document.getElementById('track-name-video').innerText = `🎞️ ${file.name}`;
+                document.getElementById('upload-zone').classList.add('hidden');
+                document.getElementById('studio-preview-box').classList.remove('hidden');
+                studioPlayer.play();
             }
         });
 
-        function applyMusicTrack(url, name) {
-            bgMusic.src = url; bgMusic.volume = 0.55;
-            const lbl = document.getElementById('track-name-music');
-            lbl.innerText = `🎵 ${name}`; lbl.className = "text-green-400 font-bold";
-            document.getElementById('btn-del-music').classList.remove('hidden');
-            if(!studioPlayer.paused) bgMusic.play();
+        function clearSelectedVideo() {
+            document.getElementById('video-input').value = "";
+            studioPlayer.pause();
+            if(studioPlayer.src) URL.revokeObjectURL(studioPlayer.src);
+            studioPlayer.removeAttribute('src');
+            studioPlayer.load();
+            
+            document.getElementById('studio-preview-box').classList.add('hidden');
+            document.getElementById('upload-zone').classList.remove('hidden');
         }
 
-        function deleteTrack(type) {
-            if (type === 'music') {
-                bgMusic.pause(); bgMusic.removeAttribute('src');
-                const lbl = document.getElementById('track-name-music');
-                lbl.innerText = "Chưa chọn nhạc nền"; lbl.className = "text-zinc-600 italic font-medium";
-                document.getElementById('btn-del-music').classList.add('hidden');
-            }
-        }
-
-        function toggleOriginalAudio() {
-            const btn = document.getElementById('btn-mute-original');
-            if (studioPlayer.muted) {
-                studioPlayer.muted = false; btn.innerText = "🔊 Tiếng gốc: BẬT";
-                btn.className = "text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20 text-[9px] font-bold";
-            } else {
-                studioPlayer.muted = true; btn.innerText = "🔇 Tiếng gốc: ĐÃ TẮT";
-                btn.className = "text-red-400 bg-red-500/10 px-2 py-0.5 rounded-md border border-red-500/10 text-[9px] font-bold";
-            }
-        }
-
-        playBtn.addEventListener('click', function() {
-            if (studioPlayer.paused) { studioPlayer.play(); if(bgMusic.src) bgMusic.play(); playBtn.innerText = "⏸"; } 
-            else { studioPlayer.pause(); bgMusic.pause(); playBtn.innerText = "▶"; }
-        });
-
-        studioPlayer.addEventListener('timeupdate', function() {
-            let displayTime = Math.floor(studioPlayer.currentTime);
-            timerLabel.innerText = `${Math.floor(displayTime/60).toString().padStart(2,'0')}:${(displayTime%60).toString().padStart(2,'0')}`;
-        });
-
-        // =========================================================
-        // 🔥 ĐÃ FIX: ĐĂNG BÀI TỰ ĐỘNG ĐỒNG BỘ TIẾNG & XÓA SẠCH VIDEO CŨ TRONG STUDIO
-        // =========================================================
+        // BẤM NÚT ĐĂNG - BIẾN MẤT VÀ XOÁ SẠCH TOÀN BỘ VẾT TÍCH CŨ QUAY VỀ TRANG CHỦ
         document.getElementById('btn-publish').addEventListener('click', function() {
             const videoFile = document.getElementById('video-input').files[0];
-            const caption = document.getElementById('video-caption-input').value.trim() || "Video ngắn từ CapCut Studio";
-            const link = document.getElementById('product-link').value.trim() || "https://shopee.vn";
-            const musicUrl = bgMusic.src; // Lấy link bài hát đã chọn
+            const caption = document.getElementById('video-caption-input').value.trim() || "Video nhật ký mới đăng";
 
-            if(!videoFile) { alert("Vui lòng tải tệp video lên trước khi đăng bài!"); return; }
+            if(!videoFile) { alert("Vui lòng chọn một video từ máy trước khi đăng!"); return; }
 
             const blobUrl = URL.createObjectURL(videoFile);
 
-            // 1. Đồng bộ tiếng nhạc: Chèn thẻ audio trực tiếp đi kèm video vào luồng Home Feed
-            let embedAudioTag = "";
-            if (musicUrl && !musicUrl.includes('undefined') && musicUrl !== "") {
-                embedAudioTag = `<audio src="${musicUrl}" loop class="feed-card-music-track" style="display:none;"></audio>`;
-            }
-
+            // Bắn video mới lên vị trí đầu tiên của Trang chủ
             const feedContainer = document.getElementById('view-home');
             const newVideoCard = document.createElement('div');
             newVideoCard.className = "video-card w-full h-full relative flex items-center justify-center bg-black";
             newVideoCard.innerHTML = `
-                <video src="${blobUrl}" loop ${studioPlayer.muted ? "muted" : ""} autoplay playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
-                ${embedAudioTag}
+                <video src="${blobUrl}" loop autoplay playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
+                <div class="absolute top-4 left-3 z-30">
+                    <a href="https://shopee.vn" target="_blank" class="glass-ad-badge px-3 py-1.5 rounded-full text-[10px] font-black tracking-wide text-white flex items-center gap-1.5 shadow-lg border-l-2 border-l-[#ff0050]">
+                        <span class="bg-[#ff0050] text-[8px] px-1 rounded font-mono">ADS</span>
+                        <span>🛒 Xem sản phẩm tài trợ của Admin tại đây!</span>
+                    </a>
+                </div>
                 <div class="absolute right-3 bottom-20 flex flex-col items-center gap-4.5 z-20">
                     <div class="w-10 h-10 bg-[#ff0050] rounded-full border-2 border-white flex items-center justify-center font-bold text-xs">👤</div>
                     <div class="text-center cursor-pointer" onclick="handleLikeReal(this, 0)"><span class="text-2xl block dynamic-heart">🤍</span><p class="text-[10px] font-black mt-0.5 text-zinc-300 like-counter">0</p></div>
                     <div class="text-center cursor-pointer" onclick="openComments()"><span class="text-2xl block">💬</span><p class="text-[10px] font-black mt-0.5 text-zinc-300">0</p></div>
                     <div class="text-center cursor-pointer" onclick="handleRepost(this)"><span class="text-2xl block">🔁</span><p class="text-[10px] font-black mt-0.5 text-zinc-300 repost-counter">0</p></div>
                 </div>
-                <div class="absolute bottom-4 left-3 right-16 z-10 space-y-2">
-                    <div class="text-xs bg-black/30 p-1 rounded-lg backdrop-blur-sm inline-block"><span class="font-black text-white text-sm">@covan_taubac</span><p class="text-zinc-200 mt-0.5 font-medium leading-tight">${caption}</p></div>
-                    <div class="glass-card p-2 rounded-xl flex items-center gap-2.5 shadow-lg">
-                        <div class="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center text-lg">📦</div>
-                        <div class="flex-1 min-w-0"><h4 class="text-[11px] font-bold text-white truncate">Sản phẩm tiếp thị liên kết</h4><p class="text-[10px] font-black text-[#ff0050]">Click mua ngay</p></div>
-                        <a href="${link}" target="_blank" class="bg-[#ff0050] text-white px-3 py-1 rounded-lg text-[10px] font-black active:scale-95 transition">MÚC</a>
-                    </div>
-                </div>
+                <div class="absolute bottom-4 left-3 right-16 z-10"><div class="text-xs bg-black/40 p-2 rounded-xl backdrop-blur-md"><span class="font-black text-white text-sm">@covan_taubac</span><p class="text-zinc-200 mt-0.5 font-medium leading-tight">${caption}</p></div></div>
             `;
             feedContainer.insertBefore(newVideoCard, feedContainer.firstChild);
 
-            // Đẩy thumbnail nhỏ vào profile cá nhân
+            // Cập nhật thumbnail nhỏ vào trang profile cá nhân
             const profileGrid = document.getElementById('my-uploaded-videos-grid');
             const thumbItem = document.createElement('div');
             thumbItem.className = "aspect-[3/4] bg-zinc-900 rounded-md overflow-hidden relative border border-zinc-800";
             thumbItem.innerHTML = `<video src="${blobUrl}" muted class="w-full h-full object-cover"></video><span class="absolute bottom-1 left-1 text-[9px] font-black bg-black/60 px-1 rounded">▶ 1</span>`;
             profileGrid.insertBefore(thumbItem, profileGrid.firstChild);
 
-            alert("🎉 ĐÃ XUẤT BẢN VIDEO THÀNH CÔNG!\nBài đăng kèm nhạc nền đã xuất hiện trên Trang chủ.");
-            
-            // 2. GIẢI QUYẾT TRIỆT ĐỂ: XOÁ PHĂNG VIDEO CŨ KHỎI KHU VỰC STUDIO BIÊN TẬP
-            document.getElementById('video-input').value = ""; // Xoá file gốc trong input
-            studioPlayer.pause();
-            studioPlayer.src = "";
-            studioPlayer.removeAttribute('src'); 
-            studioPlayer.load(); // Ép hệ thống giải phóng bộ nhớ clip cũ
-            studioPlayer.classList.add('hidden'); // Ẩn trình phát đi
-            
-            document.getElementById('studio-placeholder').classList.remove('hidden'); // Hiện lại khung tải lên trống
-            document.getElementById('btn-studio-play').classList.replace('flex', 'hidden');
-            document.getElementById('studio-timer').classList.add('hidden');
-            
-            // Xoá rỗng toàn bộ text tiêu đề và đường link sản phẩm gắn kèm
-            document.getElementById('video-caption-input').value = "";
-            document.getElementById('product-link').value = "";
-            
-            // Khôi phục thanh nhạc nền Studio về ban đầu
-            deleteTrack('music');
+            alert("🎉 ĐÃ ĐĂNG BÀI THÀNH CÔNG!\nVideo nhật ký tối giản kèm quảng cáo góc nhỏ của Admin đã xuất bản.");
 
-            // Chuyển tab về xem thành quả
+            // TIẾN HÀNH DỌN DẸP SẠCH SẼ TOÀN BỘ FORM ĐĂNG CŨ ĐỂ KHÔNG BỊ KẸT LẠI
+            document.getElementById('video-input').value = ""; 
+            document.getElementById('video-caption-input').value = ""; 
+            studioPlayer.pause();
+            if(studioPlayer.src) URL.revokeObjectURL(studioPlayer.src);
+            studioPlayer.removeAttribute('src');
+            studioPlayer.load();
+
+            document.getElementById('studio-preview-box').classAdd = "hidden"; 
+            document.getElementById('studio-preview-box').classList.add('hidden');
+            document.getElementById('upload-zone').classList.remove('hidden');
+
+            // Chuyển màn hình về xem video mới tinh ngay đầu trang chủ
             switchTab('home');
 
-            // Backup đẩy ngầm dữ liệu lên đám mây Firebase dự phòng
+            // Đẩy luồng đồng bộ ngầm lên Firebase Storage dự phòng
             try {
                 const storageRef = firebase.storage().ref('videos/' + Date.now() + '_' + videoFile.name);
                 storageRef.put(videoFile).then(snap => {
                     snap.ref.getDownloadURL().then(url => {
-                        db.collection('videos').add({ username: "Cổ Văn Tảu Bắc", videoUrl: url, caption: caption, productLink: link, createdAt: new Date() });
+                        db.collection('videos').add({ username: "Cổ Văn Tảu Bắc", videoUrl: url, caption: caption, createdAt: new Date() });
                     });
                 });
             } catch(e) {}
         });
 
-        function addProductToStore() {
-            const name = document.getElementById('shop-p-name').value.trim();
-            const price = document.getElementById('shop-p-price').value.trim();
-            const grid = document.getElementById('my-store-grid');
-            if(!name || !price) return;
-            const card = document.createElement('div');
-            card.className = "bg-zinc-900 border border-zinc-800 p-2.5 rounded-2xl flex flex-col justify-between shadow-md";
-            card.innerHTML = `<div class="w-full aspect-square bg-zinc-800 rounded-xl overflow-hidden mb-2"><div class="w-full h-full flex items-center justify-center text-2xl bg-zinc-950">📦</div></div><h5 class="text-[11px] font-bold text-zinc-200 truncate">${name}</h5><p class="text-[11px] font-black text-[#ff0050] mt-0.5">${price} ₫</p>`;
-            grid.insertBefore(card, grid.firstChild);
-            alert("Đã đăng sản phẩm thành công lên giỏ hàng cá nhân!");
-        }
+        auth.onAuthStateChanged(user => {
+            if (user) { document.getElementById('user-nickname').innerText = user.displayName || "Cổ Văn Tảu Bắc"; }
+        });
     </script>
 </body>
 </html>
