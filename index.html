@@ -38,6 +38,12 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
         }
+        .truncate-3-lines {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-white font-sans select-none overflow-hidden flex justify-center relative">
@@ -53,11 +59,10 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 2. HỘP THƯ CHAT PHÂN TÁCH BẠN BÈ & NGƯỜI LẠ (CHUẨN ZALO) -->
+        <!-- 2. HỘP THƯ CHAT PHÂN TÁCH BẠN BÈ & NGƯỜI LẠ -->
         <!-- ========================================================= -->
         <div id="view-chat" class="tab-view bg-zinc-950 flex flex-col justify-between">
             
-            <!-- DANH SÁCH HỘP THƯ CHAT TỔNG -->
             <div id="chat-list-screen" class="flex flex-col h-full w-full">
                 <div class="p-4 border-b border-zinc-900 bg-zinc-950 text-center shrink-0">
                     <h2 class="text-xs font-black tracking-widest text-zinc-400">HỘP THƯ HẸN HÒ</h2>
@@ -77,7 +82,6 @@
 
             <!-- PHÒNG CHAT RIÊNG BIỆT TRONG HỘP THƯ + BẢNG QUÀ TẶNG XU -->
             <div id="chat-room-screen" class="hidden flex-col h-full w-full bg-zinc-950 justify-between relative">
-                <!-- Header phòng chat -->
                 <div class="p-3 border-b border-zinc-900 bg-zinc-900/40 flex justify-between items-center shrink-0">
                     <div class="flex items-center gap-2.5">
                         <button onclick="backToChatList()" class="text-zinc-400 font-bold text-base px-1">←</button>
@@ -90,10 +94,8 @@
                     <button onclick="toggleGiftingPanel()" class="bg-zinc-900 border border-zinc-800 w-8 h-8 rounded-full flex items-center justify-center text-sm shadow">🎁</button>
                 </div>
                 
-                <!-- Luồng nội dung tin nhắn chat thoại/chữ -->
                 <div class="flex-1 overflow-y-auto p-4 space-y-3" id="chat-room-messages-flow"></div>
 
-                <!-- BẢNG TRƯỢT LÊN TẶNG QUÀ XU -->
                 <div id="gifting-slide-panel" class="absolute bottom-14 left-0 right-0 bg-zinc-900/95 border-t border-zinc-800 rounded-t-2xl p-3 z-40 hidden flex-col gap-3 shadow-2xl">
                     <div class="flex justify-between items-center text-[10px] font-black text-zinc-400 border-b border-zinc-800/60 pb-1.5">
                         <span>🎁 GỬI QUÀ TĂNG CẤP THÂN MẬT</span>
@@ -127,7 +129,6 @@
                     </div>
                 </div>
                 
-                <!-- Thanh công cụ gửi chữ -->
                 <div class="p-2 border-t border-zinc-900 flex gap-2 bg-black/20 shrink-0 z-10">
                     <input type="text" id="chat-room-input" placeholder="Nhắn tin trò chuyện..." class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none">
                     <button onclick="submitRoomMessage()" class="bg-[#ff0050] text-white px-4 rounded-xl text-xs font-black active:scale-95 transition">GỬI</button>
@@ -137,7 +138,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 3. MÀN HÌNH ĐĂNG BÀI NHẬT KÝ ZALO (STT CHỮ HOẶC THÊM CLIP) -->
+        <!-- 3. MÀN HÌNH ĐĂNG BÀI (STT CHỮ HOẶC THÊM CLIP) -->
         <!-- ========================================================= -->
         <div id="view-upload" class="tab-view bg-zinc-950 p-4 overflow-y-auto">
             <div class="flex justify-between items-center pb-3 border-b border-zinc-900 mb-4">
@@ -146,13 +147,14 @@
             </div>
 
             <div class="space-y-4">
+                <!-- Không còn chữ trạng thái tự động chèn vào nữa, nhập gì đăng nấy -->
                 <textarea id="video-caption-input" rows="4" placeholder="Nhập trạng thái (STT) hoặc tiêu chuẩn tìm kiếm người yêu tại đây..." class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-2xl text-xs text-white focus:outline-none font-medium resize-none focus:border-zinc-700"></textarea>
                 
                 <div class="border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center bg-zinc-900/40 cursor-pointer hover:border-zinc-700 transition" id="upload-zone">
                     <input type="file" id="video-input" accept="video/*" class="hidden">
                     <label for="video-input" class="cursor-pointer block">
                         <p class="text-3xl mb-1">➕</p>
-                        <p class="text-[11px] text-zinc-500 font-bold">BẤM ĐỂ ĐÍNH KÈM VIDEO PROFILE (TÙY CHỌN)</p>
+                        <p class="text-[11px] text-zinc-500 font-bold">BẤM ĐỂ ĐÍNH KÈM VIDEO (TÙY CHỌN)</p>
                     </label>
                 </div>
 
@@ -164,47 +166,63 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 4. MÀN HÌNH TRANG CÁ NHÂN (HỒ SƠ KHÁCH & LƯỚI ĐĂNG CLIP) -->
+        <!-- 4. MÀN HÌNH TRANG CÁ NHÂN & VÍ (RÚT / NẠP TÁCH BIỆT RÕ RÀNG) -->
         <!-- ========================================================= -->
         <div id="view-profile" class="tab-view bg-zinc-950 p-4 overflow-y-auto">
             
-            <!-- KHU VỰC HỒ SƠ NGƯỜI DÙNG THƯỜNG -->
             <div id="user-normal-profile-view" class="space-y-4 flex flex-col h-full w-full">
+                <!-- THÔNG TIN HỒ SƠ -->
                 <div class="text-center space-y-2 mt-2 relative">
                     <button onclick="openAdminLoginModal()" class="absolute top-0 right-0 text-[10px] text-zinc-600 font-bold bg-zinc-900/40 px-2.5 py-1 rounded border border-zinc-800/60">Cổng Admin</button>
                     
-                    <div class="w-18 h-18 bg-zinc-800 rounded-full mx-auto border-2 border-pink-500 flex items-center justify-center text-3xl shadow-lg">👤</div>
+                    <div class="w-18 h-18 bg-zinc-800 rounded-full mx-auto border-2 border-zinc-700 flex items-center justify-center text-3xl shadow-lg">👤</div>
                     <h2 id="user-nickname" class="text-base font-black">Cổ Văn Tảu Bắc</h2>
-                    <p class="text-amber-400 text-[10px] font-black flex items-center justify-center gap-0.5">💰 Ví xu: <span id="profile-wallet-coins-count" class="text-white">20</span> xu</p>
+                    <p class="text-zinc-500 text-[10px] font-bold">ID: tau_bac22</p>
                     
-                    <!-- Các chỉ số đưa về con số 0 sạch sẽ chuẩn không buff ảo -->
-                    <div class="flex justify-center gap-4 text-[11px] text-zinc-400 py-1 font-semibold border-y border-zinc-900/60 my-2">
-                        <div class="text-center"><b class="text-white block text-xs">0</b> Người theo dõi</div>
-                        <div class="text-center border-x border-zinc-900 px-4"><b class="text-white block text-xs">0</b> Bạn bè</div>
-                        <div class="text-center"><b class="text-white block text-xs">0</b> Lượt thích</div>
+                    <!-- Các chỉ số ẩn danh tư nhân, hiển thị số sạch -->
+                    <div class="flex justify-center gap-4 text-[11px] text-zinc-400 py-2 font-semibold w-full">
+                        <div class="text-center"><b class="text-white block text-sm">0</b> Đang theo dõi</div>
+                        <div class="text-center border-x border-zinc-800 px-4"><b class="text-white block text-sm">0</b> Follower</div>
+                        <div class="text-center"><b class="text-white block text-sm">0</b> Thích</div>
                     </div>
                 </div>
 
-                <!-- FORM ĐĂNG KÝ RÚT XU - CHIẾT KHẤU 30% (100 xu = 70K VNĐ) -->
-                <div class="bg-zinc-900/60 border border-zinc-800 p-3.5 rounded-2xl space-y-3 shadow-inner">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-[10px] font-black tracking-widest text-pink-500">💰 QUY ĐỔI & RÚT XU VỀ VÍ NGÂN HÀNG</h3>
-                        <span class="text-[9px] text-green-400 font-black">Chiết khấu sàn: 30%</span>
+                <!-- TÁCH BIỆT RÕ RÀNG NÚT NẠP VÀ RÚT -->
+                <div class="bg-zinc-900/40 border border-zinc-800 p-3.5 rounded-2xl space-y-3 shadow-inner">
+                    <div class="flex justify-between items-center border-b border-zinc-800/50 pb-2">
+                        <h3 class="text-[10px] font-black tracking-widest text-amber-400">💳 QUẢN LÝ TÀI CHÍNH</h3>
+                        <p class="text-amber-400 text-[11px] font-black flex items-center gap-1">Ví: <span id="profile-wallet-coins-count" class="text-white text-sm">20</span> xu</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="withdraw-bank-name" placeholder="Tên Ngân hàng..." class="bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
-                        <input type="text" id="withdraw-bank-account" placeholder="Số tài khoản..." class="bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
+                    
+                    <div class="flex gap-2 w-full">
+                        <button onclick="openCoinShopModal()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-amber-400 py-3 rounded-xl text-[11px] font-black flex flex-col items-center gap-1 shadow transition">
+                            <span class="text-xl">📥</span> NẠP XU
+                        </button>
+                        <button onclick="toggleWithdrawForm()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-pink-500 py-3 rounded-xl text-[11px] font-black flex flex-col items-center gap-1 shadow transition">
+                            <span class="text-xl">💸</span> RÚT TIỀN
+                        </button>
                     </div>
-                    <input type="text" id="withdraw-bank-owner" placeholder="Tên chủ sở hữu tài khoản (VIẾT CHỮ HOA)..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
-                    <div class="flex gap-2 items-center">
-                        <input type="number" id="withdraw-coins-amount" placeholder="Nhập số xu rút (Tối thiểu 100)..." class="flex-1 bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
-                        <button onclick="executeRequestWithdrawal()" class="bg-white text-black text-xs font-black px-5 py-2.5 rounded-xl active:scale-95 transition">RÚT TIỀN</button>
+
+                    <!-- FORM RÚT TIỀN (Ẩn/Hiện) VỚI ĐIỀU KIỆN CHẶT CHẼ -->
+                    <div id="withdraw-form-container" class="hidden flex-col gap-2 mt-2 pt-2">
+                        <p class="text-[9px] text-zinc-400 font-medium">Quy đổi chiết khấu sàn 30%: <b class="text-pink-400">100 xu = 70.000đ</b></p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="withdraw-bank-name" placeholder="Ngân hàng..." class="bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
+                            <input type="text" id="withdraw-bank-account" placeholder="Số tài khoản..." class="bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
+                        </div>
+                        <input type="text" id="withdraw-bank-owner" placeholder="Tên chủ tài khoản (VIẾT HOA)..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
+                        <div class="flex gap-2 items-center">
+                            <input type="number" id="withdraw-coins-amount" placeholder="Số xu rút (Min 100)..." class="flex-1 bg-black border border-zinc-800 p-2.5 rounded-xl text-[11px] text-white focus:outline-none">
+                            <button onclick="executeRequestWithdrawal()" class="bg-white text-black text-xs font-black px-5 py-2.5 rounded-xl active:scale-95 transition">RÚT</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- LƯỚI VIDEO PROFILE ĐÃ ĐĂNG CHỦ QUAN -->
                 <div class="space-y-2 pt-1 flex-1 overflow-y-auto">
-                    <h4 class="text-xs font-black text-zinc-400 tracking-wider pl-1">🎬 HỒ SƠ CLIP ĐÃ ĐĂNG</h4>
+                    <div class="flex items-center gap-2 border-b border-zinc-900 pb-2">
+                        <span class="text-xs font-black text-zinc-400 tracking-wider">🎬 BÀI ĐĂNG CỦA TÔI</span>
+                    </div>
                     <div id="my-uploaded-videos-grid" class="grid grid-cols-3 gap-1">
                         <!-- Bài đăng mới sẽ tự động dán gọn vào đây -->
                     </div>
@@ -215,14 +233,14 @@
             <div id="admin-exclusive-panel-view" class="hidden flex-col h-full w-full space-y-4">
                 <div class="p-3 border-b border-zinc-800 bg-zinc-900/60 rounded-xl flex justify-between items-center">
                     <div>
-                        <h2 class="text-xs font-black text-pink-500 tracking-wider">QUẢN TRỊ: ADMIN CỔ VĂN TẢU BẮC</h2>
+                        <h2 class="text-xs font-black text-pink-500 tracking-wider">QUẢN TRỊ ADMIN</h2>
                     </div>
                     <button onclick="logoutAdminSession()" class="bg-zinc-800 text-zinc-400 px-2.5 py-1 rounded text-[10px] font-black active:bg-zinc-700">Thoát</button>
                 </div>
 
                 <!-- DÁN BANNER AFFILIATE ĐIỀU PHỐI -->
                 <div class="bg-zinc-900 p-3 rounded-2xl space-y-2 border border-zinc-800">
-                    <h3 class="text-[10px] font-black tracking-widest text-blue-400">🔗 ĐIỀU PHỐI QUẢNG CÁO ĐỊA ĐIỂM TOÀN SÀN</h3>
+                    <h3 class="text-[10px] font-black tracking-widest text-blue-400">🔗 ĐIỀU PHỐI QUẢNG CÁO</h3>
                     <input type="text" id="admin-input-ad-text" placeholder="Chữ hiển thị (ví dụ: Sân cầu lông Phúc An...)" class="w-full bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
                     <input type="text" id="admin-input-ad-link" placeholder="Đường link website điều hướng khi bấm..." class="w-full bg-black border border-zinc-800 p-2 rounded-xl text-xs text-white focus:outline-none">
                     <button onclick="adminApplyGlobalAdConfig()" class="w-full py-2 bg-blue-600 text-white font-black rounded-xl text-xs active:scale-98 transition">CẬP NHẬT BANNER TOÀN SÀN</button>
@@ -230,7 +248,7 @@
 
                 <!-- SỔ PHÊ DUYỆT TÀI CHÍNH CHỜ DUYỆT -->
                 <div class="flex-1 overflow-y-auto space-y-3">
-                    <h3 class="text-xs font-black text-amber-400 tracking-wider pl-1">📋 DANH SÁCH LỆNH CHỜ DUYỆT TIỀN</h3>
+                    <h3 class="text-xs font-black text-amber-400 tracking-wider pl-1">📋 DANH SÁCH LỆNH CHỜ DUYỆT</h3>
                     <div id="admin-ledger-approval-container" class="space-y-2 text-[10px]"></div>
                 </div>
             </div>
@@ -258,6 +276,53 @@
 
     </div>
 
+    <!-- ========================================================= -->
+    <!-- TRANG CÁ NHÂN CỦA NGƯỜI KHÁC KHI BẤM TỪ TRANG CHỦ (TIKTOK STYLE) -->
+    <!-- ========================================================= -->
+    <div id="other-user-profile-modal" class="fixed inset-0 modal-blur z-[9990] hidden flex-col transform translate-x-full transition-transform duration-300">
+        <div class="w-full max-w-[450px] mx-auto h-full bg-zinc-950 flex flex-col border-x border-zinc-900 shadow-2xl">
+            <!-- Header Mũi tên -->
+            <div class="p-4 border-b border-zinc-900 flex justify-between items-center bg-zinc-950">
+                <button onclick="closeOtherUserProfile()" class="text-zinc-400 font-bold text-xl px-2">←</button>
+                <h3 class="text-xs font-black text-white" id="other-profile-username">Username</h3>
+                <div class="w-8"></div>
+            </div>
+            
+            <!-- Thông tin cá nhân -->
+            <div class="p-6 flex flex-col items-center space-y-3 bg-zinc-950 shrink-0">
+                <div class="w-20 h-20 bg-zinc-800 rounded-full border-2 border-zinc-700 flex items-center justify-center text-3xl shadow-lg" id="other-profile-avatar">👤</div>
+                <h2 class="text-base font-black text-white" id="other-profile-name">@username</h2>
+                
+                <!-- Hiển thị chỉ số cá nhân cơ bản -->
+                <div class="flex justify-center gap-6 text-[12px] text-zinc-400 font-semibold my-2 w-full">
+                    <div class="text-center"><b class="text-white block text-sm">12</b> Đang theo dõi</div>
+                    <div class="text-center"><b class="text-white block text-sm" id="other-profile-followers">4.5K</b> Follower</div>
+                    <div class="text-center"><b class="text-white block text-sm">10.2K</b> Thích</div>
+                </div>
+
+                <!-- Nút Follow & Nhắn tin -->
+                <div class="flex gap-2 w-full max-w-[280px] mt-2">
+                    <button id="btn-follow-user" onclick="toggleFollowUser(this)" class="flex-1 bg-[#ff0050] text-white py-2.5 rounded-lg text-xs font-black transition active:scale-95 shadow">Theo dõi</button>
+                    <button class="bg-zinc-800 text-white px-5 py-2.5 rounded-lg text-xs font-black transition active:scale-95 border border-zinc-700 shadow">Nhắn tin</button>
+                </div>
+            </div>
+
+            <!-- Lưới Video của người đó -->
+            <div class="flex-1 bg-zinc-950 overflow-y-auto">
+                <div class="flex justify-around border-b border-zinc-900 bg-zinc-950 sticky top-0 z-10">
+                    <div class="py-3 text-white font-bold text-xs border-b-2 border-white w-1/2 text-center">Tác phẩm</div>
+                    <div class="py-3 text-zinc-600 font-bold text-xs w-1/2 text-center">Đã thích</div>
+                </div>
+                <div class="grid grid-cols-3 gap-0.5 mt-0.5 bg-black" id="other-user-videos-grid">
+                    <!-- Ảnh mockup lưới video ngẫu nhiên -->
+                    <div class="aspect-[3/4] bg-zinc-900 border border-zinc-800 flex justify-center items-center"><p class="text-3xl">🎥</p></div>
+                    <div class="aspect-[3/4] bg-zinc-900 border border-zinc-800 flex justify-center items-center"><p class="text-3xl">🎵</p></div>
+                    <div class="aspect-[3/4] bg-zinc-900 border border-zinc-800 flex justify-center items-center"><p class="text-[8px] text-zinc-500 font-bold p-2 text-center">STT: Đang buồn...</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- OVERLAY MODAL: ĐĂNG NHẬP CỔNG ADMIN -->
     <div id="admin-login-overlay-modal" class="fixed inset-0 modal-blur z-[9999] hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-[350px] p-5 space-y-4 shadow-2xl relative">
@@ -271,24 +336,24 @@
         </div>
     </div>
 
-    <!-- OVERLAY MODAL: CỬA HÀNG NẠP XU & PHÁT HÀNH QR THANH TOÁN -->
+    <!-- OVERLAY MODAL: CỬA HÀNG NẠP XU (TÁCH BIỆT RÚT) -->
     <div id="coin-shop-overlay-modal" class="fixed inset-0 modal-blur z-[9999] hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-[380px] p-5 space-y-4 shadow-2xl relative">
             <button onclick="closeCoinShopModal()" class="absolute top-3 right-4 text-zinc-500 font-bold text-sm">✕</button>
             
             <div id="coin-shop-list-view" class="space-y-3">
-                <div class="text-center"><h3 class="font-black text-sm text-amber-400 tracking-wider">💰 CỬA HÀNG NẠP XU HẸN HÒ</h3></div>
+                <div class="text-center"><h3 class="font-black text-sm text-amber-400 tracking-wider">💰 CỬA HÀNG NẠP XU</h3></div>
                 <div class="grid grid-cols-1 gap-2 text-xs font-black">
-                    <div onclick="selectCoinTierPackage(10, 10000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói Nạp 10 Xu</span><span class="text-amber-500">10.000 đ</span></div>
-                    <div onclick="selectCoinTierPackage(25, 20000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói Nạp 25 Xu</span><span class="text-amber-500">20.000 đ</span></div>
-                    <div onclick="selectCoinTierPackage(50, 40000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói Nạp 50 Xu</span><span class="text-amber-500">40.000 đ</span></div>
-                    <div onclick="selectCoinTierPackage(100, 80000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói Nạp 100 Xu</span><span class="text-amber-500">80.000 đ</span></div>
-                    <div onclick="selectCoinTierPackage(150, 125000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói Nạp 150 Xu</span><span class="text-amber-500">125.000 đ</span></div>
+                    <div onclick="selectCoinTierPackage(10, 10000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói 10 Xu</span><span class="text-amber-500">10.000 đ</span></div>
+                    <div onclick="selectCoinTierPackage(25, 20000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói 25 Xu</span><span class="text-amber-500">20.000 đ</span></div>
+                    <div onclick="selectCoinTierPackage(50, 40000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói 50 Xu</span><span class="text-amber-500">40.000 đ</span></div>
+                    <div onclick="selectCoinTierPackage(100, 80000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói 100 Xu</span><span class="text-amber-500">80.000 đ</span></div>
+                    <div onclick="selectCoinTierPackage(150, 125000)" class="bg-black/40 border border-zinc-800 p-3 rounded-xl flex justify-between items-center cursor-pointer hover:border-amber-400 transition"><span>💰 Gói 150 Xu</span><span class="text-amber-500">125.000 đ</span></div>
                 </div>
             </div>
 
             <div id="coin-shop-checkout-view" class="hidden flex-col items-center text-center space-y-3">
-                <h3 class="font-black text-xs text-white tracking-widest">QUÉT MÃ QR NẠP TIỀN VÀO VÍ</h3>
+                <h3 class="font-black text-xs text-white tracking-widest">QUÉT MÃ QR NẠP TIỀN</h3>
                 <div class="bg-white p-2 rounded-2xl flex items-center justify-center shadow-lg">
                     <img id="checkout-qr-graphic-node" src="" class="w-44 h-44 object-contain" alt="Payment QR">
                 </div>
@@ -296,7 +361,7 @@
                     <p class="text-amber-400 font-black text-xs">Gói chọn: <span id="checkout-xu-label">0</span> Xu</p>
                     <p>Cần thanh toán: <span id="checkout-price-label" class="text-white font-bold">0 đ</span></p>
                 </div>
-                <button onclick="userConfirmDepositPaymentDone()" class="w-full py-2.5 bg-green-600 text-white font-black text-xs rounded-xl transition shadow">XÁC NHẬN ĐÃ CHUYỂN KHOẢN KHÁCH</button>
+                <button onclick="userConfirmDepositPaymentDone()" class="w-full py-2.5 bg-green-600 text-white font-black text-xs rounded-xl transition shadow">XÁC NHẬN CHUYỂN KHOẢN</button>
             </div>
         </div>
     </div>
@@ -304,7 +369,7 @@
     <!-- TIKTOK STYLE COMMENT OVERLAY BOTTOM SHEET -->
     <div id="comment-sheet" class="absolute bottom-0 left-0 right-0 h-[68%] bg-zinc-900 border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
         <div class="flex justify-between items-center pb-3 border-b border-zinc-800">
-            <span class="text-xs font-black text-zinc-400">Bình luận công khai hồ sơ</span>
+            <span class="text-xs font-black text-zinc-400">Bình luận</span>
             <button onclick="closeComments()" class="text-zinc-500 text-sm font-bold px-2 hover:text-white">✕</button>
         </div>
         <div class="flex-1 overflow-y-auto py-3 space-y-4 text-xs" id="comment-list">
@@ -348,18 +413,19 @@
             link: "https://shopee.vn"
         };
 
+        // Đã xóa bỏ cụm từ "Trạng thái chữ:" trong dữ liệu mẫu
         const globalDatingVideos = [
             { id: "vid_001", user: "Trâm Anh 🎀", age: 21, likes: 142, isVideo: true, desc: "Tìm bạn đi đánh cầu lông cuối tuần này bên sân Phúc An, em bao trà sữa full topping luôn! 🏸🥤", src: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" },
             { id: "vid_002", user: "Hương Giang ✨", age: 22, likes: 95, isVideo: true, desc: "Lướt xem bóng đá WC xong thèm cháo lòng mì cay quá. Tìm bạn đi ăn cùng khu vực Dĩ An. ⚽🍲", src: "https://assets.mixkit.co/videos/preview/mixkit-boxer-training-alone-in-a-dark-gym-41710-large.mp4" },
-            { id: "vid_003", user: "Phương Thảo 🌸", age: 20, likes: 210, isVideo: false, desc: "Trạng thái chữ: Ghét sự giả dối, thích trồng rau xà lách chăm sóc cây cối hoa cỏ ngoài vườn. Cần tìm bạn đồng điệu tâm hồn nghiêm túc. 🌱🏡" }
+            { id: "vid_003", user: "Phương Thảo 🌸", age: 20, likes: 210, isVideo: false, desc: "Ghét sự giả dối, thích trồng rau xà lách chăm sóc cây cối hoa cỏ ngoài vườn. Cần tìm bạn đồng điệu tâm hồn nghiêm túc. 🌱🏡" }
         ];
 
         const usersChatDatingDatabase = [
             { id: "u_inbox_1", nickname: "Trâm Anh 🎀", avatar: "👩", type: "friend", lastMsg: "Anh đánh cầu lông hay thế, hôm nào chỉ em với nha", textCount: 3, messages: [{ sender: "them", text: "Hi anh Tảu Bắc, thấy video của anh chung sở thích ghê!" }, { sender: "me", text: "Chào em nhiều nha!" }, { sender: "them", text: "Anh đánh cầu lông hay thế, hôm nào chỉ em với nha" }] },
-            { id: "u_inbox_2", nickname: "Thùy Linh (Người lạ)", avatar: "🕵️", type: "stranger", lastMsg: "Profile anh dễ thương ghê, làm quen đi uống trà sữa...", textCount: 1, messages: [{ sender: "them", text: "Profile anh dễ thương ghê, làm quen đi uống trà sữa không anh?" }] }
+            { id: "u_inbox_2", nickname: "Thùy Linh", avatar: "🕵️", type: "stranger", lastMsg: "Profile anh dễ thương ghê, làm quen đi uống trà sữa...", textCount: 1, messages: [{ sender: "them", text: "Profile anh dễ thương ghê, làm quen đi uống trà sữa không anh?" }] }
         ];
 
-        // RENDER TRANG CHỦ CHUẨN LƯỚT TIM TIKTOK VÀ GRADIENT CHO STT CHỮ
+        // RENDER TRANG CHỦ (KÈM AVATAR CÓ DẤU CỘNG ĐỂ MỞ PROFILE)
         function renderViralDiscoveryFeed() {
             const container = document.getElementById('view-home');
             container.innerHTML = "";
@@ -373,7 +439,7 @@
                 if(vid.isVideo) {
                     mediaElement = `<video src="${vid.src}" loop muted ${index === 0 ? "autoplay" : ""} playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>`;
                 } else {
-                    mediaElement = `<div class="w-full h-full flex items-center justify-center p-8 text-center text-sm font-bold bg-gradient-to-br from-pink-600/40 to-purple-800/50 leading-relaxed border-y border-zinc-900">${vid.desc}</div>`;
+                    mediaElement = `<div class="w-full h-full flex items-center justify-center p-8 text-center text-[15px] font-bold bg-gradient-to-br from-pink-600/40 to-purple-800/50 leading-relaxed border-y border-zinc-900 shadow-inner">${vid.desc}</div>`;
                 }
 
                 card.innerHTML = `
@@ -384,19 +450,35 @@
                             <span>${globalAdConfig.text}</span>
                         </a>
                     </div>
-                    <div class="absolute right-3 bottom-6 flex flex-col items-center gap-4.5 z-20">
+                    
+                    <div class="absolute right-3 bottom-14 flex flex-col items-center gap-5 z-20">
+                        <!-- Avatar mở Profile như TikTok -->
+                        <div class="relative cursor-pointer mb-2" onclick="openOtherUserProfile('${vid.user}')">
+                            <div class="w-11 h-11 bg-zinc-800 rounded-full border-2 border-white flex items-center justify-center text-lg shadow-lg overflow-hidden">${vid.isVideo ? '👩' : '🌸'}</div>
+                            <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#ff0050] w-[18px] h-[18px] rounded-full flex items-center justify-center text-white text-[12px] font-black shadow-md border border-zinc-900">+</div>
+                        </div>
+
                         <div class="text-center cursor-pointer bg-black/40 w-10 h-10 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md active:scale-90 transition" onclick="executeViralHeartLike(this, '${vid.id}')">
                             <span class="text-2xl transition duration-200 block dynamic-heart">🤍</span>
                         </div>
-                        <p class="text-[10px] font-black text-zinc-300 mt-[-8px] mb-2 like-counter-txt">${vid.likes}</p>
-                        <div class="text-center cursor-pointer" onclick="openComments()"><span class="text-2xl block drop-shadow-md">💬</span><p class="text-[9px] font-black mt-0.5 text-zinc-300">12</p></div>
-                        <div class="text-center cursor-pointer" onclick="handleShare()"><span class="text-2xl block drop-shadow-md">↪️</span></div>
+                        <p class="text-[10px] font-black text-white drop-shadow-md mt-[-10px] like-counter-txt">${vid.likes}</p>
+                        
+                        <div class="text-center cursor-pointer" onclick="openComments()">
+                            <span class="text-[26px] block drop-shadow-md">💬</span>
+                            <p class="text-[10px] font-black mt-0.5 text-white drop-shadow-md">12</p>
+                        </div>
+                        
+                        <div class="text-center cursor-pointer" onclick="handleShare()">
+                            <span class="text-[26px] block drop-shadow-md">↪️</span>
+                            <p class="text-[10px] font-black mt-0.5 text-white drop-shadow-md">Chia sẻ</p>
+                        </div>
                     </div>
-                    <div class="absolute bottom-4 left-3 w-[calc(100%-75px)] z-10 ${!vid.isVideo ? 'hidden' : ''}">
-                        <div class="text-xs bg-black/40 p-3 rounded-2xl backdrop-blur-md border border-white/5">
-                            <span class="font-black text-white text-sm">@${vid.user}</span>
-                            <span class="bg-pink-500/20 text-pink-400 text-[9px] font-bold px-1.5 py-0.5 rounded ml-1">Tuổi: ${vid.age}</span>
-                            <p class="text-zinc-200 mt-1 font-medium leading-tight">${vid.desc}</p>
+                    
+                    <div class="absolute bottom-4 left-3 w-[calc(100%-80px)] z-10 drop-shadow-lg ${!vid.isVideo ? 'hidden' : ''}">
+                        <div class="text-xs">
+                            <span class="font-black text-white text-[15px] drop-shadow-md">@${vid.user}</span>
+                            <span class="bg-pink-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded ml-1 shadow">Tuổi: ${vid.age}</span>
+                            <p class="text-white mt-1.5 font-medium leading-snug drop-shadow-md truncate-3-lines">${vid.desc}</p>
                         </div>
                     </div>
                 `;
@@ -404,6 +486,53 @@
             });
         }
         window.addEventListener('DOMContentLoaded', renderViralDiscoveryFeed);
+
+        // MỞ TRANG CÁ NHÂN NGƯỜI KHÁC KHI BẤM VÀO AVATAR TỪ FEED (TIKTOK STYLE)
+        function openOtherUserProfile(username) {
+            const modal = document.getElementById('other-user-profile-modal');
+            document.getElementById('other-profile-username').innerText = username;
+            document.getElementById('other-profile-name').innerText = "@" + username.toLowerCase().replace(/ /g, '_');
+            
+            // Randomize thông số 1 chút cho giống thật
+            document.getElementById('other-profile-followers').innerText = Math.floor(Math.random() * 50 + 1) + "." + Math.floor(Math.random() * 9) + "K";
+            
+            const btnFollow = document.getElementById('btn-follow-user');
+            btnFollow.innerText = "Theo dõi";
+            btnFollow.className = "flex-1 bg-[#ff0050] text-white py-2.5 rounded-lg text-xs font-black transition active:scale-95 shadow";
+
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('translate-x-full'); modal.classList.add('translate-x-0'); }, 10);
+        }
+
+        function closeOtherUserProfile() {
+            const modal = document.getElementById('other-user-profile-modal');
+            modal.classList.remove('translate-x-0'); modal.classList.add('translate-x-full');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function toggleFollowUser(btn) {
+            if (btn.innerText === "Theo dõi") {
+                btn.innerText = "Đang theo dõi";
+                btn.className = "flex-1 bg-zinc-800 text-white border border-zinc-700 py-2.5 rounded-lg text-xs font-black transition active:scale-95 shadow";
+                showToast("Đã theo dõi thành công! 💖");
+            } else {
+                btn.innerText = "Theo dõi";
+                btn.className = "flex-1 bg-[#ff0050] text-white py-2.5 rounded-lg text-xs font-black transition active:scale-95 shadow";
+            }
+        }
+
+        // TỐI ƯU TOAST THÔNG BÁO MƯỢT MÀ
+        function showToast(message) {
+            const oldToast = document.getElementById('custom-app-toast');
+            if(oldToast) oldToast.remove();
+            const toast = document.createElement('div');
+            toast.id = 'custom-app-toast';
+            toast.className = "fixed top-6 left-1/2 transform -translate-x-1/2 bg-zinc-900/95 border border-zinc-800 text-white text-xs font-black px-5 py-2.5 rounded-full shadow-2xl z-[9999] backdrop-blur-xl flex items-center gap-2 transition-all duration-300 opacity-0 -translate-y-2 pointer-events-none text-center";
+            toast.innerHTML = `<span>⚡</span> <span class="tracking-wide">${message}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('opacity-0', '-translate-y-2'); toast.classList.add('opacity-100', 'translate-y-0'); }, 30);
+            setTimeout(() => { toast.classList.remove('opacity-100', 'translate-y-0'); toast.classList.add('opacity-0', '-translate-y-2'); setTimeout(() => { toast.remove(); }, 2500); }, 2500);
+        }
 
         function executeViralHeartLike(btn, videoId) {
             const targetVid = globalDatingVideos.find(v => v.id === videoId);
@@ -415,7 +544,6 @@
                 btn.classList.remove('liked'); heartIcon.innerText = "🤍"; heartIcon.classList.remove('text-red-500'); targetVid.likes--;
             } else {
                 btn.classList.add('liked'); heartIcon.innerText = "❤️"; heartIcon.classList.add('text-red-500'); targetVid.likes++;
-                showToast(`Đã thích hồ sơ của @${targetVid.user}!`);
             }
             counterText.innerText = targetVid.likes;
         }
@@ -450,12 +578,10 @@
             document.getElementById('comment-list').appendChild(item); input.value = "";
         }
 
-        // CHAT VÀ PHÂN LOẠI LEVEL THÂN MẬT
         function renderInboxList(category) {
             const container = document.getElementById('chat-inbox-users-list');
             container.innerHTML = "";
             const filtered = usersChatDatingDatabase.filter(u => u.type === category);
-            
             if(filtered.length === 0) {
                 container.innerHTML = `<p class="text-[11px] text-zinc-600 text-center py-8 italic">Hộp thư trống...</p>`;
                 return;
@@ -495,7 +621,6 @@
 
         function backToChatList() {
             document.getElementById('chat-room-screen').classList.replace('flex', 'hidden');
-            document.getElementById('chat-room-screen').classList.add('hidden');
             document.getElementById('chat-list-screen').classList.remove('hidden');
             document.getElementById('gifting-slide-panel').classList.add('hidden'); 
             renderInboxList(window.activeTargetUser ? window.activeTargetUser.type : 'friends');
@@ -563,7 +688,7 @@
             if(userAppProfile.coins < cost) {
                 document.getElementById('gifting-slide-panel').classList.add('hidden');
                 openCoinShopModal();
-                showToast("Số dư ví không đủ. Vui lòng chọn gói xu nạp thêm!");
+                showToast("Số dư ví không đủ. Vui lòng chọn gói xu nạp thêm! ⚠️");
                 return;
             }
             userAppProfile.coins -= cost;
@@ -573,8 +698,16 @@
             renderRoomMessages();
         }
 
+        // TÁCH BIỆT NẠP VÀ RÚT
+        function toggleWithdrawForm() {
+            const form = document.getElementById('withdraw-form-container');
+            form.classList.toggle('hidden');
+            form.classList.toggle('flex');
+        }
+
         function openCoinShopModal() {
-            document.getElementById('coin-shop-overlay-modal').classList.replace('hidden', 'flex');
+            document.getElementById('coin-shop-overlay-modal').classList.remove('hidden');
+            document.getElementById('coin-shop-overlay-modal').classList.add('flex');
             document.getElementById('coin-shop-list-view').classList.remove('hidden');
             document.getElementById('coin-shop-checkout-view').classList.add('hidden');
         }
@@ -593,32 +726,44 @@
             const p = currentSelectedDatingPackage;
             systemFinancialLedger.unshift({ id: "TXN"+Date.now(), type: "Nạp xu", xu: p.xu, money: p.price, status: "Chờ duyệt (2-5p)", time: new Date().toLocaleTimeString() });
             closeCoinShopModal();
-            showToast("Báo cáo nạp thành công! Chờ Admin phê duyệt trong 2-5p.");
+            showToast("Báo cáo nạp thành công! Chờ Admin phê duyệt trong 2-5p. ⏳");
             renderAdminLedgerApprovalScreenDOM();
         }
 
-        // PHÂN HỆ RÚT TIỀN TIẾT KIỆM (CHIẾT KHẤU 30%)
+        // PHÂN HỆ RÚT TIỀN: SỬA LỖI ĐIỀU KIỆN SỐ DƯ
         function executeRequestWithdrawal() {
             const bankName = document.getElementById('withdraw-bank-name').value.trim();
             const bankAccount = document.getElementById('withdraw-bank-account').value.trim();
             const bankOwner = document.getElementById('withdraw-bank-owner').value.trim().toUpperCase();
             const coinsAmount = parseInt(document.getElementById('withdraw-coins-amount').value);
 
-            if(!bankName || !bankAccount || !bankOwner || !coinsAmount) { showToast("Vui lòng nhập đầy đủ thông tin nhận tiền! ⚠️"); return; }
-            if(coinsAmount < 100) { showToast("Mỗi lần rút tối thiểu từ 100 xu trở lên! ⚠️"); return; }
-            if(coinsAmount > userAppProfile.coins) { showToast("Số dư xu hiện tại không đủ để thực hiện! ⚠️"); return; }
+            if(!bankName || !bankAccount || !bankOwner || !coinsAmount) { 
+                showToast("Vui lòng điền đủ thông tin tài khoản ngân hàng! ⚠️"); 
+                return; 
+            }
+            if(isNaN(coinsAmount) || coinsAmount < 100) { 
+                showToast("Số xu rút không hợp lệ (tối thiểu 100 xu)! ⚠️"); 
+                return; 
+            }
 
-            userAppProfile.coins -= coinsAmount;
+            // KIỂM TRA SỐ DƯ CHẶT CHẼ NGAY ĐÂY:
+            if(coinsAmount > userAppProfile.coins) { 
+                showToast(`❌ Lỗi: Số dư ví chỉ còn ${userAppProfile.coins} xu. Không đủ để thực hiện rút!`); 
+                return; // BLOCK CHẶN NGAY, KHÔNG THỂ RÚT
+            }
+
+            userAppProfile.coins -= coinsAmount; // CHỈ TRỪ KHI HỢP LỆ
             syncUserProfileWalletDOM();
 
-            const netVndMoney = Math.floor(coinsAmount * 700); 
+            const netVndMoney = Math.floor(coinsAmount * 700); // Chiết khấu 30% -> 100 xu = 70.000đ
             systemFinancialLedger.unshift({ id: "WTH"+Date.now(), type: "Rút tiền", xu: coinsAmount, money: netVndMoney, status: "Chờ duyệt (5-10p)", bankInfo: `${bankName} - ${bankAccount} - ${bankOwner}`, time: new Date().toLocaleTimeString() });
 
             document.getElementById('withdraw-bank-name').value = "";
             document.getElementById('withdraw-bank-account').value = "";
             document.getElementById('withdraw-bank-owner').value = "";
             document.getElementById('withdraw-coins-amount').value = "";
-            showToast("Đã gửi yêu cầu rút tiền mặt! Vui lòng chờ Admin giải ngân trong 5-10p.");
+            toggleWithdrawForm(); // Đóng form rút lại
+            showToast("Đã gửi lệnh rút tiền mặt! Vui lòng chờ Admin giải ngân 5-10p.");
             renderAdminLedgerApprovalScreenDOM();
         }
 
@@ -633,7 +778,7 @@
         function executeAdminAuthentication() {
             if(document.getElementById('admin-username-field').value.trim() === "bevip09" && document.getElementById('admin-password-field').value.trim() === "Tdhxtdhtptqt49") {
                 closeAdminLoginModal();
-                showToast("Xác thực quyền Admin thành công!");
+                showToast("Xác thực quyền Admin thành công! 👑");
                 document.getElementById('user-normal-profile-view').classList.add('hidden');
                 document.getElementById('admin-exclusive-panel-view').classList.replace('hidden', 'flex');
                 renderAdminLedgerApprovalScreenDOM();
@@ -651,7 +796,7 @@
             globalAdConfig.text = document.getElementById('admin-input-ad-text').value.trim();
             globalAdConfig.link = document.getElementById('admin-input-ad-link').value.trim();
             renderViralDiscoveryFeed();
-            showToast("Đã ghim quảng cáo Affiliate mới lên góc video.");
+            showToast("Đã cập nhật quảng cáo Affiliate lên góc video.");
         }
 
         function renderAdminLedgerApprovalScreenDOM() {
@@ -667,8 +812,8 @@
                 item.className = "bg-black border border-zinc-800 p-2.5 rounded-xl space-y-1";
                 item.innerHTML = `
                     <p class="text-white font-bold">[${tx.type.toUpperCase()}] ${tx.xu} xu (${tx.money.toLocaleString()}đ)</p>
-                    <p class="text-[9px] text-zinc-400">${tx.type==='Rút tiền'?'Chuyển cho: '+tx.bankInfo:'Khách đã báo nạp'}</p>
-                    <button onclick="adminApproveTransactionSuccess('${tx.id}')" class="w-full mt-1 py-1 bg-green-600 text-white font-black rounded text-[10px]">XÁC NHẬN DUYỆT THÀNH CÔNG</button>
+                    <p class="text-[9px] text-zinc-400">${tx.type==='Rút tiền'?'Chuyển cho: '+tx.bankInfo:'Khách báo nạp'}</p>
+                    <button onclick="adminApproveTransactionSuccess('${tx.id}')" class="w-full mt-1 py-1.5 bg-green-600 text-white font-black rounded-lg text-[10px] active:scale-95 transition">XÁC NHẬN DUYỆT LỆNH</button>
                 `;
                 container.appendChild(item);
             });
@@ -716,9 +861,9 @@
             let blobUrl = ""; let isVid = false;
             if(videoFile) { blobUrl = URL.createObjectURL(videoFile); isVid = true; }
 
+            // Không chèn thêm tiền tố "Trạng thái chữ:" nữa
             globalDatingVideos.unshift({ id: "v_"+Date.now(), user: "Cổ Văn Tảu Bắc", age: 22, likes: 0, isVideo: isVid, desc: caption, src: blobUrl });
 
-            // Cập nhật ghim lưới video vào kho cá nhân Profile
             const profileGrid = document.getElementById('my-uploaded-videos-grid');
             const thumbItem = document.createElement('div');
             thumbItem.className = "aspect-[3/4] bg-zinc-900 rounded-md overflow-hidden relative border border-zinc-800 flex items-center justify-center text-center p-1";
@@ -729,9 +874,8 @@
             }
             profileGrid.insertBefore(thumbItem, profileGrid.firstChild);
 
-            showToast("Đã xuất bản bài viết trạng thái thành công!");
+            showToast("Đã xuất bản bài đăng thành công! 🎉");
 
-            // Xóa sạch bộ nhớ form nhập
             document.getElementById('video-input').value = ""; document.getElementById('video-caption-input').value = "";
             studioPlayer.pause(); if(studioPlayer.src) URL.revokeObjectURL(studioPlayer.src);
             studioPlayer.removeAttribute('src'); studioPlayer.load();
