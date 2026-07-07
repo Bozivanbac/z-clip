@@ -21,10 +21,6 @@
         .tab-view { display: none; }
         .tab-view.active { display: flex; flex-direction: column; height: calc(100vh - 64px); width: 100%; overflow: hidden; }
         
-        /* FIX KHÓA TÂM LAYOUT LƯỚT VIDEO: Đảm bảo cuộn dọc mượt mà khóa đúng clip tiếp theo */
-        .feed-container { scroll-snap-type: y mandatory; overflow-y: scroll !important; height: 100%; width: 100%; -webkit-overflow-scrolling: touch; }
-        .video-card { scroll-snap-align: start; width: 100%; height: 100%; flex-shrink: 0; position: relative; overflow: hidden; background: #000; }
-        
         ::-webkit-scrollbar { display: none !important; }
         * { -ms-overflow-style: none !important; scrollbar-width: none !important; box-sizing: border-box; }
         
@@ -52,33 +48,17 @@
     <div class="w-full max-w-[450px] h-screen max-h-screen relative bg-black flex flex-col justify-between border-x border-zinc-900 shadow-2xl overflow-hidden">
         
         <!-- ========================================================= -->
-        <!-- 1. MÀN HÌNH KHÁM PHÁ (CHIA ĐÔI: VIDEO NGẮN & BẢNG TIN FB) -->
+        <!-- 1. MÀN HÌNH KHÁM PHÁ UNIFIED FEED (GỘP CHUNG VIDEO, ẢNH, STT) -->
         <!-- ========================================================= -->
         <div id="view-home" class="tab-view active bg-black">
-            <!-- Header Tab chia đôi trang chủ tiện lợi -->
-            <div class="flex border-b border-zinc-900 shrink-0 text-xs font-black text-center bg-black backdrop-blur-md z-30">
-                <button onclick="switchHomeSubTab('video')" id="sub-tab-video" class="flex-1 py-3 text-white border-b-2 border-white transition">
-                    🎬 Video Xu Hướng
-                </button>
-                <button onclick="switchHomeSubTab('feeds')" id="sub-tab-feeds" class="flex-1 py-3 text-zinc-500 transition">
-                    📰 Bảng Tin Hò Hẹn
-                </button>
+            <!-- Header tiêu đề tối giản thời thượng -->
+            <div class="p-3 border-b border-zinc-900 bg-black/80 text-center shrink-0">
+                <h2 class="text-xs font-black tracking-widest text-zinc-400 uppercase">Khám Phá Xu Hướng</h2>
             </div>
 
-            <!-- THANH THÔNG BÁO THỜI HẠN XÓA BÀI CÔNG KHAI (THÊM MỚI THEO YÊU CẦU) -->
-            <div class="bg-gradient-to-r from-pink-600/20 to-red-600/20 border-b border-zinc-900 px-3 py-2 text-[10px] font-black text-center text-pink-400 tracking-wide shrink-0 animate-pulse flex items-center justify-center gap-1 z-20">
-                <span>🔥</span>
-                <span>THÔNG BÁO: Mọi bài đăng sẽ tự động hủy sau 48 giờ để tăng tương tác câu view!</span>
-            </div>
-
-            <!-- PHẦN 1: FEED LƯỚT VIDEO TIKTOK STYLE (Xử lý khóa tâm mượt mà) -->
-            <div id="home-video-wrapper" class="feed-container flex-1 relative bg-black">
-                <!-- Nội dung đổ thời gian thực từ Firebase -->
-            </div>
-
-            <!-- PHẦN 2: FEED ĐĂNG TRẠNG THÁI CUỘN DỌC KIỂU FACEBOOK -->
-            <div id="home-feeds-wrapper" class="hidden flex-1 overflow-y-auto p-3 space-y-3 bg-zinc-950">
-                <!-- Các bài viết văn bản chữ thuần đổ vào đây -->
+            <!-- LUỒNG DÒNG THỜI GIAN TRỘN LẪN CUỘN DỌC MƯỢT MÀ -->
+            <div id="home-unified-wrapper" class="flex-1 overflow-y-auto p-3 space-y-4 bg-zinc-950 pb-6">
+                <!-- Nội dung thời gian thực bao gồm Video/Ảnh/Chữ sẽ tự động đổ vào đây qua JS -->
             </div>
         </div>
 
@@ -97,28 +77,36 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 3. MÀN HÌNH ĐĂNG NỘI DUNG (KÉO VIEW GIỚI HẠN 48 TIẾNG) -->
+        <!-- 3. MÀN HÌNH ĐĂNG NỘI DUNG VỚI GỢI Ý NHỎ TINH TẾ -->
         <!-- ========================================================= -->
         <div id="view-upload" class="tab-view bg-zinc-950 p-4 overflow-y-auto">
             <div class="flex justify-between items-center pb-3 border-b border-zinc-900 mb-4">
                 <div>
                     <h2 class="text-xs font-black tracking-widest text-zinc-400">CHIA SẺ KHOẢNH KHẮC</h2>
-                    <p class="text-[8px] text-pink-400 font-bold tracking-wide mt-0.5">⚠️ BÀI ĐĂNG TỰ ĐỘNG HỦY SAU 2 NGÀY ĐỂ TĂNG TƯƠNG TÁC</p>
+                    <!-- Gợi ý nhỏ tinh tế theo yêu cầu của bồ tèo -->
+                    <p class="text-[10px] text-zinc-500 font-medium tracking-wide mt-0.5">Bài đăng của bạn sẽ tự động gỡ bỏ sau 2 ngày.</p>
                 </div>
                 <button id="btn-publish" class="bg-gradient-to-r from-pink-500 to-red-500 text-white px-5 py-1.5 rounded-full font-black text-xs shadow-lg active:scale-95 transition">ĐĂNG BÀI</button>
             </div>
             <div class="space-y-4">
-                <textarea id="video-caption-input" rows="4" placeholder="Hôm nay tâm trạng bồ thế nào? Nhập trạng thái STT hoặc tiêu chí tìm người yêu tại đây..." class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-2xl text-xs text-white focus:outline-none font-medium resize-none focus:border-zinc-700"></textarea>
+                <textarea id="video-caption-input" rows="4" placeholder="Nhập suy nghĩ, dòng trạng thái tâm sự hoặc tiêu chí tìm người yêu tại đây..." class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-2xl text-xs text-white focus:outline-none font-medium resize-none focus:border-zinc-700"></textarea>
+                
+                <!-- VÙNG CHỌN FILE ĐA NĂNG: SỬA LỖI NHẬN CẢ VIDEO LẪN HÌNH ẢNH -->
                 <div class="border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center bg-zinc-900/40 cursor-pointer hover:border-zinc-700 transition" id="upload-zone">
-                    <input type="file" id="video-input" accept="video/*" class="hidden">
-                    <label for="video-input" class="cursor-pointer block">
-                        <p class="text-3xl mb-1">➕</p>
-                        <p class="text-[11px] text-zinc-500 font-bold">KÈM CLIP VIDEO PROFILE TÙY CHỌN</p>
+                    <input type="file" id="media-input" accept="video/*,image/*" class="hidden">
+                    <label for="media-input" class="cursor-pointer block">
+                        <p class="text-3xl mb-1">🖼️</p>
+                        <p class="text-[11px] text-zinc-400 font-bold">ĐÍNH KÈM VIDEO HOẶC HÌNH ẢNH PROFILE</p>
+                        <p class="text-[9px] text-zinc-600 mt-0.5">(Tùy chọn tải lên)</p>
                     </label>
                 </div>
-                <div id="studio-preview-box" class="hidden w-full aspect-video bg-black rounded-2xl overflow-hidden relative border border-zinc-900">
-                    <video id="studio-player" class="w-full h-full object-contain" loop muted playsinline></video>
-                    <button type="button" onclick="clearSelectedVideo()" class="absolute top-2 right-2 bg-black/70 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">✕</button>
+                
+                <!-- Khung xem trước thông minh tự nhận diện định dạng file -->
+                <div id="studio-preview-box" class="hidden w-full rounded-2xl overflow-hidden relative border border-zinc-900 bg-black">
+                    <div id="preview-media-container" class="w-full aspect-video flex items-center justify-center">
+                        <!-- Thẻ img hoặc video sẽ tự động chèn vào đây qua JavaScript -->
+                    </div>
+                    <button type="button" onclick="clearSelectedMedia()" class="absolute top-2 right-2 bg-black/70 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow">✕</button>
                 </div>
             </div>
         </div>
@@ -128,8 +116,6 @@
         <!-- ========================================================= -->
         <div id="view-profile" class="tab-view bg-zinc-950 p-4 overflow-y-auto relative">
             <div id="user-normal-profile-view" class="space-y-4 flex flex-col h-full w-full">
-                
-                <!-- Cài đặt ví và chuyển tài khoản thu nhỏ kín đáo -->
                 <div class="flex justify-between items-center w-full px-1">
                     <button onclick="openDeviceAccountManagerModal()" class="text-[10px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full font-bold active:scale-95 transition">👥 Đổi Tài Khoản</button>
                     <button onclick="openWalletMiniModal()" class="text-xs bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full flex items-center gap-1 font-black text-amber-400 active:scale-95 transition">
@@ -149,7 +135,7 @@
                     </div>
                 </div>
 
-                <!-- LƯỚI KHÔNG GIAN NHẬT KÝ ĐỜI THƯỜNG -->
+                <!-- LƯỚI KHÔNG GIAN KHO TÁC PHẨM CÁ NHÂN -->
                 <div class="space-y-2 pt-1 flex-1 overflow-y-auto">
                     <span class="text-[11px] font-black text-zinc-400 tracking-wider pl-1 uppercase">🎨 Nhật Ký Đời Thường & Kho Tác Phẩm</span>
                     <div id="my-uploaded-videos-grid" class="grid grid-cols-3 gap-1"></div>
@@ -158,7 +144,7 @@
                 <button onclick="executeLogOutSession()" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800/80 rounded-xl text-xs font-black transition active:scale-98">ĐĂNG XUẤT TÀI KHOẢN</button>
             </div>
 
-            <!-- WORKSPACE ĐỘC QUYỀN CỦA ADMIN (CHỈ TỰ ĐỘNG BẬT KHI LOGIN ACC BEVIP09) -->
+            <!-- WORKSPACE ĐỘC QUYỀN CỦA ADMIN (CHỈ BẬT KHI ĐĂNG NHẬP ACC BEVIP09) -->
             <div id="admin-exclusive-panel-view" class="hidden flex-col h-full w-full space-y-4">
                 <div class="p-3 border-b border-zinc-800 bg-zinc-900/60 rounded-xl flex justify-between items-center">
                     <div>
@@ -316,7 +302,7 @@
         </div>
     </div>
 
-    <!-- ENGINE LOGIC KẾT NỐI REALTIME FIREBASE + KHÓA TỰ HỦY 2 NGÀY -->
+    <!-- ENGINE LOGIC KẾT NỐI REALTIME FIREBASE + UNIFIED TIMELINE -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBgfznta_Ikr8yDb6_Z89SrhfuHHsAsDw8", authDomain: "app-giai-tri.firebaseapp.com", 
@@ -327,14 +313,12 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
         
-        let currentHomeSubTab = 'video';
         let systemFinancialLedger = [];
         let activeBigoUserObj = null;
         let globalDatingVideos = [];
 
         let usersChatDatingDatabase = [
-            { id: "u_inbox_1", nickname: "Trâm Anh 🎀", avatar: "👩", type: "friend", lastMsg: "Anh đánh cầu lông hay thế, hôm nào chỉ em với nha", textCount: 3, messages: [{ sender: "them", text: "Hi anh Tảu Bắc, thấy video của anh sở thích ghê!" }, { sender: "me", text: "Chào em nhiều nha!" }] },
-            { id: "u_inbox_2", nickname: "Thùy Linh", avatar: "🕵️", type: "stranger", lastMsg: "Profile anh dễ thương ghê, làm quen đi uống trà sữa...", textCount: 1, messages: [{ sender: "them", text: "Profile anh dễ thương ghê, làm quen đi uống trà sữa không anh?" }] }
+            { id: "u_inbox_1", nickname: "Trâm Anh 🎀", avatar: "👩", type: "friend", lastMsg: "Anh đánh cầu lông hay thế, hôm nào chỉ em với nha", textCount: 3, messages: [{ sender: "them", text: "Hi anh Tảu Bắc, thấy video của anh chung sở thích ghê!" }, { sender: "me", text: "Chào em nhiều nha!" }] }
         ];
 
         let deviceRegisteredAccounts = JSON.parse(localStorage.getItem('device_saved_nicks') || '[]');
@@ -344,7 +328,9 @@
         }
         let currentActiveUser = JSON.parse(localStorage.getItem('current_active_session') || JSON.stringify(deviceRegisteredAccounts[0]));
 
-        // HÀM ĐỒNG BỘ REALTIME + TỰ ĐỘNG QUÉT DỌN BÀI HẾT HẠN 48 GIỜ
+        // ====================================================================
+        // 🔥 ĐỒNG BỘ REALTIME + TỰ ĐỘNG QUÉT DỌN BÀI HẾT HẠN 48 TIẾNG KHÔNG CHỪA SÓT
+        // ====================================================================
         async function syncAndCleanFirebasePosts() {
             try {
                 const snapshot = await db.collection('posts').get();
@@ -356,10 +342,9 @@
                     const data = doc.data();
                     if (data.createdAt) {
                         const postTime = data.createdAt.toDate().getTime();
-                        
                         if (now - postTime > fortyEightHoursInMs) {
                             await db.collection('posts').doc(doc.id).delete();
-                            console.log("Hệ thống tự hủy bài đăng quá 2 ngày:", doc.id);
+                            console.log("Hệ thống tự động xóa bài hết hạn 2 ngày:", doc.id);
                         } else {
                             freshPosts.push({ id: doc.id, ...data });
                         }
@@ -374,101 +359,228 @@
                     return timeB - timeA;
                 });
 
-                if (currentHomeSubTab === 'video') renderVideoTabFeed();
-                else renderFacebookStyleFeedsTab();
+                renderUnifiedHomeFeed();
 
             } catch (err) {
-                console.log("Firebase fallback mode activated.", err);
+                console.log("Firebase fallback data simulation active.", err);
                 globalDatingVideos = [
-                    { id: "vid_001", user: "Trâm Anh 🎀", likes: 142, isVideo: true, desc: "Tìm bạn đi đánh cầu lông cuối tuần này bên sân Phúc An Dĩ An! 🏸🥤", src: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" },
-                    { id: "vid_003", user: "Phương Thảo 🌸", likes: 210, isVideo: false, desc: "Ghét sự giả dối, thích trồng rau xà lách chăm sóc cây cối ngoài vườn. 🌱🏡" }
+                    { id: "vid_001", user: "Trâm Anh 🎀", likes: 142, isVideo: true, isImage: false, desc: "Tìm bạn đi đánh cầu lông cuối tuần này bên sân Phúc An Dĩ An, em bao trà sữa full topping luôn! 🏸🥤", src: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4" },
+                    { id: "vid_002", user: "Hương Giang ✨", likes: 95, isVideo: false, isImage: true, desc: "Thèm cháo lòng mì cay thập cẩm quá bồ tèo ơi. Có ai đi ăn cùng không? ⚽🍲", src: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" },
+                    { id: "vid_003", user: "Phương Thảo 🌸", likes: 210, isVideo: false, isImage: false, desc: "Thích trồng rau cải xà lách, chăm sóc hoa cỏ ngoài vườn. Cần tìm bạn đồng điệu tâm hồn nghiêm túc. 🌱🏡" }
                 ];
-                if (currentHomeSubTab === 'video') renderVideoTabFeed();
-                else renderFacebookStyleFeedsTab();
+                renderUnifiedHomeFeed();
             }
         }
 
-        function switchHomeSubTab(type) {
-            currentHomeSubTab = type;
-            document.querySelectorAll('#view-home video').forEach(v => v.pause());
-            if(type === 'video') {
-                document.getElementById('sub-tab-video').className = "flex-1 py-3 text-white border-b-2 border-white font-black";
-                document.getElementById('sub-tab-feeds').className = "flex-1 py-3 text-zinc-500 font-bold";
-                document.getElementById('home-video-wrapper').classList.remove('hidden');
-                document.getElementById('home-feeds-wrapper').classList.add('hidden');
-                renderVideoTabFeed();
-            } else {
-                document.getElementById('sub-tab-video').className = "flex-1 py-3 text-zinc-500 font-bold";
-                document.getElementById('sub-tab-feeds').className = "flex-1 py-3 text-white border-b-2 border-white font-black";
-                document.getElementById('home-video-wrapper').classList.add('hidden');
-                document.getElementById('home-feeds-wrapper').classList.remove('hidden');
-                renderFacebookStyleFeedsTab();
-            }
-        }
-
-        function renderVideoTabFeed() {
-            const container = document.getElementById('home-video-wrapper');
+        // ====================================================================
+        // 🔮 RENDER LUỒNG GỘP CHUNG TRÊN TRANG CHỦ THEO YÊU CẦU (KHÔNG TÁCH BIỆT)
+        // ====================================================================
+        function renderUnifiedHomeFeed() {
+            const container = document.getElementById('home-unified-wrapper');
             container.innerHTML = "";
-            const onlyVideos = globalDatingVideos.filter(v => v.isVideo);
 
-            if(onlyVideos.length === 0) {
-                container.innerHTML = `<div class="h-full w-full flex items-center justify-center text-zinc-600 text-xs italic">Không có video xu hướng nào trong 2 ngày qua...</div>`;
+            if(globalDatingVideos.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-600 text-xs py-12 italic">Bảng tin trống vắng... Hãy là người đầu tiên chia sẻ khoảnh khắc nhé!</div>`;
                 return;
             }
 
-            onlyVideos.forEach((vid, index) => {
+            globalDatingVideos.forEach(post => {
                 const card = document.createElement('div');
-                card.className = "video-card flex items-center justify-center bg-black";
+                card.className = "bg-zinc-900 border border-zinc-800/80 rounded-2xl p-4 space-y-3 shadow-xl relative w-full flex flex-col";
+                
+                // Khối render Media tùy thuộc vào file là Video, Ảnh hay chỉ là chữ thuần
+                let mediaDOM = "";
+                if(post.isVideo && post.src) {
+                    mediaDOM = `
+                        <div class="w-full aspect-video rounded-xl bg-black overflow-hidden relative border border-zinc-800">
+                            <video src="${post.src}" loop muted class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
+                            <span class="absolute top-2 right-2 bg-black/60 text-[8px] text-zinc-400 px-2 py-0.5 rounded font-black tracking-wide">🎬 VIDEO</span>
+                        </div>
+                    `;
+                } else if(post.isImage && post.src) {
+                    mediaDOM = `
+                        <div class="w-full rounded-xl overflow-hidden border border-zinc-800 bg-black">
+                            <img src="${post.src}" class="w-full h-auto max-h-[280px] object-cover" alt="Image post">
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
-                    <video src="${vid.src}" loop muted ${index === 0 ? "autoplay" : ""} playsinline class="w-full h-full object-cover" onclick="togglePlayFeedVideo(this)"></video>
-                    <div class="absolute right-3 bottom-14 flex flex-col items-center gap-5 z-20">
-                        <div class="relative cursor-pointer mb-2" onclick="openOtherUserProfile('${vid.user}')">
-                            <div class="w-11 h-11 bg-zinc-800 rounded-full border-2 border-white flex items-center justify-center text-lg shadow-lg overflow-hidden">👩</div>
-                            <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#ff0050] w-[18px] h-[18px] rounded-full flex items-center justify-center text-white text-[12px] font-black border border-zinc-900">+</div>
+                    <!-- Đầu bài viết: Ảnh đại diện + Tên + Nút Follow đồng bộ chuẩn chỉ -->
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center gap-2.5 cursor-pointer" onclick="openOtherUserProfile('${post.user}')">
+                            <div class="relative">
+                                <div class="w-10 h-10 bg-zinc-800 rounded-full border border-zinc-700 flex items-center justify-center text-base shadow overflow-hidden">👩</div>
+                                <!-- Nút cộng Follow nhỏ chuẩn đét đính liền avatar -->
+                                <div onclick="event.stopPropagation(); toggleFollowMiniButton(this);" class="absolute -bottom-1 -right-1 bg-[#ff0050] text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black border border-zinc-900 shadow-md pointer-events-auto transition active:scale-75">+</div>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-black text-zinc-200 hover:text-white">@${post.user}</h4>
+                                <p class="text-[8px] text-zinc-500 font-bold tracking-wider uppercase">Vừa chia sẻ</p>
+                            </div>
                         </div>
-                        <div class="text-center cursor-pointer bg-black/40 w-10 h-10 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md" onclick="executeViralHeartLike(this, '${vid.id}')">
-                            <span class="text-2xl block dynamic-heart">🤍</span>
-                        </div>
-                        <p class="text-[10px] font-black text-white drop-shadow-md mt-[-10px] like-counter-txt">${vid.likes}</p>
-                        <div class="text-center cursor-pointer" onclick="openComments()"><span class="text-[26px] block">💬</span></div>
+                        
+                        <!-- Nhãn thời gian nhỏ báo hạn biến mất -->
+                        <span class="text-[8px] bg-zinc-800/80 text-zinc-500 font-bold px-2 py-1 rounded-full border border-zinc-800">Hạn: 48 Giờ</span>
                     </div>
-                    <div class="absolute bottom-4 left-3 w-[calc(100%-80px)] z-10">
-                        <span class="font-black text-white text-[15px]">@${vid.user}</span>
-                        <p class="text-white mt-1.5 text-xs leading-snug font-medium drop-shadow-md">${vid.desc}</p>
+
+                    <!-- Phần thân: Nội dung STT chữ văn bản -->
+                    <p class="text-xs text-zinc-200 font-medium leading-relaxed break-words px-0.5">${post.desc}</p>
+
+                    <!-- Phần Media đính kèm (Ảnh/Video tự động chèn) -->
+                    ${mediaDOM}
+
+                    <!-- Chân bài viết: Tổ hợp Tim (Like) và Comment đồng bộ gọn gàng -->
+                    <div class="flex border-t border-zinc-800/80 pt-2.5 mt-1 text-zinc-400 font-black text-[11px] items-center justify-around w-full">
+                        <button onclick="executeViralHeartLike(this, '${post.id}')" class="flex items-center gap-1.5 hover:text-white active:scale-95 transition">
+                            <span class="text-base dynamic-heart">🤍</span> 
+                            <span>Thích (<b class="like-counter-txt text-zinc-300 font-mono">${post.likes}</b>)</span>
+                        </button>
+                        
+                        <button onclick="openComments()" class="flex items-center gap-1.5 hover:text-white active:scale-95 transition">
+                            <span class="text-base">💬</span> 
+                            <span>Bình luận</span>
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function renderFacebookStyleFeedsTab() {
-            const container = document.getElementById('home-feeds-wrapper');
-            container.innerHTML = "";
-            if(globalDatingVideos.length === 0) {
-                container.innerHTML = `<p class="text-zinc-600 text-xs text-center py-12 italic">Bảng tin hò hẹn trống trơn...</p>`;
-                return;
+        // HÀM CLICK NÚT CỘNG THEO DÕI NHỎ TRÊN AVATAR
+        function toggleFollowMiniButton(node) {
+            if(node.innerText === "+") {
+                node.innerText = "✓";
+                node.className = "absolute -bottom-1 -right-1 bg-zinc-700 text-green-400 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black border border-zinc-900 shadow-md";
+                showToast("Đã đưa vào danh sách theo dõi! 💖");
+            } else {
+                node.innerText = "+";
+                node.className = "absolute -bottom-1 -right-1 bg-[#ff0050] text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black border border-zinc-900 shadow-md";
             }
-            globalDatingVideos.forEach(post => {
-                const item = document.createElement('div');
-                item.className = "bg-zinc-900 border border-zinc-800/80 p-4 rounded-2xl space-y-3 shadow-md";
-                item.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 bg-zinc-800 rounded-full flex items-center justify-center text-sm cursor-pointer" onclick="openOtherUserProfile('${post.user}')">👤</div>
-                        <div>
-                            <h4 class="text-xs font-black text-white cursor-pointer" onclick="openOtherUserProfile('${post.user}')">@${post.user}</h4>
-                            <p class="text-[9px] text-zinc-500 font-bold">Lưu giữ giới hạn 48H câu tương tác</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-zinc-200 leading-relaxed font-medium break-words">${post.desc}</p>
-                    <div class="flex border-t border-zinc-800/60 pt-2 text-zinc-400 font-bold text-[11px] justify-around">
-                        <button onclick="executeViralHeartLike(this, '${post.id}')" class="flex items-center gap-1.5 active:scale-95 transition">❤️ Thích (<span class="like-counter-txt">${post.likes}</span>)</button>
-                        <button onclick="openComments()" class="flex items-center gap-1.5">💬 Bình luận</button>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
         }
 
+        // ====================================================================
+        // SỬA LỖI TẢI LÊN FILE: TỰ ĐỘNG PHÂN BIỆT ẢNH HOẶC VIDEO ĐỂ HIỂN THỊ PREVIEW
+        // ====================================================================
+        document.getElementById('media-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const previewContainer = document.getElementById('preview-media-container');
+                previewContainer.innerHTML = "";
+                
+                if (file.type.startsWith('video/')) {
+                    // Nếu là video ngắn
+                    const videoNode = document.createElement('video');
+                    videoNode.src = URL.createObjectURL(file);
+                    videoNode.className = "w-full h-full object-contain";
+                    videoNode.controls = true;
+                    videoNode.muted = true;
+                    previewContainer.appendChild(videoNode);
+                    videoNode.play();
+                } else if (file.type.startsWith('image/')) {
+                    // Nếu là hình ảnh chụp
+                    const imgNode = document.createElement('img');
+                    imgNode.src = URL.createObjectURL(file);
+                    imgNode.className = "w-full h-auto max-h-[220px] object-contain rounded-xl";
+                    previewContainer.appendChild(imgNode);
+                }
+
+                document.getElementById('upload-zone').classList.add('hidden');
+                document.getElementById('studio-preview-box').classList.remove('hidden');
+            }
+        });
+
+        function clearSelectedMedia() {
+            document.getElementById('media-input').value = "";
+            document.getElementById('preview-media-container').innerHTML = "";
+            document.getElementById('studio-preview-box').classList.add('hidden');
+            document.getElementById('upload-zone').classList.remove('hidden');
+        }
+
+        // ĐĂNG BÀI: SỬA LẠI TỪ NGỮ THÔNG BÁO TỰ NHIÊN ("Đang tải bài viết...")
+        document.getElementById('btn-publish').addEventListener('click', async function() {
+            const caption = document.getElementById('video-caption-input').value.trim();
+            const fileObj = document.getElementById('media-input').files[0];
+
+            if(!caption && !fileObj) { showToast("Vui lòng điền tâm sự hoặc đính kèm ảnh/video bồ ơi! ⚠️"); return; }
+
+            showToast("Đang tải bài viết... ⏳");
+            let fileCloudUrl = "";
+            let isVid = false;
+            let isImg = false;
+
+            try {
+                if (fileObj) {
+                    if(fileObj.type.startsWith('video/')) isVid = true;
+                    else if(fileObj.type.startsWith('image/')) isImg = true;
+
+                    // Upload lên Firebase Storage
+                    const storageRefPath = storage.ref('media/' + Date.now() + '_' + fileObj.name);
+                    const snapshotRef = await storageRefPath.put(fileObj);
+                    fileCloudUrl = await snapshotRef.ref.getDownloadURL();
+                }
+
+                // Lưu văn bản dữ liệu thuần vào Firestore
+                await db.collection('posts').add({
+                    user: currentActiveUser.nickname,
+                    likes: 0,
+                    isVideo: isVid,
+                    isImage: isImg,
+                    desc: caption || "Xem nhật ký đời thường của tôi...",
+                    src: fileCloudUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast("Đăng bài viết thành công! 🎉");
+                document.getElementById('video-caption-input').value = "";
+                clearSelectedMedia();
+
+                await syncAndCleanFirebasePosts();
+                switchTab('home');
+
+            } catch (error) {
+                console.error(error);
+                showToast("Đang lưu trữ dữ liệu tạm thời trên thiết bị.");
+                globalDatingVideos.unshift({ 
+                    id: "fallback_"+Date.now(), 
+                    user: currentActiveUser.nickname, 
+                    likes: 0, 
+                    isVideo: fileObj ? fileObj.type.startsWith('video/') : false, 
+                    isImage: fileObj ? fileObj.type.startsWith('image/') : false, 
+                    desc: caption, 
+                    src: fileObj ? URL.createObjectURL(fileObj) : "" 
+                });
+                renderUnifiedHomeFeed();
+                switchTab('home');
+            }
+        });
+
+        // TĂNG GIẢM TIM LIKE REALTIME TRÊN FIREBASE
+        async function executeViralHeartLike(btn, videoId) {
+            const targetVid = globalDatingVideos.find(v => v.id === videoId); if(!targetVid) return;
+            const heartIcon = btn.querySelector('.dynamic-heart');
+            const counterText = btn.querySelector('.like-counter-txt');
+            
+            let isAlreadyLiked = btn.classList.contains('liked');
+            let incValue = isAlreadyLiked ? -1 : 1;
+
+            if(isAlreadyLiked) {
+                btn.classList.remove('liked'); if(heartIcon) heartIcon.innerText = "🤍"; targetVid.likes--;
+            } else {
+                btn.classList.add('liked'); if(heartIcon) heartIcon.innerText = "❤️"; targetVid.likes++;
+            }
+            if(counterText) counterText.innerText = targetVid.likes;
+
+            if(videoId && !videoId.startsWith('fallback_') && !videoId.startsWith('vid_')) {
+                try {
+                    await db.collection('posts').doc(videoId).update({
+                        likes: firebase.firestore.FieldValue.increment(incValue)
+                    });
+                } catch(e) { console.log(e); }
+            }
+        }
+
+        // PHÒNG CHAT TRƯỢT LÊN BIGO LIVE STYLE CAO CẤP TRỰC TIẾP TẠI CHỖ
         function openBigoChatOverlay(nickname, avatar = "👩") {
             let userChatData = usersChatDatingDatabase.find(u => u.nickname === nickname);
             if(!userChatData) {
@@ -476,11 +588,14 @@
                 usersChatDatingDatabase.unshift(userChatData);
             }
             activeBigoUserObj = userChatData;
+            
             document.getElementById('chat-room-title').innerText = nickname;
             document.getElementById('chat-room-avatar').innerText = avatar;
+            
             const overlay = document.getElementById('chat-room-screen');
             overlay.classList.remove('hidden');
             setTimeout(() => { overlay.classList.remove('translate-y-full'); }, 10);
+            
             syncRelationshipLevelDOM();
             renderBigoMessagesFlow();
         }
@@ -556,7 +671,7 @@
             grid.innerHTML = `
                 <div class="grid grid-cols-3 gap-0.5 w-full bg-black p-1">
                     <div class="aspect-[3/4] bg-zinc-900 border border-zinc-800 flex justify-center items-center text-2xl rounded-lg">🎥</div>
-                    <div class="aspect-[3/4] bg-zinc-900 border border-zinc-800 flex justify-center items-center text-2xl rounded-lg">🎵</div>
+                    <div class="aspect-[3/4] bg-zinc-900 border border-zinc-800 flex justify-center items-center text-2xl rounded-lg">🖼️</div>
                     <div class="aspect-[3/4] bg-zinc-800/40 border border-zinc-800 flex items-center justify-center text-[9px] text-zinc-400 p-2 font-bold text-center rounded-lg">Nhật Ký: Đời thường...</div>
                 </div>
             `;
@@ -636,10 +751,7 @@
             const amt = parseInt(document.getElementById('withdraw-coins-amount').value);
             if(!bank || !accNum || isNaN(amt) || amt < 100) { showToast("Vui lòng nhập thông tin hợp lệ (Min 100)! ⚠️"); return; }
             
-            if(amt > currentActiveUser.coins) {
-                showToast(`❌ Thất bại: Ví tài khoản chỉ còn ${currentActiveUser.coins} xu. Không đủ điều kiện!`);
-                return;
-            }
+            if(amt > currentActiveUser.coins) { showToast(`❌ Thất bại: Số dư không đủ!`); return; }
 
             currentActiveUser.coins -= amt;
             const idx = deviceRegisteredAccounts.findIndex(a => a.username === currentActiveUser.username);
@@ -675,43 +787,6 @@
             showToast("Đã phê duyệt lệnh thành công!"); renderAdminLedgerApprovalScreenDOM(); syncSessionStateWithGiaoDienUI();
         }
 
-        document.getElementById('btn-publish').addEventListener('click', async function() {
-            const caption = document.getElementById('video-caption-input').value.trim();
-            const videoFile = document.getElementById('video-input').files[0];
-            if(!caption && !videoFile) { showToast("Vui lòng điền chữ hoặc đính kèm video! ⚠️"); return; }
-
-            showToast("Đang tải dữ liệu bài đăng lên hệ thống Firebase... ⏳");
-            let uploadedVideoUrl = ""; let isVid = false;
-
-            try {
-                if (videoFile) {
-                    isVid = true;
-                    const cloudPathRef = storage.ref('videos/' + Date.now() + '_' + videoFile.name);
-                    const uploadTaskSnap = await cloudPathRef.put(videoFile);
-                    uploadedVideoUrl = await uploadTaskSnap.ref.getDownloadURL();
-                }
-
-                await db.collection('posts').add({
-                    user: currentActiveUser.nickname,
-                    likes: 0,
-                    isVideo: isVid,
-                    desc: caption || "Xem nhật ký đời thường của tôi...",
-                    src: uploadedVideoUrl,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                showToast("Xuất bản thành công! Giới hạn hiển thị 2 ngày bắt đầu. 🎉");
-                document.getElementById('video-caption-input').value = "";
-                clearSelectedVideo();
-                await syncAndCleanFirebasePosts();
-                switchTab('home');
-            } catch (error) {
-                showToast("Chạy chế độ lưu đệm máy khách.");
-                globalDatingVideos.unshift({ id: "vid_"+Date.now(), user: currentActiveUser.nickname, likes: 0, isVideo: isVid, desc: caption, src: videoFile ? URL.createObjectURL(videoFile) : "" });
-                switchTab('home');
-            }
-        });
-
         function switchTab(tabName) {
             document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
@@ -728,6 +803,14 @@
         function closeComments() { document.getElementById('comment-sheet').classList.add('translate-y-full'); }
         function toggleFollowUser(btn) { btn.innerText = "Đang theo dõi"; btn.className = "flex-1 bg-zinc-800 text-white py-2.5 rounded-lg text-xs font-black"; }
         function syncUserProfileWalletDOM() { const node = document.getElementById('profile-wallet-coins-count'); if(node) node.innerText = currentActiveUser.coins; }
+        
+        function sendComment() {
+            const input = document.getElementById('comment-input'); if(!input.value.trim()) return;
+            const item = document.createElement('div'); item.className = "flex items-start justify-between gap-2 py-1";
+            item.innerHTML = `<div class="flex gap-2.5"><div class="w-7 h-7 bg-zinc-800 rounded-full flex items-center justify-center text-xs">👤</div><div><p class="font-black text-zinc-400 text-[10px]">@bạn</p><p class="text-zinc-200 mt-0.5 font-medium">${input.value}</p></div></div>`;
+            document.getElementById('comment-list').appendChild(item); input.value = "";
+        }
+
         function showToast(m) { const old = document.getElementById('custom-app-toast'); if(old) old.remove(); const t = document.createElement('div'); t.id = 'custom-app-toast'; t.className = "fixed top-6 left-1/2 transform -translate-x-1/2 bg-zinc-900 border border-zinc-800 text-white text-xs font-black px-5 py-2.5 rounded-full shadow-2xl z-[9999] text-center w-72"; t.innerHTML = `<span>⚡</span> <span>${m}</span>`; document.body.appendChild(t); setTimeout(() => { t.remove(); }, 3000); }
 
         window.addEventListener('DOMContentLoaded', () => {
