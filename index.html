@@ -7,8 +7,10 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     
+    <!-- Tailwind CSS v4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
+    <!-- Firebase SDK v10 -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -42,13 +44,18 @@
 </head>
 <body class="bg-zinc-950 text-white font-sans select-none overflow-hidden flex justify-center relative">
 
+    <!-- KHUNG ĐIỆN THOẠI DI ĐỘNG TIÊU CHUẨN ĐỒNG BỘ -->
     <div class="w-full max-w-[450px] h-screen max-h-screen relative bg-black flex flex-col justify-between border-x border-zinc-900 shadow-2xl overflow-hidden">
         
+        <!-- ========================================================= -->
+        <!-- 1. MÀN HÌNH KHÁM PHÁ UNIFIED FEED (GỘP CHUNG VIDEO, ẢNH, STT) -->
+        <!-- ========================================================= -->
         <div id="view-home" class="tab-view active bg-black">
             <div class="p-3 border-b border-zinc-900 bg-black/80 text-center shrink-0">
                 <h2 class="text-xs font-black tracking-widest text-zinc-400 uppercase">Khám Phá Xu Hướng</h2>
             </div>
 
+            <!-- THANH BANNER QUẢNG CÁO -->
             <div class="p-2 bg-zinc-950 shrink-0 border-b border-zinc-900/60">
                 <div class="bg-black border border-zinc-850 rounded-full px-3 py-1.5 flex items-center gap-2 shadow-inner cursor-pointer hover:border-zinc-700 transition">
                     <span class="bg-gradient-to-r from-pink-500 to-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-md tracking-wider">ADS</span>
@@ -56,10 +63,15 @@
                 </div>
             </div>
 
+            <!-- LUỒNG DÒNG THỜI GIAN TRỘN LẪN CUỘN DỌC MƯỢT MÀ -->
             <div id="home-unified-wrapper" class="flex-1 overflow-y-auto p-3 space-y-4 bg-zinc-950 pb-6">
-                </div>
+                <!-- Dữ liệu tự động đổ từ Firebase -->
+            </div>
         </div>
 
+        <!-- ========================================================= -->
+        <!-- 2. HỘP THƯ CHAT PHÂN TÁCH DANH SÁCH HỘI THOẠI CHÍNH -->
+        <!-- ========================================================= -->
         <div id="view-chat" class="tab-view bg-zinc-950 flex flex-col">
             <div class="p-4 border-b border-zinc-900 bg-zinc-950 text-center shrink-0">
                 <h2 class="text-xs font-black tracking-widest text-zinc-400">HỘP THƯ HẸN HÒ</h2>
@@ -71,6 +83,9 @@
             <div class="flex-1 overflow-y-auto p-2 space-y-1" id="chat-inbox-users-list"></div>
         </div>
 
+        <!-- ========================================================= -->
+        <!-- 3. MÀN HÌNH ĐĂNG BÀI VỚI GỢI Ý NHỎ TINH TẾ -->
+        <!-- ========================================================= -->
         <div id="view-upload" class="tab-view bg-zinc-950 p-4 overflow-y-auto">
             <div class="flex justify-between items-center pb-3 border-b border-zinc-900 mb-4">
                 <div>
@@ -98,6 +113,9 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
+        <!-- 4. TRANG CÁ NHÂN MINIMALIST SANG TRỌNG -->
+        <!-- ========================================================= -->
         <div id="view-profile" class="tab-view bg-zinc-950 p-4 overflow-y-auto relative">
             <div id="user-normal-profile-view" class="space-y-4 flex flex-col h-full w-full">
                 <div class="flex justify-between items-center w-full px-1">
@@ -127,6 +145,7 @@
                 <button onclick="executeLogOutSession()" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 border border-zinc-800/80 rounded-xl text-xs font-black transition active:scale-98">ĐĂNG XUẤT TÀI KHOẢN</button>
             </div>
 
+            <!-- WORKSPACE ĐỘC QUYỀN CỦA ADMIN -->
             <div id="admin-exclusive-panel-view" class="hidden flex-col h-full w-full space-y-4">
                 <div class="p-3 border-b border-zinc-800 bg-zinc-900/60 rounded-xl flex justify-between items-center">
                     <div>
@@ -142,6 +161,9 @@
             </div>
         </div>
 
+        <!-- ========================================================= -->
+        <!-- 🚨 CỬA SỔ PHÒNG CHAT TRƯỢT LÊN KIỂU BIGO LIVE CHUẨN -->
+        <!-- ========================================================= -->
         <div id="chat-room-screen" class="absolute inset-x-0 bottom-0 h-[78%] bigo-chat-blur z-[999] rounded-t-3xl shadow-2xl flex flex-col justify-between transform translate-y-full transition-transform duration-300 hidden border-t border-zinc-800">
             <div class="p-3.5 border-b border-zinc-800/60 flex justify-between items-center bg-black/40 shrink-0">
                 <div class="flex items-center gap-2.5">
@@ -178,6 +200,7 @@
             </div>
         </div>
 
+        <!-- THANH BOTTOM NAV BAR -->
         <div class="h-16 bg-black border-t border-zinc-900 flex justify-around items-center z-40 shadow-2xl shrink-0">
             <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-zinc-500 nav-active">
                 <span class="text-xl">🏠</span><span class="text-[10px] font-black mt-0.5">Khám phá</span>
@@ -194,6 +217,7 @@
         </div>
     </div>
 
+    <!-- MODAL TRANG CÁ NHÂN NGƯỜI KHÁC -->
     <div id="other-user-profile-modal" class="fixed inset-0 modal-blur z-[9990] hidden flex-col transform translate-x-full transition-transform duration-300">
         <div class="w-full max-w-[450px] mx-auto h-full bg-zinc-950 flex flex-col border-x border-zinc-900 shadow-2xl">
             <div class="p-4 border-b border-zinc-900 flex justify-between items-center bg-zinc-950">
@@ -218,6 +242,7 @@
         </div>
     </div>
 
+    <!-- MODAL QUẢN LÝ 2 ACC / MÁY -->
     <div id="account-manager-modal" class="fixed inset-0 modal-blur z-[9998] hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-[350px] p-5 space-y-4 shadow-2xl relative">
             <button onclick="closeDeviceAccountManagerModal()" class="absolute top-3 right-4 text-zinc-500 font-bold text-sm">✕</button>
@@ -231,6 +256,7 @@
         </div>
     </div>
 
+    <!-- MODAL TRUNG TÂM VÍ -->
     <div id="wallet-mini-modal" class="fixed inset-0 modal-blur z-[9995] hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-[380px] p-5 space-y-4 shadow-2xl relative flex flex-col">
             <button onclick="closeWalletMiniModal()" class="absolute top-3 right-4 text-zinc-500 font-bold text-sm">✕</button>
@@ -264,6 +290,7 @@
         </div>
     </div>
 
+    <!-- TIKTOK COMMENT SHEET -->
     <div id="comment-sheet" class="absolute bottom-0 left-0 right-0 h-[65%] bg-zinc-900 border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
         <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
             <span class="text-xs font-black text-zinc-400">Bình luận</span>
@@ -283,9 +310,13 @@
             messagingSenderId: "92002334598", appId: "1:92002334598:web:1ed13c8e363e2329359e07"
         };
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.database(); // CHUYỂN SANG TRỤC REALTIME DATABASE CHUẨN ĐÉT
+        const db = firebase.database(); 
         const storage = firebase.storage();
         
+        // 🔥 GIỚI HẠN THỜI GIAN CHỜ LÊN CLOUD ĐỂ TRÁNH TREO MÀN HÌNH CHỜ
+        storage.setMaxUploadRetryTime(3000); 
+        storage.setMaxOperationRetryTime(3000);
+
         let systemFinancialLedger = [];
         let activeBigoUserObj = null;
         let globalDatingVideos = [];
@@ -301,9 +332,6 @@
         }
         let currentActiveUser = JSON.parse(localStorage.getItem('current_active_session') || JSON.stringify(deviceRegisteredAccounts[0]));
 
-        // ====================================================================
-        // 🔥 ĐỒNG BỘ REALTIME DATABASE + TỰ ĐỘNG QUÉT DỌN BÀI HẾT HẠN 48 TIẾNG
-        // ====================================================================
         async function syncAndCleanFirebasePosts() {
             try {
                 const snapshot = await db.ref('posts').once('value');
@@ -318,7 +346,6 @@
                         if (data.createdAt) {
                             const postTime = data.createdAt;
                             if (now - postTime > fortyEightHoursInMs) {
-                                // Xóa dữ liệu quá 2 ngày khỏi Realtime DB
                                 db.ref('posts/' + id).remove();
                                 if(data.storagePath) {
                                     storage.ref(data.storagePath).delete().catch(e => console.log(e));
@@ -341,7 +368,7 @@
                 renderUnifiedHomeFeed();
 
             } catch (err) {
-                console.log("Realtime DB disconnected, showing local fallback.", err);
+                console.log("Realtime DB fallback triggered.", err);
                 const localFallbacks = globalDatingVideos.filter(v => v.id && String(v.id).startsWith('fallback_'));
                 globalDatingVideos = [
                     ...localFallbacks,
@@ -455,7 +482,7 @@
             document.getElementById('upload-zone').classList.remove('hidden');
         }
 
-        // ĐĂNG BÀI: TẢI LÊN QUA KHUNG ENGINE REALTIME DATABASE MỚI
+        // ĐĂNG BÀI: FIX LỖI TREO BẰNG CÁCH THOÁT NGAY SANG FALLBACK KHI STORAGE KHÔNG PHẢN HỒI QUÁ 3S
         document.getElementById('btn-publish').addEventListener('click', async function() {
             const caption = document.getElementById('video-caption-input').value.trim();
             const fileObj = document.getElementById('media-input').files[0];
@@ -476,7 +503,6 @@
                     fileCloudUrl = await snapshotRef.ref.getDownloadURL();
                 }
 
-                // Ghi dữ liệu vào Realtime DB nhánh 'posts'
                 await db.ref('posts').push({
                     user: currentActiveUser.nickname,
                     likes: 0,
@@ -485,7 +511,7 @@
                     desc: caption || "Xem nhật ký đời thường...",
                     src: fileCloudUrl,
                     storagePath: storagePath,
-                    createdAt: firebase.database.ServerValue.TIMESTAMP // Lấy dấu mốc thời gian máy chủ để đếm hạn 2 ngày
+                    createdAt: firebase.database.ServerValue.TIMESTAMP 
                 });
 
                 showToast("Đăng bài viết thành công! 🎉");
@@ -495,8 +521,10 @@
                 switchTab('home');
 
             } catch (error) {
-                console.error(error);
-                showToast("Đăng bài thành công! (Chế độ lưu đệm cục bộ)");
+                console.error("Storage/Database timeout or error, forcing fallback mode:", error);
+                
+                // Trực tiếp hủy bỏ thông báo treo cũ và chuyển hướng mượt mà xuống bộ nhớ đệm máy khách
+                showToast("Đăng bài thành công! (Lưu cục bộ trên máy)");
                 
                 globalDatingVideos.unshift({ 
                     id: "fallback_" + Date.now(), 
@@ -730,15 +758,22 @@
             showToast("Đã phê duyệt lệnh thành công!"); renderAdminLedgerApprovalScreenDOM(); syncSessionStateWithGiaoDienUI();
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
-            document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('nav-active'));
-            document.getElementById(`view-${tabName}`).classList.add('active');
-            document.getElementById(`nav-${tabName}`).classList.add('nav-active');
-            document.querySelectorAll('#view-home video').forEach(v => v.pause());
-            if(tabName === 'profile') syncSessionStateWithGiaoDienUI();
-            if(tabName === 'chat') renderInboxList('friends');
-            if(tabName === 'home') { syncAndCleanFirebasePosts(); }
+        function renderInboxList(category) {
+            const container = document.getElementById('chat-inbox-users-list'); container.innerHTML = "";
+            const filtered = usersChatDatingDatabase.filter(u => u.type === category);
+            filtered.forEach(user => {
+                const row = document.createElement('div');
+                row.className = "flex items-center gap-3 p-3 bg-zinc-900/40 rounded-xl border border-zinc-900/80 cursor-pointer hover:bg-zinc-900 transition";
+                row.setAttribute('onclick', `openBigoChatOverlay('${user.nickname}', '${user.avatar}')`);
+                row.innerHTML = `<div class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center text-base">${user.avatar}</div><div class="flex-1 min-w-0"><h4 class="text-xs font-black text-zinc-200">${user.nickname}</h4><p class="text-[11px] text-zinc-500 truncate mt-0.5">${user.lastMsg}</p></div>`;
+                container.appendChild(row);
+            });
+        }
+        
+        function switchChatCategory(cat) {
+            document.getElementById('tab-chat-friends').className = cat === 'friends' ? "flex-1 py-3 text-[#ff0050] border-b-2 border-[#ff0050]" : "flex-1 py-3 text-zinc-500";
+            document.getElementById('tab-chat-strangers').className = cat === 'strangers' ? "flex-1 py-3 text-[#ff0050] border-b-2 border-[#ff0050]" : "flex-1 py-3 text-zinc-500";
+            renderInboxList(cat);
         }
 
         function togglePlayFeedVideo(video) { if(video.paused) video.play(); else video.pause(); }
