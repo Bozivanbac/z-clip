@@ -24,51 +24,49 @@
         ::-webkit-scrollbar { display: none !important; }
         * { -ms-overflow-style: none !important; scrollbar-width: none !important; box-sizing: border-box; }
         
-        .bigo-chat-blur {
-            background: rgba(15, 15, 20, 0.9);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+        /* CHUYỂN SANG KHUNG NỀN SOLID ĐẬM ĐỂ TĂNG ĐỘ SANG TRỌNG CAO CẤP */
+        .premium-dark-card {
+            background: #09090b;
+            border: 1px solid #18181b;
         }
-        .modal-blur {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .modal-solid-dark {
+            background: #040405;
         }
     </style>
 </head>
-<body class="bg-zinc-950 text-white font-sans select-none overflow-hidden flex justify-center relative">
+<body class="bg-[#020203] text-white font-sans select-none overflow-hidden flex justify-center relative">
 
-    <!-- KHUNG ĐIỆN THOẠI DI ĐỘNG TIÊU CHUẨN ĐỒNG BỘ -->
-    <div class="w-full max-w-[450px] h-screen max-h-screen relative bg-black flex flex-col justify-between border-x border-zinc-900 shadow-2xl overflow-hidden">
+    <!-- KHUNG TRẢI NGHIỆM ĐƯỢC NỚI RỘNG KHÔNG GIAN TOÀN DIỆN -->
+    <div class="w-full max-w-[480px] h-screen max-h-screen relative bg-black flex flex-col justify-between border-x border-zinc-900 shadow-2xl overflow-hidden">
         
         <!-- ========================================================= -->
         <!-- 1. MÀN HÌNH KHÁM PHÁ UNIFIED FEED -->
         <!-- ========================================================= -->
         <div id="view-home" class="tab-view active bg-black">
-            <div class="p-3 border-b border-zinc-900 bg-black/80 text-center shrink-0">
+            <div class="p-4 border-b border-zinc-900 bg-black/95 text-center shrink-0">
                 <h2 class="text-xs font-black tracking-widest text-zinc-400 uppercase">Khám Phá Xu Hướng</h2>
             </div>
 
             <!-- THANH BANNER QUẢNG CÁO -->
-            <div class="p-2 bg-zinc-950 shrink-0 border-b border-zinc-900/60">
-                <div class="bg-black border border-zinc-850 rounded-full px-3 py-1.5 flex items-center gap-2 shadow-inner cursor-pointer hover:border-zinc-700 transition">
-                    <span class="bg-gradient-to-r from-pink-500 to-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-md tracking-wider">ADS</span>
-                    <p class="text-[10px] font-bold text-zinc-100 truncate flex-1">☕ Trà sữa chocolate full topping - Tiệm trà nét quê. Click xem ngay!</p>
+            <div class="p-2 bg-black shrink-0 border-b border-zinc-900">
+                <div class="bg-zinc-950 border border-zinc-900 rounded-full px-4 py-2 flex items-center gap-2 shadow-lg cursor-pointer hover:border-zinc-800 transition">
+                    <span class="bg-gradient-to-r from-pink-500 to-red-500 text-white text-[8px] font-black px-2 py-0.5 rounded tracking-wider">ADS</span>
+                    <p class="text-[10px] font-bold text-zinc-300 truncate flex-1">☕ Trà sữa chocolate full topping - Tiệm trà nét quê. Click xem ngay!</p>
                 </div>
             </div>
 
-            <!-- LUỒNG DÒNG THỜI GIAN TRỘN LẪN CUỘN DỌC MƯỢT MÀ -->
-            <div id="home-unified-wrapper" class="flex-1 overflow-y-auto p-3 space-y-4 bg-zinc-950 pb-6"></div>
+            <!-- LUỒNG DÒNG THỜI GIAN CUỘN DỌC MƯỢT MÀ -->
+            <div id="home-unified-wrapper" class="flex-1 overflow-y-auto p-4 space-y-4 bg-black pb-8"></div>
         </div>
 
         <!-- ========================================================= -->
-        <!-- 2. HỘP THƯ CHAT PHÂN TÁCH DANH SÁCH HỘI THOẠI -->
+        <!-- 2. HỘP THƯ CHAT TRỰC QUAN -->
         <!-- ========================================================= -->
-        <div id="view-chat" class="tab-view bg-zinc-950 flex flex-col">
-            <div class="p-4 border-b border-zinc-900 bg-zinc-950 text-center shrink-0">
+        <div id="view-chat" class="tab-view bg-black flex flex-col">
+            <div class="p-4 border-b border-zinc-900 bg-black text-center shrink-0">
                 <h2 class="text-xs font-black tracking-widest text-zinc-400">HỘP THƯ HẸN HÒ</h2>
             </div>
-            <div class="flex border-b border-zinc-900 shrink-0 text-xs font-black text-center bg-zinc-900/20">
+            <div class="flex border-b border-zinc-900 shrink-0 text-xs font-black text-center bg-zinc-950">
                 <button onclick="switchChatCategory('friends')" id="tab-chat-friends" class="flex-1 py-3 text-[#ff0050] border-b-2 border-[#ff0050]">👥 Tương Hợp</button>
                 <button onclick="switchChatCategory('strangers')" id="tab-chat-strangers" class="flex-1 py-3 text-zinc-500">💌 Tin Nhắn Chờ</button>
             </div>
@@ -76,9 +74,9 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 3. MÀN HÌNH ĐĂNG BÀI KHOẢNH KHẮC -->
+        <!-- 3. MÀN HÌNH ĐĂNG BÀI TINH TẾ -->
         <!-- ========================================================= -->
-        <div id="view-upload" class="tab-view bg-zinc-950 p-4 overflow-y-auto">
+        <div id="view-upload" class="tab-view bg-black p-4 overflow-y-auto">
             <div class="flex justify-between items-center pb-3 border-b border-zinc-900 mb-4">
                 <div>
                     <h2 class="text-xs font-black tracking-widest text-zinc-400">CHIA SẺ KHOẢNH KHẮC</h2>
@@ -87,19 +85,19 @@
                 <button id="btn-publish" class="bg-gradient-to-r from-pink-500 to-red-500 text-white px-5 py-1.5 rounded-full font-black text-xs shadow-lg active:scale-95 transition">ĐĂNG BÀI</button>
             </div>
             <div class="space-y-4">
-                <textarea id="video-caption-input" rows="4" placeholder="Nhập suy nghĩ, dòng trạng thái tâm sự hoặc tiêu chí tìm người yêu tại đây..." class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-2xl text-xs text-white focus:outline-none font-medium resize-none focus:border-zinc-700"></textarea>
+                <textarea id="video-caption-input" rows="4" placeholder="Nhập suy nghĩ, dòng trạng thái tâm sự hoặc tiêu chí tìm người yêu tại đây..." class="w-full bg-zinc-950 border border-zinc-900 p-3 rounded-2xl text-xs text-white focus:outline-none font-medium resize-none focus:border-zinc-800"></textarea>
                 
-                <div class="border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center bg-zinc-900/40 cursor-pointer hover:border-zinc-700 transition" id="upload-zone">
+                <div class="border-2 border-dashed border-zinc-900 rounded-2xl p-8 text-center bg-zinc-950 cursor-pointer hover:border-zinc-800 transition" id="upload-zone">
                     <input type="file" id="media-input" accept="video/*,image/*" class="hidden">
                     <label for="media-input" class="cursor-pointer block">
-                        <p class="text-3xl mb-1">🖼️</p>
-                        <p class="text-[11px] text-zinc-400 font-bold">ĐÍNH KÈM VIDEO HOẶC HÌNH ẢNH PROFILE</p>
+                        <p class="text-3xl mb-2">🖼️</p>
+                        <p class="text-[11px] text-zinc-400 font-bold tracking-wide">ĐÍNH KÈM VIDEO HOẶC HÌNH ẢNH PROFILE</p>
                     </label>
                 </div>
                 
                 <div id="studio-preview-box" class="hidden w-full rounded-2xl overflow-hidden relative border border-zinc-900 bg-black">
                     <div id="preview-media-container" class="w-full aspect-video flex items-center justify-center"></div>
-                    <button type="button" onclick="clearSelectedMedia()" class="absolute top-2 right-2 bg-black/70 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow">✕</button>
+                    <button type="button" onclick="clearSelectedMedia()" class="absolute top-3 right-3 bg-black/80 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-lg">✕</button>
                 </div>
             </div>
         </div>
@@ -107,11 +105,11 @@
         <!-- ========================================================= -->
         <!-- 4. TRANG CÁ NHÂN -->
         <!-- ========================================================= -->
-        <div id="view-profile" class="tab-view bg-zinc-950 p-4 overflow-y-auto relative">
+        <div id="view-profile" class="tab-view bg-black p-4 overflow-y-auto relative">
             <div id="user-normal-profile-view" class="space-y-4 flex flex-col h-full w-full">
                 <div class="flex justify-between items-center w-full px-1">
-                    <button onclick="openDeviceAccountManagerModal()" class="text-[10px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full font-bold active:scale-95 transition">👥 Đổi Tài Khoản</button>
-                    <button onclick="openWalletMiniModal()" class="text-xs bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full flex items-center gap-1 font-black text-amber-400 active:scale-95 transition">
+                    <button onclick="openDeviceAccountManagerModal()" class="text-[10px] text-zinc-400 bg-zinc-950 border border-zinc-900 px-3 py-1.5 rounded-full font-bold transition">👥 Đổi Tài Khoản</button>
+                    <button onclick="openWalletMiniModal()" class="text-xs bg-zinc-950 border border-zinc-900 px-4 py-2 rounded-full flex items-center gap-1 font-black text-amber-400 transition">
                         ⚙️ Cài Đặt Ví (<span id="profile-wallet-coins-count" class="text-white">20</span>)
                     </button>
                 </div>
@@ -121,7 +119,7 @@
                     <h2 id="current-user-display-name" class="text-base font-black text-white">Cổ Văn Tảu Bắc</h2>
                     <p id="current-user-display-id" class="text-zinc-500 text-[10px] font-mono">@tau_bac22</p>
                     
-                    <div class="flex justify-center gap-4 text-[11px] text-zinc-400 py-2 font-semibold w-full border-y border-zinc-900/60 my-2">
+                    <div class="flex justify-center gap-4 text-[11px] text-zinc-400 py-2 font-semibold w-full border-y border-zinc-900 my-2">
                         <div class="text-center"><b class="text-white block text-sm">0</b> Đang theo</div>
                         <div class="text-center border-x border-zinc-900 px-4"><b class="text-white block text-sm">0</b> Người theo dõi</div>
                         <div class="text-center"><b class="text-white block text-sm">0</b> Lượt thích</div>
@@ -133,7 +131,7 @@
                     <div id="my-uploaded-videos-grid" class="grid grid-cols-3 gap-1"></div>
                 </div>
 
-                <button onclick="executeLogOutSession()" class="w-full py-2.5 bg-zinc-900 text-zinc-400 border border-zinc-800 rounded-xl text-xs font-black transition">ĐĂNG XUẤT TÀI KHOẢN</button>
+                <button onclick="executeLogOutSession()" class="w-full py-2.5 bg-zinc-950 text-zinc-500 border border-zinc-900 rounded-xl text-xs font-black transition">ĐĂNG XUẤT TÀI KHOẢN</button>
             </div>
 
             <!-- WORKSPACE CỦA ADMIN -->
@@ -152,42 +150,43 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 🚨 CỬA SỔ PHÒNG CHAT TRƯỢT LÊN KIỂU BIGO LIVE -->
+        <!-- 🚨 CỬA SỔ CHAT CAO CẤP CHUẨN TÔNG ĐEN ĐẬM SẮC NÉT (ĐÃ FIX PHÈN BLUR) -->
         <!-- ========================================================= -->
-        <div id="chat-room-screen" class="absolute inset-x-0 bottom-0 h-[78%] bigo-chat-blur z-[999] rounded-t-3xl shadow-2xl flex flex-col justify-between transform translate-y-full transition-transform duration-300 hidden border-t border-zinc-800">
-            <div class="p-3.5 border-b border-zinc-800/60 flex justify-between items-center bg-black/40 shrink-0">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-sm font-bold shadow" id="chat-room-avatar">👩</div>
+        <div id="chat-room-screen" class="absolute inset-x-0 bottom-0 h-[82%] modal-solid-dark z-[999] rounded-t-3xl shadow-2xl flex flex-col justify-between transform translate-y-full transition-transform duration-300 hidden border-t border-zinc-800">
+            <div class="p-4 border-b border-zinc-900 flex justify-between items-center bg-black shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-zinc-800 rounded-full flex items-center justify-center text-base font-bold shadow" id="chat-room-avatar">👩</div>
                     <div>
                         <h3 class="text-xs font-black text-white" id="chat-room-title">Tên Đối Phương</h3>
-                        <span class="text-[8px] text-amber-400 font-black bg-amber-500/10 px-2 py-0.5 rounded-full" id="chat-relation-level">Tìm hiểu</span>
+                        <span class="text-[8px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-full" id="chat-relation-level">Tìm hiểu</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="toggleGiftingPanel()" class="bg-zinc-900 border border-zinc-800 w-8 h-8 rounded-full flex items-center justify-center text-sm shadow">🎁</button>
-                    <button onclick="closeBigoChatOverlay()" class="text-zinc-400 text-xs font-black p-1 px-2.5 bg-zinc-900 border border-zinc-800 rounded-full">✕ Đóng</button>
+                    <button onclick="toggleGiftingPanel()" class="bg-zinc-900 border border-zinc-800 w-9 h-9 rounded-full flex items-center justify-center text-sm shadow">🎁</button>
+                    <button onclick="closeBigoChatOverlay()" class="text-zinc-400 text-xs font-black px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-full">✕ Đóng</button>
                 </div>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-4 space-y-3 text-xs" id="chat-room-messages-flow"></div>
+            <!-- DÒNG CHAT SẮC NÉT -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 text-xs bg-[#050506]" id="chat-room-messages-flow"></div>
 
-            <!-- PANEL TẶNG QUÀ TRỪ XU -->
-            <div id="gifting-slide-panel" class="absolute bottom-16 left-0 right-0 bg-zinc-900/95 border-t border-zinc-800 rounded-t-2xl p-3 z-40 hidden flex flex-col gap-3 shadow-2xl">
-                <div class="flex justify-between items-center text-[10px] font-black text-zinc-400 border-b border-zinc-800/60 pb-1.5">
+            <!-- PANEL TẶNG QUÀ -->
+            <div id="gifting-slide-panel" class="absolute bottom-16 left-0 right-0 bg-zinc-950 border-t border-zinc-900 p-4 z-40 hidden flex flex-col gap-3 shadow-2xl">
+                <div class="flex justify-between items-center text-[10px] font-black text-zinc-500 border-b border-zinc-900 pb-2">
                     <span>🎁 GỬI QUÀ QUY ĐỔI TẬP TRUNG</span>
-                    <span class="text-amber-400 flex items-center gap-0.5">💰 Ví xu: <b id="gift-panel-user-coins" class="text-white">0</b> xu</span>
+                    <span class="text-amber-400 flex items-center gap-0.5">💰 Ví: <b id="gift-panel-user-coins" class="text-white">0</b> xu</span>
                 </div>
                 <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
-                    <div onclick="executeSendGift('🌹 Hoa hồng', 1)" class="bg-black/40 p-1.5 border border-zinc-800 rounded-xl cursor-pointer"><p class="text-base">🌹</p><p class="text-[9px] text-amber-500 font-extrabold">1 xu</p></div>
-                    <div onclick="executeSendGift('❤️ Trái tim', 2)" class="bg-black/40 p-1.5 border border-zinc-800 rounded-xl cursor-pointer"><p class="text-base">❤️</p><p class="text-[9px] text-amber-500 font-extrabold">2 xu</p></div>
-                    <div onclick="executeSendGift('🥤 Trà sữa', 5)" class="bg-black/40 p-1.5 border border-zinc-800 rounded-xl cursor-pointer"><p class="text-base">🥤</p><p class="text-[9px] text-amber-500 font-extrabold">5 xu</p></div>
-                    <div onclick="executeSendGift('🚗 Xe hơi', 150)" class="bg-black/40 p-1.5 border border-zinc-800 rounded-xl cursor-pointer"><p class="text-base">🚗</p><p class="text-[9px] text-amber-500 font-extrabold">150 xu</p></div>
+                    <div onclick="executeSendGift('🌹 Hoa hồng', 1)" class="bg-black p-2 border border-zinc-900 rounded-xl cursor-pointer hover:border-pink-500"><p class="text-base">🌹</p><p class="text-[9px] text-amber-500 font-bold mt-1">1 xu</p></div>
+                    <div onclick="executeSendGift('❤️ Trái tim', 2)" class="bg-black p-2 border border-zinc-900 rounded-xl cursor-pointer hover:border-pink-500"><p class="text-base">❤️</p><p class="text-[9px] text-amber-500 font-bold mt-1">2 xu</p></div>
+                    <div onclick="executeSendGift('🥤 Trà sữa', 5)" class="bg-black p-2 border border-zinc-900 rounded-xl cursor-pointer hover:border-pink-500"><p class="text-base">🥤</p><p class="text-[9px] text-amber-500 font-bold mt-1">5 xu</p></div>
+                    <div onclick="executeSendGift('🚗 Xe hơi', 150)" class="bg-black p-2 border border-zinc-900 rounded-xl cursor-pointer hover:border-pink-500"><p class="text-base">🚗</p><p class="text-[9px] text-amber-500 font-bold mt-1">150 xu</p></div>
                 </div>
             </div>
 
-            <div class="p-2 border-t border-zinc-900 bg-black/40 flex gap-2 shrink-0 items-center">
-                <input type="text" id="chat-room-input" placeholder="Nhập tin nhắn tương tác bí mật..." class="flex-1 bg-zinc-950 border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none">
-                <button onclick="submitRoomMessage()" class="bg-[#ff0050] text-white px-5 py-2.5 rounded-xl text-xs font-black active:scale-95 transition">GỬI</button>
+            <div class="p-3 border-t border-zinc-900 bg-black flex gap-2 shrink-0 items-center">
+                <input type="text" id="chat-room-input" placeholder="Nhập tin nhắn... (Bấm Enter để gửi)" class="flex-1 bg-zinc-950 border border-zinc-900 p-3 rounded-xl text-xs text-white focus:outline-none">
+                <button onclick="submitRoomMessage()" class="bg-[#ff0050] text-white px-5 py-3 rounded-xl text-xs font-black active:scale-95 transition">GỬI</button>
             </div>
         </div>
 
@@ -208,11 +207,24 @@
         </div>
     </div>
 
-    <!-- MODAL ĐỔI TÀI KHOẢN (BƠM SẴN ACC ẢO) -->
+    <!-- TIKTOK COMMENT SHEET (ĐÃ SỬA LẠI THÀNH DANH MỤC ĐEN SANG TRỌNG) -->
+    <div id="comment-sheet" class="absolute bottom-0 left-0 right-0 h-[68%] modal-solid-dark border-t border-zinc-800 rounded-t-3xl z-50 p-4 transform translate-y-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+        <div class="flex justify-between items-center pb-3 border-b border-zinc-900">
+            <span class="text-xs font-black text-zinc-400">Bình luận bài viết</span>
+            <button onclick="closeComments()" class="text-zinc-500 text-sm font-bold px-2">✕</button>
+        </div>
+        <div class="flex-1 overflow-y-auto py-3 space-y-3 text-xs" id="comment-list"></div>
+        <div class="flex gap-2 pt-3 border-t border-zinc-900 items-center bg-black/40">
+            <input type="text" id="comment-input" placeholder="Để lại ý kiến... (Bấm Enter để gửi)" class="flex-1 bg-zinc-950 rounded-xl p-3 text-xs focus:outline-none text-white border border-zinc-900">
+            <button onclick="sendComment()" class="bg-[#ff0050] text-white px-5 py-3 rounded-xl text-xs font-black">GỬI</button>
+        </div>
+    </div>
+
+    <!-- MODAL ĐỔI ACC -->
     <div id="account-manager-modal" class="fixed inset-0 modal-blur z-[9998] hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-[350px] p-5 space-y-4 shadow-2xl relative">
             <button onclick="closeDeviceAccountManagerModal()" class="absolute top-3 right-4 text-zinc-500 font-bold text-sm">✕</button>
-            <div class="text-center"><h3 class="font-black text-xs text-white tracking-widest uppercase">ĐĂNG NHẬP HỆ THỐNG</h3><p class="text-[9px] text-zinc-500 mt-1">Chọn tài khoản ảo để test tính năng tương tác</p></div>
+            <div class="text-center"><h3 class="font-black text-xs text-white tracking-widest uppercase">ĐĂNG NHẬP HỆ THỐNG</h3><p class="text-[9px] text-zinc-500 mt-1">Chọn tài khoản để trải nghiệm tương tác</p></div>
             <div class="space-y-2" id="device-accounts-list-dom"></div>
             <div class="border-t border-zinc-800/80 pt-3 space-y-2">
                 <input type="text" id="login-username-input" placeholder="Tên tài khoản mới..." class="w-full bg-black border border-zinc-800 p-2.5 rounded-xl text-xs text-white focus:outline-none">
@@ -222,7 +234,7 @@
         </div>
     </div>
 
-    <!-- MODAL TRUNG TÂM VÍ -->
+    <!-- MODAL VÍ -->
     <div id="wallet-mini-modal" class="fixed inset-0 modal-blur z-[9995] hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-[380px] p-5 space-y-4 shadow-2xl relative flex flex-col">
             <button onclick="closeWalletMiniModal()" class="absolute top-3 right-4 text-zinc-500 font-bold text-sm">✕</button>
@@ -240,7 +252,27 @@
         </div>
     </div>
 
-    <!-- SCRIPT ĐIỀU HƯỚNG ENGINE -->
+    <!-- MODAL XEM PROFILE KHÁCH -->
+    <div id="other-user-profile-modal" class="fixed inset-0 modal-blur z-[9990] hidden flex-col transform translate-x-full transition-transform duration-300">
+        <div class="w-full max-w-[450px] mx-auto h-full bg-black flex flex-col border-x border-zinc-900 shadow-2xl">
+            <div class="p-4 border-b border-zinc-900 flex justify-between items-center bg-black">
+                <button onclick="closeOtherUserProfile()" class="text-zinc-400 font-bold text-xl px-2">←</button>
+                <h3 class="text-xs font-black text-white" id="other-profile-username">Username</h3>
+                <div class="w-8"></div>
+            </div>
+            <div class="p-6 flex flex-col items-center space-y-3 bg-zinc-950 shrink-0">
+                <div class="w-18 h-18 bg-zinc-800 rounded-full border border-zinc-700 flex items-center justify-center text-2xl shadow-lg" id="other-profile-avatar">👤</div>
+                <h2 class="text-sm font-black text-white" id="other-profile-name">@username</h2>
+                <div class="flex gap-2 w-full max-w-[260px] mt-2">
+                    <button id="btn-follow-user" onclick="toggleFollowUser(this)" class="flex-1 bg-[#ff0050] text-white py-2.5 rounded-lg text-xs font-black shadow">Theo dõi</button>
+                    <button onclick="executeActionDirectMessageFromProfile()" class="flex-1 bg-zinc-900 text-white px-5 py-2.5 rounded-lg text-xs font-black border border-zinc-800 shadow">Nhắn tin</button>
+                </div>
+            </div>
+            <div class="flex-1 bg-black overflow-y-auto" id="other-user-videos-grid"></div>
+        </div>
+    </div>
+
+    <!-- LOGIC PHÒNG MÁY ENGINE -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBgfznta_Ikr8yDb6_Z89SrhfuHHsAsDw8", authDomain: "app-giai-tri.firebaseapp.com", 
@@ -257,21 +289,18 @@
         let activeBigoUserObj = null;
         let globalDatingVideos = [];
 
-        // HỘP THƯ CHAT BAN ĐẦU
         let usersChatDatingDatabase = [
             { id: "u_inbox_1", nickname: "Trâm Anh 🎀", avatar: "👩", type: "friend", lastMsg: "Anh đánh cầu lông hay thế, hôm nào chỉ em với nha", textCount: 3, messages: [{ sender: "them", text: "Hi anh, thấy video của anh chung sở thích ghê!" }, { sender: "me", text: "Chào em nhiều nha!" }] }
         ];
 
-        // 🔥 KHỞI TẠO NICK CHÍNH VÀ BƠM THÊM 1 ACC ẢO ĐỂ TƯƠNG TÁC
         let deviceRegisteredAccounts = JSON.parse(localStorage.getItem('device_saved_nicks') || '[]');
         if(deviceRegisteredAccounts.length === 0) {
             deviceRegisteredAccounts.push({ username: "tau_bac22", nickname: "Cổ Văn Tảu Bắc", coins: 20, isAdmin: false });
-            deviceRegisteredAccounts.push({ username: "tuan_hai99", nickname: "Nguyễn Tuấn Hải (Ảo)", coins: 150, isAdmin: false }); // Nick ảo test máy
+            deviceRegisteredAccounts.push({ username: "tuan_hai99", nickname: "Nguyễn Tuấn Hải (Ảo)", coins: 150, isAdmin: false });
             localStorage.setItem('device_saved_nicks', JSON.stringify(deviceRegisteredAccounts));
         }
         let currentActiveUser = JSON.parse(localStorage.getItem('current_active_session') || JSON.stringify(deviceRegisteredAccounts[0]));
 
-        // ĐỒNG BỘ DỮ LIỆU BẢNG TIN
         async function syncAndCleanFirebasePosts() {
             try {
                 const snapshot = await db.ref('posts').once('value');
@@ -288,7 +317,7 @@
                 const localFallbacks = globalDatingVideos.filter(v => v.id && String(v.id).startsWith('fallback_'));
                 globalDatingVideos = [
                     ...localFallbacks,
-                    { id: "vid_001", user: "Trâm Anh 🎀", likes: 142, isVideo: true, src: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4", desc: "Tìm bạn đi đánh cầu lông cuối tuần này bên sân Phúc An Dĩ An, em bao trà sữa luôn! 🏸🥤" }
+                    { id: "vid_001", user: "Trâm Anh 🎀", likes: 142, isVideo: true, src: "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-lighting-39853-large.mp4", desc: "Tìm bạn đi đánh cầu lông cuối tuần này bên sân Phúc An Dĩ An, em bao trà sữa full topping luôn! 🏸🥤" }
                 ];
                 renderUnifiedHomeFeed();
             }
@@ -298,26 +327,39 @@
             const container = document.getElementById('home-unified-wrapper'); container.innerHTML = "";
             globalDatingVideos.forEach(post => {
                 const card = document.createElement('div');
-                card.className = "bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3 shadow-xl flex flex-col";
+                card.className = "premium-dark-card rounded-2xl p-4 space-y-3 shadow-xl flex flex-col";
                 card.innerHTML = `
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
-                            <div class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center text-base">👩</div>
+                            <div class="relative">
+                                <div class="w-9 h-9 bg-zinc-800 rounded-full flex items-center justify-center text-base">👩</div>
+                                <div onclick="event.stopPropagation(); toggleFollowMiniButton(this);" class="absolute -bottom-1 -right-1 bg-[#ff0050] text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black border border-black shadow-md">+</div>
+                            </div>
                             <div><h4 class="text-xs font-black text-zinc-200">@${post.user}</h4></div>
                         </div>
+                        <span class="text-[8px] bg-zinc-900 text-zinc-500 font-bold px-2 py-1 rounded-full">Hạn: 2 Ngày</span>
                     </div>
-                    <p class="text-xs text-zinc-200 break-words">${post.desc}</p>
-                    ${post.src ? `<div class="w-full aspect-video rounded-xl bg-black overflow-hidden relative"><video src="${post.src}" loop muted class="w-full h-full object-cover" onclick="this.paused?this.play():this.pause()"></video></div>` : ''}
-                    <div class="flex border-t border-zinc-800 pt-2 text-zinc-400 font-black text-[11px] justify-around">
-                        <button onclick="executeViralHeartLike(this, '${post.id}')">❤️ Thích (<b class="like-counter-txt">${post.likes}</b>)</button>
-                        <button onclick="openBigoChatOverlay('${post.user}')">💬 Nhắn tin</button>
+                    <p class="text-xs text-zinc-200 break-words leading-relaxed font-medium">${post.desc}</p>
+                    ${post.src ? `<div class="w-full aspect-video rounded-xl bg-black overflow-hidden border border-zinc-900"><video src="${post.src}" loop muted class="w-full h-full object-cover" onclick="this.paused?this.play():this.pause()"></video></div>` : ''}
+                    <div class="flex border-t border-zinc-900 pt-2.5 mt-1 text-zinc-500 font-black text-[11px] justify-around">
+                        <button onclick="executeViralHeartLike(this, '${post.id}')" class="flex items-center gap-1 hover:text-white">❤️ Thích (<b class="like-counter-txt">${post.likes}</b>)</button>
+                        <button onclick="openBigoChatOverlay('${post.user}')" class="flex items-center gap-1 hover:text-white">💬 Nhắn tin</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // BẤM ĐĂNG BÀI: LUÔN THOÁT RA MƯỢT MÀ KỂ CẢ KHI LỖI FIREBASE
+        function toggleFollowMiniButton(node) {
+            if(node.innerText === "+") {
+                node.innerText = "✓"; node.className = "absolute -bottom-1 -right-1 bg-zinc-800 text-green-400 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black border border-black";
+                showToast("Đã theo dõi thành công! 💖");
+            } else {
+                node.innerText = "+"; node.className = "absolute -bottom-1 -right-1 bg-[#ff0050] text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black border border-black";
+            }
+        }
+
+        // ĐĂNG BÀI
         document.getElementById('btn-publish').addEventListener('click', async function() {
             const caption = document.getElementById('video-caption-input').value.trim();
             const fileObj = document.getElementById('media-input').files[0];
@@ -331,17 +373,16 @@
                     fileCloudUrl = await snap.ref.getDownloadURL();
                 }
                 await db.ref('posts').push({ user: currentActiveUser.nickname, likes: 0, desc: caption, src: fileCloudUrl, createdAt: Date.now() });
-                showToast("Đăng bài viết lên mây thành công! 🎉");
+                showToast("Đăng bài viết thành công! 🎉");
             } catch (error) {
-                // CHẾ ĐỘ CỨU CÁNH CỤC BỘ KHI CẤU HÌNH LỖI
                 globalDatingVideos.unshift({ id: "fallback_" + Date.now(), user: currentActiveUser.nickname, likes: 0, desc: caption, src: fileObj ? URL.createObjectURL(fileObj) : "" });
-                showToast("Đăng bài thành công! (Chế độ lưu tạm máy)");
+                showToast("Đăng bài thành công! (Lưu cục bộ)");
             }
             document.getElementById('video-caption-input').value = ""; clearSelectedMedia();
             renderUnifiedHomeFeed(); switchTab('home');
         });
 
-        // 🔥 PHÒNG CHAT XOAY QUANH CHATBOT TỰ ĐỘNG PHẢN HỒI LẬP TỨC TRONG 1S
+        // MỞ KHUNG CHAT SẮC NÉT
         function openBigoChatOverlay(nickname, avatar = "👩") {
             let userChatData = usersChatDatingDatabase.find(u => u.nickname === nickname);
             if(!userChatData) {
@@ -361,86 +402,96 @@
             activeBigoUserObj.messages.push({ sender: 'me', text: userMsg });
             activeBigoUserObj.lastMsg = userMsg; input.value = ""; renderBigoMessagesFlow();
 
-            // 🔥 PHẢN HỒI ẢO TỪ BOT SAU 1 GIÂY ĐỂ KIỂM TRA TƯƠNG TÁC
             setTimeout(() => {
                 if(activeBigoUserObj) {
                     const botReplies = [
-                        "Dạ em nghe nè anh ơi! 🥰",
-                        "Sân Phúc An dạo này đông khách ghê, hôm nào anh rủ em đi chung nha! 🏸",
-                        "App bồ mượt quá trời, nhắn cái nhận được liền nè! ⚡",
-                        "Anh Tảu Bắc ơi, tí đi ăn mì cay thập cẩm uống trà sữa không anh? 🥤🍜"
+                        "Dạ em nghe nè bồ tèo ơi! 🥰",
+                        "Sân cầu lông Phúc An dạo này đông vui ghê, hôm nào đánh chung nha! 🏸",
+                        "Hệ thống gõ phím Enter gửi tin này mượt mà hẳn luôn á! ⚡",
+                        "Xíu nữa mình đi uống trà sữa tiệm trà nét quê nha bồ! 🥤"
                     ];
                     const randomReply = botReplies[Math.floor(Math.random() * botReplies.length)];
                     activeBigoUserObj.messages.push({ sender: 'them', text: randomReply });
-                    activeBigoUserObj.lastMsg = randomReply;
-                    renderBigoMessagesFlow();
+                    activeBigoUserObj.lastMsg = randomReply; renderBigoMessagesFlow();
                 }
             }, 1000);
         }
+
+        // 🔥 KÍCH HOẠT LỆNH ENTER CHO KHUNG CHAT VÀ COMMENT CHUẨN ĐẾT
+        document.getElementById('chat-room-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); submitRoomMessage(); }
+        });
+
+        document.getElementById('comment-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); sendComment(); }
+        });
 
         function renderBigoMessagesFlow() {
             const container = document.getElementById('chat-room-messages-flow'); container.innerHTML = "";
             if(!activeBigoUserObj) return;
             activeBigoUserObj.messages.forEach(msg => {
                 const row = document.createElement('div');
-                row.className = msg.sender === 'me' ? "flex justify-end" : "flex justify-start gap-2";
-                row.innerHTML = `<div class="${msg.sender === 'me' ? 'bg-gradient-to-r from-pink-500 to-red-500 text-white' : 'bg-zinc-900 text-zinc-100'} p-2.5 rounded-2xl max-w-[85%] text-xs font-semibold">${msg.text}</div>`;
+                row.className = msg.sender === 'me' ? "flex justify-end" : "flex justify-start gap-2.5";
+                row.innerHTML = `
+                    <div class="${msg.sender === 'me' ? 'bg-[#ff0050] text-white rounded-tr-none' : 'bg-zinc-900 text-zinc-100 rounded-tl-none'} p-3 rounded-2xl max-w-[80%] text-xs font-semibold shadow-md leading-normal">
+                        ${msg.text}
+                    </div>`;
                 container.appendChild(row);
             });
             container.scrollTop = container.scrollHeight;
         }
 
-        // ĐỔI TÀI KHOẢN QUA LẠI GIỮA NICK THẬT VÀ NICK ẢO
+        function sendComment() {
+            const input = document.getElementById('comment-input'); if(!input.value.trim()) return;
+            const item = document.createElement('div'); item.className = "flex items-start gap-2.5 py-1.5 border-b border-zinc-950";
+            item.innerHTML = `<div class="w-7 h-7 bg-zinc-800 rounded-full flex items-center justify-center text-xs">👤</div><div><p class="font-black text-zinc-500 text-[10px]">@bạn</p><p class="text-zinc-200 mt-0.5 font-medium">${input.value}</p></div>`;
+            document.getElementById('comment-list').appendChild(item); input.value = "";
+            const container = document.getElementById('comment-list').parentNode; container.scrollTop = container.scrollHeight;
+        }
+
+        // THAO TÁC CƠ BẢN
+        function closeBigoChatOverlay() { document.getElementById('chat-room-screen').classList.add('translate-y-full'); }
+        function openComments() { document.getElementById('comment-sheet').classList.remove('translate-y-full'); }
+        function closeComments() { document.getElementById('comment-sheet').classList.add('translate-y-full'); }
+        function openWalletMiniModal() { document.getElementById('wallet-mini-modal').classList.replace('hidden', 'flex'); document.getElementById('modal-wallet-coins-count').innerText = currentActiveUser.coins; }
+        function closeWalletMiniModal() { document.getElementById('wallet-mini-modal').classList.replace('flex', 'hidden'); }
+        function toggleGiftingPanel() { document.getElementById('gifting-slide-panel').classList.toggle('hidden'); document.getElementById('gift-panel-user-coins').innerText = currentActiveUser.coins; }
+        function executeSendGift(gift, cost) {
+            if(currentActiveUser.coins < cost) { showToast("Ví không đủ xu bồ ơi! ⚠️"); return; }
+            currentActiveUser.coins -= cost; localStorage.setItem('current_active_session', JSON.stringify(currentActiveUser));
+            activeBigoUserObj.messages.push({ sender: 'me', text: `🎁 Đã tặng thành công: 1 ${gift} (-${cost} xu)` });
+            renderBigoMessagesFlow(); syncSessionStateWithGiaoDienUI(); toggleGiftingPanel();
+        }
         function openDeviceAccountManagerModal() { document.getElementById('account-manager-modal').classList.replace('hidden', 'flex'); renderSavedAccountsListDOM(); }
         function closeDeviceAccountManagerModal() { document.getElementById('account-manager-modal').classList.replace('flex', 'hidden'); }
         function renderSavedAccountsListDOM() {
             const container = document.getElementById('device-accounts-list-dom'); container.innerHTML = "";
             deviceRegisteredAccounts.forEach(acc => {
                 const isActive = acc.username === currentActiveUser.username;
-                const row = document.createElement('div');
-                row.className = `flex justify-between items-center p-2.5 rounded-xl border text-xs cursor-pointer ${isActive ? 'bg-pink-500/20 border-pink-500 font-black' : 'bg-black/30 border-zinc-800'}`;
+                const row = document.createElement('div'); row.className = `flex justify-between items-center p-3 rounded-xl border text-xs cursor-pointer ${isActive ? 'bg-pink-500/10 border-pink-500 font-black text-pink-400' : 'bg-black border-zinc-800 text-zinc-400'}`;
                 row.setAttribute('onclick', `executeSwitchSessionNick('${acc.username}')`);
-                row.innerHTML = `<div>👤 ${acc.nickname}</div> ${isActive ? '<span>• Đang dùng</span>' : '<span>Chọn acc ảo này</span>'}`;
+                row.innerHTML = `<div>👤 ${acc.nickname}</div> ${isActive ? '<span>• Hiện tại</span>' : '<span class="text-[10px] text-zinc-600">Bấm để đổi</span>'}`;
                 container.appendChild(row);
             });
         }
-        function executeSwitchSessionNick(un) { const acc = deviceRegisteredAccounts.find(a => a.username === un); if(acc) { currentActiveUser = acc; localStorage.setItem('current_active_session', JSON.stringify(currentActiveUser)); syncSessionStateWithGiaoDienUI(); closeDeviceAccountManagerModal(); showToast(`Đã chuyển sang: ${acc.nickname} ✨`); } }
-
-        // CÁC HÀM TIỆN ÍCH KHÁC
-        function closeBigoChatOverlay() { document.getElementById('chat-room-screen').classList.add('translate-y-full'); }
-        function openWalletMiniModal() { document.getElementById('wallet-mini-modal').classList.replace('hidden', 'flex'); document.getElementById('modal-wallet-coins-count').innerText = currentActiveUser.coins; }
-        function closeWalletMiniModal() { document.getElementById('wallet-mini-modal').classList.replace('flex', 'hidden'); }
-        function toggleGiftingPanel() { document.getElementById('gifting-slide-panel').classList.toggle('hidden'); document.getElementById('gift-panel-user-coins').innerText = currentActiveUser.coins; }
-        function executeSendGift(gift, cost) {
-            if(currentActiveUser.coins < cost) { showToast("Không đủ xu! Yêu cầu nạp thêm."); return; }
-            currentActiveUser.coins -= cost; localStorage.setItem('current_active_session', JSON.stringify(currentActiveUser));
-            activeBigoUserObj.messages.push({ sender: 'me', text: `🎁 Đã tặng thành công: 1 ${gift} (-${cost} xu)` });
-            renderBigoMessagesFlow(); syncSessionStateWithGiaoDienUI(); toggleGiftingPanel();
-        }
-        function syncSessionStateWithGiaoDienUI() {
-            document.getElementById('current-user-display-name').innerText = currentActiveUser.nickname;
-            document.getElementById('current-user-display-id').innerText = "@" + currentActiveUser.username;
-            document.getElementById('profile-wallet-coins-count').innerText = currentActiveUser.coins;
-        }
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('[id^="nav-"]').forEach(b => b.classList.remove('nav-active'));
-            document.getElementById(`view-${tab}`).classList.add('active');
-            document.getElementById(`nav-${tab}`).classList.add('nav-active');
-            if(tab === 'chat') renderInboxList('friends');
-        }
-        function renderInboxList(cat) {
+        function executeSwitchSessionNick(un) { const acc = deviceRegisteredAccounts.find(a => a.username === un); if(acc) { currentActiveUser = acc; localStorage.setItem('current_active_session', JSON.stringify(currentActiveUser)); syncSessionStateWithGiaoDienUI(); closeDeviceAccountManagerModal(); showToast(`Đã chuyển: ${acc.nickname} ✨`); } }
+        function syncSessionStateWithGiaoDienUI() { document.getElementById('current-user-display-name').innerText = currentActiveUser.nickname; document.getElementById('current-user-display-id').innerText = "@" + currentActiveUser.username; document.getElementById('profile-wallet-coins-count').innerText = currentActiveUser.coins; }
+        function switchTab(tab) { document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active')); document.querySelectorAll('[id^="nav-"]').forEach(b => b.classList.remove('nav-active')); document.getElementById(`view-${tab}`).classList.add('active'); document.getElementById(`nav-${tab}`).classList.add('nav-active'); if(tab === 'chat') renderInboxList(); if(tab === 'home') syncAndCleanFirebasePosts(); }
+        function renderInboxList() {
             const container = document.getElementById('chat-inbox-users-list'); container.innerHTML = "";
             usersChatDatingDatabase.forEach(u => {
-                const row = document.createElement('div'); row.className = "flex items-center gap-3 p-3 bg-zinc-900/40 rounded-xl border border-zinc-900 cursor-pointer";
+                const row = document.createElement('div'); row.className = "flex items-center gap-3 p-3.5 bg-zinc-950 border border-zinc-900 rounded-2xl cursor-pointer hover:bg-zinc-900/40 transition";
                 row.setAttribute('onclick', `openBigoChatOverlay('${u.nickname}', '${u.avatar}')`);
-                row.innerHTML = `<div class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center">${u.avatar}</div><div><h4 class="text-xs font-black">${u.nickname}</h4><p class="text-[11px] text-zinc-500 mt-0.5">${u.lastMsg}</p></div>`;
+                row.innerHTML = `<div class="w-9 h-9 bg-zinc-800 rounded-full flex items-center justify-center">${u.avatar}</div><div class="flex-1 min-w-0"><h4 class="text-xs font-black text-zinc-300">| ${u.nickname}</h4><p class="text-[11px] text-zinc-500 truncate mt-0.5">${u.lastMsg}</p></div>`;
                 container.appendChild(row);
             });
         }
+        function openOtherUserProfile(u) { document.getElementById('other-profile-username').innerText = u; document.getElementById('other-profile-name').innerText = "@" + u; document.getElementById('other-user-profile-modal').classList.remove('hidden'); setTimeout(() => { document.getElementById('other-user-profile-modal').classList.remove('translate-x-full'); }, 10); }
+        function closeOtherUserProfile() { document.getElementById('other-user-profile-modal').classList.add('translate-x-full'); }
+        async function executeViralHeartLike(btn, id) { const target = globalDatingVideos.find(v => v.id === id); if(!target) return; btn.classList.toggle('text-red-500'); if(btn.classList.contains('text-red-500')) target.likes++; else target.likes--; btn.querySelector('.like-counter-txt').innerText = target.likes; }
         function clearSelectedMedia() { document.getElementById('media-input').value = ""; document.getElementById('studio-preview-box').classList.add('hidden'); document.getElementById('upload-zone').classList.remove('hidden'); }
-        function showToast(m) { const old = document.getElementById('app-toast'); if(old) old.remove(); const t = document.createElement('div'); t.id = 'app-toast'; t.className = "fixed top-6 left-1/2 transform -translate-x-1/2 bg-zinc-900 border border-zinc-800 px-5 py-2 rounded-full z-[9999] text-xs font-black"; t.innerHTML = `⚡ ${m}`; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
-        document.getElementById('media-input').addEventListener('change', function(e) { if(e.target.files[0]) { document.getElementById('upload-zone').classList.add('hidden'); document.getElementById('studio-preview-box').classList.remove('hidden'); document.getElementById('preview-media-container').innerHTML = "<p class='text-xs text-zinc-400'>File đã được chọn sẵn sàng sàng!</p>"; } });
+        function showToast(m) { const old = document.getElementById('app-toast'); if(old) old.remove(); const t = document.createElement('div'); t.id = 'app-toast'; t.className = "fixed top-6 left-1/2 transform -translate-x-1/2 bg-zinc-900 border border-zinc-800 px-5 py-2.5 rounded-full z-[9999] text-xs font-black text-white shadow-xl"; t.innerHTML = `⚡ ${m}`; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
+        document.getElementById('media-input').addEventListener('change', function(e) { if(e.target.files[0]) { document.getElementById('upload-zone').classList.add('hidden'); document.getElementById('studio-preview-box').classList.remove('hidden'); document.getElementById('preview-media-container').innerHTML = "<p class='text-xs text-zinc-500 font-bold'>File đính kèm đã sẵn sàng lên kệ!</p>"; } });
         window.addEventListener('DOMContentLoaded', () => { syncSessionStateWithGiaoDienUI(); syncAndCleanFirebasePosts(); });
     </script>
 </body>
