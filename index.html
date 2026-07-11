@@ -3,62 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Game Shop</title>
+    <title>Gói Mua Một Lần</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Tiêu đề & Thanh điều hướng -->
-    <div class="shop-header">
-        <h1>VẬT PHẨM ĐỘC QUYỀN</h1>
-        <p>Ưu đãi giới hạn dành riêng cho chiến thần</p>
-        <header class="shop-nav">
-            <button class="nav-item active">Gói Sapphire</button>
-            <button class="nav-item">Rương Thần Bí</button>
-            <button class="nav-item">Quà Mỗi Ngày</button>
-        </header>
+    <div class="shop-wrapper">
+        <!-- Tiêu đề phân khu -->
+        <div class="section-title">Gói mua một lần</div>
+
+        <!-- Vùng chứa các gói ưu đãi -->
+        <main class="bundle-container">
+            
+            <!-- GÓI 1 -->
+            <div class="bundle-card">
+                <!-- Nhãn giảm giá góc trên -->
+                <div class="discount-header">
+                    <span class="time-tag">🕒 -50%</span>
+                    <span class="percent-tag">50% <small>OFF</small></span>
+                </div>
+
+                <!-- Hình ảnh rương báu chính -->
+                <div class="main-chest">🎁</div>
+
+                <!-- Tên gói -->
+                <h3 class="bundle-name">Gói ưu đãi đặc biệt chỉ có một lần</h3>
+
+                <!-- Hàng vật phẩm nhỏ đi kèm -->
+                <div class="sub-items-list">
+                    <div class="sub-item">⚔️<span>x1</span></div>
+                    <div class="sub-item">🛡️<span>x1</span></div>
+                    <div class="sub-item">💎<span>x3</span></div>
+                    <div class="sub-item">🧪<span>x3</span></div>
+                </div>
+
+                <!-- Khối thanh toán (Giá cũ gạch ngang + Giá mới + Nút mua) -->
+                <div class="purchase-action">
+                    <div class="price-box">
+                        <span class="new-price">249.500 đ</span>
+                        <span class="old-price">499.000 đ</span>
+                    </div>
+                    <button class="cart-btn">🛒</button>
+                </div>
+
+                <!-- Dòng giới hạn mua -->
+                <div class="stock-info">Còn hàng: 1/1</div>
+            </div>
+
+            <!-- GÓI 2 -->
+            <div class="bundle-card">
+                <div class="discount-header">
+                    <span class="time-tag">🕒 -60%</span>
+                    <span class="percent-tag">60% <small>OFF</small></span>
+                </div>
+                <div class="main-chest">👑</div>
+                <h3 class="bundle-name">Gói mua một lần Spirit Vanna</h3>
+                <div class="sub-items-list">
+                    <div class="sub-item">📜<span>x1</span></div>
+                    <div class="sub-item">🏺<span>x2</span></div>
+                    <div class="sub-item">💰<span>x10</span></div>
+                </div>
+                <div class="purchase-action">
+                    <div class="price-box">
+                        <span class="new-price">519.600 đ</span>
+                        <span class="old-price">1.299.000 đ</span>
+                    </div>
+                    <button class="cart-btn">🛒</button>
+                </div>
+                <div class="stock-info">Còn hàng: 1/1</div>
+            </div>
+
+        </main>
     </div>
-
-    <!-- Danh sách vật phẩm -->
-    <main class="shop-container">
-        
-        <!-- Gói 1 -->
-        <div class="product-card">
-            <div class="badge">Bán chạy</div>
-            <div class="product-image">💎</div>
-            <h3 class="product-name">200 Sapphire</h3>
-            <div class="price-tag">79.000 đ</div>
-            <button class="buy-button">MUA NGAY</button>
-        </div>
-
-        <!-- Gói 2 -->
-        <div class="product-card hot">
-            <div class="badge hot-badge">+10% BONUS</div>
-            <div class="product-image">🔮</div>
-            <h3 class="product-name">1,000 + 100 <span class="highlight">Sapphire</span></h3>
-            <div class="price-tag">249.000 đ</div>
-            <button class="buy-button">MUA NGAY</button>
-        </div>
-
-        <!-- Gói 3 -->
-        <div class="product-card">
-            <div class="badge">Ưu đãi</div>
-            <div class="product-image">🏺</div>
-            <h3 class="product-name">3,500 + 500 Sapphire</h3>
-            <div class="price-tag">799.000 đ</div>
-            <button class="buy-button">MUA NGAY</button>
-        </div>
-
-        <!-- Gói 4 -->
-        <div class="product-card vip">
-            <div class="badge vip-badge">SIÊU CẤP</div>
-            <div class="product-image">👑</div>
-            <h3 class="product-name">11,500 + 2,500 Sapphire</h3>
-            <div class="price-tag">2.499.000 đ</div>
-            <button class="buy-button">MUA NGAY</button>
-        </div>
-
-    </main>
 
 </body>
 </html>
