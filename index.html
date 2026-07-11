@@ -3,56 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cửa Hàng Vật Phẩm Demo</title>
+    <title>Premium Game Shop</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Thanh Menu Danh Mục -->
-    <header class="shop-nav">
-        <button class="nav-item active">Gói Vật Phẩm</button>
-        <button class="nav-item">Quà Mỗi Ngày</button>
-        <button class="nav-item">Rương Thần Bí</button>
-        <button class="nav-item">Ưu Đãi Đặc Biệt</button>
-    </header>
+    <!-- Tiêu đề & Thanh điều hướng -->
+    <div class="shop-header">
+        <h1>VẬT PHẨM ĐỘC QUYỀN</h1>
+        <p>Ưu đãi giới hạn dành riêng cho chiến thần</p>
+        <header class="shop-nav">
+            <button class="nav-item active">Gói Sapphire</button>
+            <button class="nav-item">Rương Thần Bí</button>
+            <button class="nav-item">Quà Mỗi Ngày</button>
+        </header>
+    </div>
 
-    <!-- Khu Vực Hiển Thị Vật Phẩm (Dạng Lưới) -->
+    <!-- Danh sách vật phẩm -->
     <main class="shop-container">
         
-        <!-- Vật phẩm 1 -->
+        <!-- Gói 1 -->
         <div class="product-card">
-            <div class="product-image">
-                <span class="placeholder-icon">💎</span>
-            </div>
-            <h3 class="product-name">200 Đá Quý</h3>
-            <button class="buy-button">79.000 đ</button>
+            <div class="badge">Bán chạy</div>
+            <div class="product-image">💎</div>
+            <h3 class="product-name">200 Sapphire</h3>
+            <div class="price-tag">79.000 đ</div>
+            <button class="buy-button">MUA NGAY</button>
         </div>
 
-        <!-- Vật phẩm 2 -->
-        <div class="product-card">
-            <div class="product-image">
-                <span class="placeholder-icon">💎💎</span>
-            </div>
-            <h3 class="product-name">1000 + 100 Đá Quý</h3>
-            <button class="buy-button">249.000 đ</button>
+        <!-- Gói 2 -->
+        <div class="product-card hot">
+            <div class="badge hot-badge">+10% BONUS</div>
+            <div class="product-image">🔮</div>
+            <h3 class="product-name">1,000 + 100 <span class="highlight">Sapphire</span></h3>
+            <div class="price-tag">249.000 đ</div>
+            <button class="buy-button">MUA NGAY</button>
         </div>
 
-        <!-- Vật phẩm 3 -->
+        <!-- Gói 3 -->
         <div class="product-card">
-            <div class="product-image">
-                <span class="placeholder-icon">🏺</span>
-            </div>
-            <h3 class="product-name">3500 + 500 Đá Quý</h3>
-            <button class="buy-button">799.000 đ</button>
+            <div class="badge">Ưu đãi</div>
+            <div class="product-image">🏺</div>
+            <h3 class="product-name">3,500 + 500 Sapphire</h3>
+            <div class="price-tag">799.000 đ</div>
+            <button class="buy-button">MUA NGAY</button>
         </div>
 
-        <!-- Vật phẩm 4 -->
-        <div class="product-card">
-            <div class="product-image">
-                <span class="placeholder-icon">💰</span>
-            </div>
-            <h3 class="product-name">11500 + 2500 Đá Quý</h3>
-            <button class="buy-button">2.499.000 đ</button>
+        <!-- Gói 4 -->
+        <div class="product-card vip">
+            <div class="badge vip-badge">SIÊU CẤP</div>
+            <div class="product-image">👑</div>
+            <h3 class="product-name">11,500 + 2,500 Sapphire</h3>
+            <div class="price-tag">2.499.000 đ</div>
+            <button class="buy-button">MUA NGAY</button>
         </div>
 
     </main>
