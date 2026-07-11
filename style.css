@@ -1,172 +1,176 @@
-/* Reset & Nền tối chuẩn Cyberpunk/Gaming */
+/* Nền vàng sáng phía sau */
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: radial-gradient(circle at top, #1a1f36 0%, #0a0c16 100%);
-    color: #ffffff;
+    padding: 20px;
+    background-color: #ffcc00; /* Màu nền vàng giống ảnh */
+    font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    justify-content: center;
 }
 
-/* Khu vực tiêu đề */
-.shop-header {
+.shop-wrapper {
+    width: 100%;
+    max-width: 1200px;
     text-align: center;
-    margin-top: 40px;
+}
+
+/* Chữ "Gói mua một lần" ở giữa */
+.section-title {
+    background-color: #1c2536;
+    color: white;
+    padding: 8px 25px;
+    border-radius: 5px;
+    display: inline-block;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
-.shop-header h1 {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-    background: linear-gradient(45deg, #ff7b00, #ffae00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 5px;
-}
-
-.shop-header p {
-    color: #8a99ad;
-    margin-top: 0;
-}
-
-/* Thanh Menu mịn màng */
-.shop-nav {
+/* Lưới chứa các thẻ */
+.bundle-container {
     display: flex;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 6px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    margin: 20px auto;
-    width: fit-content;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.nav-item {
-    background: none;
-    border: none;
-    color: #8a99ad;
-    padding: 10px 24px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.nav-item.active, .nav-item:hover {
-    background: #ff7b00;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
-}
-
-/* Lưới hiển thị thẻ vật phẩm */
-.shop-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-    width: 90%;
-    max-width: 1200px;
-    padding: 20px 0 6px 0;
-}
-
-/* Thiết kế thẻ vật phẩm (Card) siêu cấp */
-.product-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 25px;
-    text-align: center;
+/* Thẻ gói hàng màu xanh */
+.bundle-card {
+    background: linear-gradient(to bottom, #4a90e2, #0b3c73);
+    border: 3px solid #ffffff;
+    border-radius: 15px;
+    width: 300px;
+    padding: 15px;
     position: relative;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+/* Thiết kế phần nhãn giảm giá ở góc */
+.discount-header {
+    width: 100%;
+    display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-/* Hiệu ứng phát sáng và nổi lên khi rê chuột */
-.product-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255, 123, 0, 0.5);
-    box-shadow: 0 12px 30px rgba(255, 123, 0, 0.15);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-/* Nổi bật thẻ HOT */
-.product-card.hot {
-    border-color: rgba(139, 92, 246, 0.5);
-}
-.product-card.hot:hover {
-    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.25);
-}
-
-/* Nhãn đính kèm (Badge) */
-.badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 4px 12px;
+.time-tag {
+    background-color: #ffffff;
+    color: #333;
+    padding: 2px 8px;
+    border-radius: 10px;
     font-size: 0.75rem;
     font-weight: bold;
-    border-radius: 20px;
-    text-transform: uppercase;
-}
-.hot-badge { background: #8b5cf6; }
-.vip-badge { background: #ec4899; }
-
-/* Hình ảnh / Icon bự và sắc nét hơn */
-.product-image {
-    font-size: 4rem;
-    margin: 20px 0;
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
-    transition: transform 0.3s ease;
-}
-.product-card:hover .product-image {
-    transform: scale(1.1) rotate(5deg);
+    border: 1px solid #ccc;
 }
 
-/* Tên và giá tiền */
-.product-name {
-    font-size: 1.2rem;
-    margin: 10px 0;
-    color: #e2e8f0;
+.percent-tag {
+    color: #ffcc00;
+    font-size: 1.8rem;
+    font-weight: 900;
+    font-style: italic;
+    text-shadow: 2px 2px #000;
 }
-.highlight { color: #8b5cf6; }
 
-.price-tag {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #ffae00;
+/* Vật phẩm lớn ở giữa */
+.main-chest {
+    font-size: 5rem;
     margin: 15px 0;
+    filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.3));
 }
 
-/* Nút Mua Gaming Style */
-.buy-button {
-    background: linear-gradient(90deg, #ff7b00, #ff5100);
-    color: white;
-    border: none;
-    padding: 14px;
+/* Tên gói đồ bên dưới */
+.bundle-name {
+    color: #333;
+    background-color: #ffffff;
+    width: 90%;
+    padding: 8px 5px;
+    border-radius: 5px;
     font-size: 0.95rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    border-radius: 8px;
-    cursor: pointer;
+    margin: 10px 0;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hàng danh sách các món đồ nhỏ x1 x2 */
+.sub-items-list {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 10px 0;
     width: 100%;
-    transition: all 0.2s;
 }
 
-.buy-button:hover {
-    filter: brightness(1.2);
-    box-shadow: 0 0 15px rgba(255, 81, 0, 0.6);
+.sub-item {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 35px;
 }
 
-.product-card.hot .buy-button {
-    background: linear-gradient(90deg, #8b5cf6, #6d28d9);
+.sub-item span {
+    font-size: 0.7rem;
+    color: #fff;
+    font-weight: bold;
+    margin-top: 2px;
 }
-.product-card.hot .buy-button:hover {
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+
+/* Cụm nút bấm mua hàng và giá tiền */
+.purchase-action {
+    display: flex;
+    width: 100%;
+    background-color: #ff8800;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 15px;
+    border: 2px solid #ffaa44;
+}
+
+.price-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.new-price {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.old-price {
+    color: #ffe6cc;
+    text-decoration: line-through; /* Tạo đường gạch ngang giá cũ */
+    font-size: 0.8rem;
+}
+
+.cart-btn {
+    background-color: #e66a00;
+    border: none;
+    color: white;
+    padding: 0 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cart-btn:hover {
+    background-color: #cc5f00;
+}
+
+/* Dòng trạng thái kho hàng dưới cùng */
+.stock-info {
+    color: #aae0ff;
+    font-size: 0.8rem;
+    margin-top: 8px;
 }
